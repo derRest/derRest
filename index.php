@@ -14,6 +14,6 @@ echo phpversion();
 ?>
 <html>
 <head>
-<title>Test Page</title>
+<title>Some Page</title>
 </head>
 </html>
