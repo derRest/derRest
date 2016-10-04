@@ -1,6 +1,6 @@
 <?php 
 
-$world = 'World';
+$world = 'World 2';
 
 echo 'Hello ' . strtolower($world) . '!';
 echo '<br>';
