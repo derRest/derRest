@@ -1,6 +1,6 @@
 <?php 
 
-$world = 'World';
+$world = 'Server';
 if (isset($_GET["name"])) {
     $world = $_GET["name"];	
 }
