@@ -1,1 +1,5 @@
-<?="hello world";?>
+<?php 
+
+$world = 'World';
+
+echo 'Hello ' . stringtolower($world) . '!';
