@@ -2,4 +2,4 @@
 
 $world = 'World';
 
-echo 'Hello ' . stringtolower($world) . '!';
+echo 'Hello ' . strtolower($world) . '!';
