@@ -10,3 +10,10 @@ echo 'Hello ' . strtolower($world) . '!';
 echo '<br>';
 echo '<br>';
 echo phpversion();
+
+?>
+<html>
+<head>
+<title>Test Page</title>
+</head>
+</html>
