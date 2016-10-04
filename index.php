@@ -1,7 +1,7 @@
 <?php 
 
 $world = 'World';
-if (!is_null($_GET["name"])) {
+if (isset($_GET["name"])) {
     $world = $_GET["name"];	
 }
 
