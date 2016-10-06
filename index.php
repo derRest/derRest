@@ -1,18 +1,13 @@
 <?php
-require_once 'src/Maze.php';
+namespace derRest;
 
-$x = Maze::DEFAULT_MAZE_WIDTH;
-$y = Maze::DEFAULT_MAZE_HEIGHT;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
 
-if (!empty($_GET['x']) && is_numeric($_GET['x'])) {
-    $x = $_GET['x'];
-}
-if (!empty($_GET['y']) && is_numeric($_GET['y'])) {
-    $y = $_GET['y'];
-}
-$m = new Maze((int) $x, (int) $y);
+require_once 'vendor/autoload.php';
 
-$m->generate();
+$whoops = new Run;
+$whoops->pushHandler(new PrettyPageHandler);
+$whoops->register();
 
-echo json_encode($m->getMaze());
-
+(new Routes)->dispatch();

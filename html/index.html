@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AMazeIng</title>
+</head>
+<body>
+<script>
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', location.protocol + '//' + location.host + location.pathname + 'api/maze');
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            document.querySelector('.json').innerText = xhr.responseText;
+        }
+        else {
+            document.querySelector('.json').innerText = 'Request failed.  Returned status of ' + xhr.status;
+        }
+    };
+    xhr.send();
+</script>
+<div class="json"></div>
+</body>
+</html>

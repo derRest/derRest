@@ -1,0 +1,11 @@
+{
+  "autoload": {
+    "psr-4": {
+      "derRest\\": "src/"
+    }
+  },
+  "require": {
+    "klein/klein": "2.*",
+    "filp/whoops": "2.*"
+  }
+}

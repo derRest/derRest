@@ -1,4 +1,7 @@
 <?php
+declare(strict_types=1);
+namespace derRest;
+
 /**
  * Maze.php
  *
@@ -12,25 +15,23 @@
 
 class Maze
 {
-    const DEFAULT_MAZE_HEIGHT = 15;
-    const DEFAULT_MAZE_WIDTH  = 15;
-    const WHITEPSPACE = 0;
+    const WHITE_SPACE = 0;
     const WALL = 1;
     const CANDY = 2;
 
-    private $cells            = array();
-    private $walls            = array();
-    private $eqClasses        = array();
-    private $remainingClasses = 0;
-    private $x                = 0;
-    private $y                = 0;
-    private $cellCount        = 0;
-    private $wallCount        = 0;
-    private $candyCount = 10;
-    private $counter = 0;
-    private $mazearray = array();
-    //RandomGen r;
+    const DEFAULT_MAZE_HEIGHT = 15;
+    const DEFAULT_MAZE_WIDTH = 15;
 
+    protected $cells = array();
+    protected $walls = array();
+    protected $eqClasses = array();
+    protected $remainingClasses = 0;
+    protected $x = 0;
+    protected $y = 0;
+    protected $cellCount = 0;
+    protected $wallCount = 0;
+    protected $candyCount = 10;
+    protected $counter = 0;
 
     /**
      * __construct()
@@ -38,17 +39,16 @@ class Maze
      * Class constructor. This sets the height and width of the maze then calls
      * buildBaseMaze() to initialize the arrays.
      *
-     * @param int x The width of the maze to generate; defaults to DEFAULT_MAZE_WIDTH
-     * @param int y The height of the maze to generate; defaults to DEFAULT_MAZE_HEIGHT
-     * @return n/a (Constructor)
+     * @param int $x The width of the maze to generate; defaults to DEFAULT_MAZE_WIDTH
+     * @param int $y The height of the maze to generate; defaults to DEFAULT_MAZE_HEIGHT
      */
-    public function __construct($x = self::DEFAULT_MAZE_WIDTH, $y = self::DEFAULT_MAZE_HEIGHT)
+    public function __construct(int $x = self::DEFAULT_MAZE_WIDTH, int $y = self::DEFAULT_MAZE_HEIGHT)
     {
         $this->x = $x;
         $this->y = $y;
 
         $this->buildBaseMaze();
-    } //end __construct
+    }
 
 
     /**
@@ -60,32 +60,28 @@ class Maze
      * maze are in the same set, the maze is complete and there exists a
      * path from every cell in the maze to every other cell.
      *
-     * @return void
+     * @return self
      */
-    public function generate()
+    public function generate():self
     {
         while ($this->disjointCellsExist()) {
-            $c    = $this->getRandomCell();
+            $c = $this->getRandomCell();
             $wall = $this->getRandomInnerWall($c);
-            $n    = $this->getNeighboringCell($c, $wall);
+            $n = $this->getNeighboringCell($c, $wall);
 
             if (!$this->checkConnected($c, $n)) {
                 $this->removeWall($wall);
                 $this->connect($c, $n);
             }
         }
-    } //end generate
+        return $this;
+    }
 
 
     /**
-     * display()
-     *
-     * Wrapper for the other print function that defaults to using std::cout
-     * as the output location.
-     *
      * @return array
      */
-    public function getMaze()
+    public function getMaze():array
     {
         $result = [];
         // Each row is 2 character lines high, including top border, then add 1 for
@@ -93,7 +89,6 @@ class Maze
         $printRows = (2 * $this->y) + 1;
 
         $currWall = 0;
-        $currCell = 0;
         for ($i = 0; $i < $printRows; $i++) {
             $tmp = [];
             if ($i % 2 == 0) {
@@ -106,7 +101,7 @@ class Maze
                         $tmp[] = static::WALL;
                     } else {
                         //echo "0";
-                        $tmp[] = static::WHITEPSPACE;
+                        $tmp[] = static::WHITE_SPACE;
                     }
                     if ($this->walls[$currWall++] == 1) {
                         //echo "11";
@@ -114,8 +109,8 @@ class Maze
                         $tmp[] = static::WALL;
                     } else {
                         //echo "00";
-                        $tmp[] = static::WHITEPSPACE;
-                        $tmp[] = static::WHITEPSPACE;
+                        $tmp[] = static::WHITE_SPACE;
+                        $tmp[] = static::WHITE_SPACE;
                     }
                 }
                 // Bottom-right corner does not need bottom-right divider
@@ -136,13 +131,13 @@ class Maze
                             $this->counter = 0;
                         } else {
                             //echo "0";
-                            $tmp[] = static::WHITEPSPACE;
+                            $tmp[] = static::WHITE_SPACE;
                             $this->counter++;
                         }
                     }
                     //echo "00";
-                    $tmp[] = static::WHITEPSPACE;
-                    $tmp[] = static::WHITEPSPACE;
+                    $tmp[] = static::WHITE_SPACE;
+                    $tmp[] = static::WHITE_SPACE;
                 }
 
                 // Print the right wall if needed
@@ -155,7 +150,7 @@ class Maze
             $result[] = $tmp;
         }
         return $result;
-    } //end display
+    }
 
 
     /**
@@ -166,12 +161,12 @@ class Maze
      * visible. Finally, knock out the walls in the upper-left and
      * bottom-right corners.
      *
-     * @return void
+     * @return self
      */
-    private function buildBaseMaze()
+    protected function buildBaseMaze():self
     {
-        $this->cellCount        = $this->x * $this->y;
-        $this->wallCount        = ($this->x * ($this->y + 1)) + ($this->y * ($this->x + 1));
+        $this->cellCount = $this->x * $this->y;
+        $this->wallCount = ($this->x * ($this->y + 1)) + ($this->y * ($this->x + 1));
         $this->remainingClasses = $this->cellCount;
 
         // Set all the walls to be on to start
@@ -182,10 +177,10 @@ class Maze
         // Initialize the cells to be independent of one another
         for ($i = 0; $i < $this->cellCount; $i++) {
             $c = array(
-                'idx'    => $i,
+                'idx' => $i,
                 'parent' => NULL,
             );
-            $this->cells[$i]     = $c;
+            $this->cells[$i] = $c;
             $this->eqClasses[$i] = $i;
         }
 
@@ -196,7 +191,8 @@ class Maze
         // Remove bottom-right corner walls
         $this->removeWall($this->wallCount - ($this->x + 1));
         $this->removeWall($this->wallCount - 1);
-    } //end buildBaseMaze
+        return $this;
+    }
 
 
     /**
@@ -206,16 +202,18 @@ class Maze
      * specified cells have the same equivalence class (i.e. whether they)
      * are connected within the maze.
      *
+     * @param array $c1
+     * @param array $c2
      * @return bool Whether two cells have the same equivalence class.
      */
-    private function checkConnected(array $c1, array $c2)
+    protected function checkConnected(array $c1, array $c2):bool
     {
         if ($this->eqClasses[$c1['idx']] == $this->eqClasses[$c2['idx']]) {
             return true;
         } else {
             return false;
         }
-    } //end checkConnected
+    }
 
 
     /**
@@ -227,16 +225,18 @@ class Maze
      * equivalence class of all cells that matched c2's old class to equal
      * c1's equivalence class.
      *
-     * @return void
+     * @param array $c1
+     * @param array $c2
+     * @return self
      */
-    private function connect(array $c1, array $c2)
+    protected function connect(array $c1, array $c2):self
     {
         // The root parent of c1 is its equivalence class.
         $temp1 = $this->cells[$this->eqClasses[$c1['idx']]];
         $temp1['parent'] = $c2['idx'];
 
-        $oldClass  = $this->eqClasses[$temp1['idx']];
-        $newClass  = $this->eqClasses[$c2['idx']];
+        $oldClass = $this->eqClasses[$temp1['idx']];
+        $newClass = $this->eqClasses[$c2['idx']];
 
         for ($i = 0; $i < $this->cellCount; $i++) {
             if ($this->eqClasses[$i] == $oldClass) {
@@ -245,7 +245,8 @@ class Maze
         }
 
         $this->remainingClasses--;
-    } //end connect
+        return $this;
+    }
 
 
     /**
@@ -253,12 +254,14 @@ class Maze
      *
      * Set the specified wall to invisible.
      *
-     * @return void
+     * @param int $idx
+     * @return self
      */
-    private function removeWall($idx)
+    protected function removeWall(int $idx):self
     {
         $this->walls[$idx] = 0;
-    } //end removeWall
+        return $this;
+    }
 
 
     /**
@@ -267,13 +270,13 @@ class Maze
      * Pick a cell at random within the maze. This is the first step during
      * the generation process.
      *
-     * @return Cell* A random cell in the maze.
+     * @return array A random cell in the maze.
      */
-    private function getRandomCell()
+    protected function getRandomCell():array
     {
         $idx = rand(0, $this->cellCount - 1);
         return $this->cells[$idx];
-    } //end getRandomCell
+    }
 
 
     /**
@@ -283,9 +286,11 @@ class Maze
      * at random. An inner wall is one that is adjacent to another cell/room
      * in the maze and not part of the outer border of the overall grid.
      *
+     * @param array $c
      * @return int The index of a random inner wall adjacent to the room.
+     * @throws \Exception
      */
-    private function getRandomInnerWall(array $c)
+    protected function getRandomInnerWall(array $c):int
     {
         $n = $s = $e = $w = true;
         if ($c['idx'] < $this->x) {
@@ -305,14 +310,13 @@ class Maze
         $row = floor($c['idx'] / $this->x);
 
         // Wall indexes for the north, west, east, and south
-        $nx = $c['idx'] + ($row * $this->x) + $row;
+        $nx = (int)($c['idx'] + ($row * $this->x) + $row);
         $wx = $nx + $this->x;
         $ex = $nx + $this->x + 1;
         $sx = $nx + (2 * $this->x) + 1;
 
         while (true) {
-            $wall = rand(1,4);
-            switch ($wall) {
+            switch (rand(1, 4)) {
                 case 1:
                     if ($n === true) {
                         return $nx;
@@ -335,7 +339,8 @@ class Maze
                     break;
             }
         }
-    } //end getRandomInnerWall
+        throw new \Exception('internal error');
+    }
 
 
     /**
@@ -344,10 +349,13 @@ class Maze
      * Given a cell and a wall, this method determines which room is on the
      * other side of said wall.
      *
-     * @return Cell* Returns a pointer to the cell on the other side of the
+     * @param array $c
+     * @param int $wall
+     * @return array Returns a pointer to the cell on the other side of the
      *               wall.
+     * @throws \Exception
      */
-    private function getNeighboringCell(array $c, $wall)
+    protected function getNeighboringCell(array $c, int $wall):array
     {
         // Determine which row the cell is in
         $row = floor($c['idx'] / $this->x);
@@ -376,7 +384,8 @@ class Maze
         if ($wall == $s) {
             return $this->cells[$sx];
         }
-    } //end getNeighboringCell
+        throw new \Exception('Internal Error');
+    }
 
 
     /**
@@ -392,12 +401,12 @@ class Maze
      *
      * @return bool Whether any disjoint cells still exist
      */
-    private function disjointCellsExist()
+    protected function disjointCellsExist():bool
     {
         if ($this->remainingClasses > 1) {
             return true;
         }
 
         return false;
-    } //end disjointCellsExist
-} //end class Maze
+    }
+}
