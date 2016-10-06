@@ -14,6 +14,9 @@ class Maze
 {
     const DEFAULT_MAZE_HEIGHT = 15;
     const DEFAULT_MAZE_WIDTH  = 15;
+    const WHITEPSPACE = 0;
+    const WALL = 1;
+    const CANDY = 2;
 
     private $cells            = array();
     private $walls            = array();
@@ -25,6 +28,7 @@ class Maze
     private $wallCount        = 0;
     private $candyCount = 10;
     private $counter = 0;
+    private $mazearray = array();
     //RandomGen r;
 
 
@@ -79,10 +83,11 @@ class Maze
      * Wrapper for the other print function that defaults to using std::cout
      * as the output location.
      *
-     * @return void
+     * @return array
      */
-    public function display()
+    public function getMaze()
     {
+        $result = [];
         // Each row is 2 character lines high, including top border, then add 1 for
         // bottom border of the maze
         $printRows = (2 * $this->y) + 1;
@@ -90,50 +95,66 @@ class Maze
         $currWall = 0;
         $currCell = 0;
         for ($i = 0; $i < $printRows; $i++) {
+            $tmp = [];
             if ($i % 2 == 0) {
                 // Printing a top border
                 for ($j = 0; $j < $this->x; $j++) {
                     // Top-left corner does not need top-left divider; needs a space
                     // to line everything up, though.
                     if ($j > 0 || $i > 0) {
-                        echo "#";
+                        //echo "1";
+                        $tmp[] = static::WALL;
                     } else {
-                        echo " ";
+                        //echo "0";
+                        $tmp[] = static::WHITEPSPACE;
                     }
                     if ($this->walls[$currWall++] == 1) {
-                        echo "##";
+                        //echo "11";
+                        $tmp[] = static::WALL;
+                        $tmp[] = static::WALL;
                     } else {
-                        echo "  ";
+                        //echo "00";
+                        $tmp[] = static::WHITEPSPACE;
+                        $tmp[] = static::WHITEPSPACE;
                     }
                 }
                 // Bottom-right corner does not need bottom-right divider
                 if ($i != ($printRows - 1)) {
-                    echo "#";
+                    $tmp[] = static::WALL;
+                    //echo "1";
                 }
             } else {
                 // Printing the cell itself
                 for ($j = 0; $j < $this->x; $j++) {
                     if ($this->walls[$currWall++] == 1) {
-                        echo "#";
+                        $tmp[] = static::WALL;
+                        //echo "1";
                     } else {
                         if ($this->counter == $this->candyCount) {
-                            echo "&#127852;";
+                            $tmp[] = static::CANDY;
+                            //echo "2";
                             $this->counter = 0;
                         } else {
-                            echo " ";
+                            //echo "0";
+                            $tmp[] = static::WHITEPSPACE;
                             $this->counter++;
                         }
                     }
-                    echo "  ";
+                    //echo "00";
+                    $tmp[] = static::WHITEPSPACE;
+                    $tmp[] = static::WHITEPSPACE;
                 }
 
                 // Print the right wall if needed
                 if ($this->walls[$currWall++] == 1) {
-                    echo "#";
+                    //echo "1";
+                    $tmp[] = static::WALL;
                 }
             }
-            echo "<br />";
+            //echo "<br />";
+            $result[] = $tmp;
         }
+        return $result;
     } //end display
 
 
