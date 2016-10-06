@@ -1,7 +1,12 @@
 <?php
 require "vendor/autoload.php";
 
-unlink(\derRest\DatabaseAbstraction::INITIAL_DATABASE_FILE);
+if(file_exists(\derRest\DatabaseAbstraction::DATABASE_FILE)){
+    unlink(\derRest\DatabaseAbstraction::DATABASE_FILE);
+}
+if(file_exists(\derRest\DatabaseAbstraction::INITIAL_DATABASE_FILE)){
+    unlink(\derRest\DatabaseAbstraction::INITIAL_DATABASE_FILE);
+}
 $db = new medoo([
     'database_type' => 'sqlite',
     'database_file' => \derRest\DatabaseAbstraction::INITIAL_DATABASE_FILE
