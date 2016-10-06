@@ -11,10 +11,36 @@ final class Routes
 
     public function routes(Klein $klein):Klein
     {
-        $klein->respond('/', function (Request $request,Response $response) {
+        $klein->respond('GET', '/', function (Request $request, Response $response) {
             $response->body(file_get_contents('html/index.html'));
         });
-        $klein->respond('/api/maze', function (Request $request,Response $response) {
+        $klein->respond('POST', '/api/highscore', function (Request $request, Response $response) {
+            $json = json_decode($request->body());
+            if ($json && isset($json->name) && isset($json->score) && isset($json->level) && isset($json->elapsedTime)) {
+                $db = new DatabaseAbstraction;
+                $db->insert('highscore', [
+                    'name' => $json->name,
+                    'score' => $json->score,
+                    'level' => $json->level,
+                    'elapsedTime' => $json->elapsedTime,
+                    'timestamp' => time(),
+                ]);
+                //save things
+                $response->json(['message' => 'saved']);
+            } else {
+                $response->json(['error' => true]);
+            }
+        });
+        $klein->respond('GET', '/api/highscore', function (Request $request, Response $response) {
+
+            $db = new DatabaseAbstraction;
+            $result = $db->select('highscore', '*', [
+                'ORDER' => ['score' => 'DESC'],
+                'LIMIT' => 10,
+            ]);
+            $response->json($result);
+        });
+        $klein->respond('GET', '/api/maze', function (Request $request, Response $response) {
 
             $x = Maze::DEFAULT_MAZE_WIDTH;
             $y = Maze::DEFAULT_MAZE_HEIGHT;
@@ -27,7 +53,6 @@ final class Routes
             }
             $m = new Maze($x, $y);
             $resultData = $m->generate()->getMaze();
-            $response->code(200);
             $response->json($resultData);
         });
         $klein->onHttpError(function ($code, $router) {

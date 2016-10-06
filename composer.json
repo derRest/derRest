@@ -6,6 +6,7 @@
   },
   "require": {
     "klein/klein": "2.*",
-    "filp/whoops": "2.*"
+    "filp/whoops": "2.*",
+    "catfan/Medoo": "^1.1"
   }
 }
