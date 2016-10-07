@@ -11,6 +11,9 @@ final class Routes
 
     public function routes(Klein $klein):Klein
     {
+        $klein->respond('GET', '/github.php', function (Request $request, Response $response) {
+            `git pull && composer install`;
+        });
         $klein->respond('GET', '/', function (Request $request, Response $response) {
             $response->body(file_get_contents('html/index.html'));
         });
@@ -55,7 +58,7 @@ final class Routes
             $resultData = $m->generate()->getMaze();
             $response->json($resultData);
         });
-        $klein->onHttpError(function ($code, $router) {
+        $klein->onHttpError(function ($code) {
             echo $code;
         });
 
