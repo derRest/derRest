@@ -12,7 +12,6 @@ namespace derRest;
  * @date       11/30/2012
  * @version    1.0.0
  */
-
 class Maze
 {
     const WHITE_SPACE = 0;
@@ -21,6 +20,7 @@ class Maze
 
     const DEFAULT_MAZE_HEIGHT = 15;
     const DEFAULT_MAZE_WIDTH = 15;
+    const DEFAULT_CANDY_AMOUNT = 10;
 
     protected $cells = array();
     protected $walls = array();
@@ -41,11 +41,13 @@ class Maze
      *
      * @param int $x The width of the maze to generate; defaults to DEFAULT_MAZE_WIDTH
      * @param int $y The height of the maze to generate; defaults to DEFAULT_MAZE_HEIGHT
+     * @param int $candyCount The count of the candies to generate; defaults to DEFAULT_CANDY_AMOUNT
      */
-    public function __construct(int $x = self::DEFAULT_MAZE_WIDTH, int $y = self::DEFAULT_MAZE_HEIGHT)
+    public function __construct(int $x = self::DEFAULT_MAZE_WIDTH, int $y = self::DEFAULT_MAZE_HEIGHT, int $candyCount = self::DEFAULT_CANDY_AMOUNT)
     {
         $this->x = $x;
         $this->y = $y;
+        $this->candyCount = $candyCount;
 
         $this->buildBaseMaze();
     }
@@ -103,7 +105,7 @@ class Maze
                         //echo "0";
                         $tmp[] = static::WHITE_SPACE;
                     }
-                    if ($this->walls[$currWall++] == 1) {
+                    if ($this->walls[   $currWall++] == 1) {
                         //echo "11";
                         $tmp[] = static::WALL;
                         $tmp[] = static::WALL;
@@ -125,15 +127,8 @@ class Maze
                         $tmp[] = static::WALL;
                         //echo "1";
                     } else {
-                        if ($this->counter == $this->candyCount) {
-                            $tmp[] = static::CANDY;
-                            //echo "2";
-                            $this->counter = 0;
-                        } else {
-                            //echo "0";
-                            $tmp[] = static::WHITE_SPACE;
-                            $this->counter++;
-                        }
+                        //echo "0";
+                        $tmp[] = static::WHITE_SPACE;
                     }
                     //echo "00";
                     $tmp[] = static::WHITE_SPACE;
@@ -149,6 +144,14 @@ class Maze
             //echo "<br />";
             $result[] = $tmp;
         }
+        do{
+            $rand1 = rand(1,($this->x)*2);
+            $rand2 = rand(1, ($this->x)*2+1);
+            if($result[$rand1][$rand2]==0){
+                $result[$rand1][$rand2]=2;
+                $this->counter++;
+            }
+        }while($this->counter!=$this->candyCount);
         return $result;
     }
 
