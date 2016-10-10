@@ -16,4 +16,6 @@ MIT or
 
 ## Installation
 
-Not yet
+1. clone it
+2. composer install
+3. open the website in that folder
