@@ -11,7 +11,7 @@ final class Routes
 
     public function routes(Klein $klein):Klein
     {
-        $klein->respond('GET', '/github.php', function (Request $request, Response $response) {
+        $klein->respond(['GET','POST'], '/github.php', function (Request $request, Response $response) {
             `git pull && composer install`;
         });
         $klein->respond('GET', '/', function (Request $request, Response $response) {
