@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types = 1);
 namespace derRest;
 
 use Klein\Klein;
@@ -11,11 +11,13 @@ final class Routes
 
     public function routes(Klein $klein):Klein
     {
-        $klein->respond(['GET','POST'], '/github.php', function (Request $request, Response $response) {
+        $klein->respond(['GET', 'POST'], '/github.php', function (Request $request, Response $response) {
             `git pull && composer install`;
         });
         $klein->respond('GET', '/', function (Request $request, Response $response) {
-            $response->body(file_get_contents('html/index.html'));
+            $response->body(phtml('html/index.phtml', [
+                'baseUrl' => $this->getBasePathFromRequest($request),
+            ]));
         });
         $klein->respond('POST', '/api/highscore', function (Request $request, Response $response) {
             $json = json_decode($request->body());
@@ -82,13 +84,19 @@ final class Routes
     {
         $request = Request::createFromGlobals();
         $uri = $request->server()->get('REQUEST_URI');
+        $dir = $this->getBasePathFromRequest($request);
+        $request->server()->set('REQUEST_URI', substr($uri, strlen($dir)));
+        return $request;
+    }
+
+    protected function getBasePathFromRequest(Request $request):string
+    {
         $scriptFilename = $request->server()->get('SCRIPT_FILENAME');
         $documentRoot = $request->server()->get('DOCUMENT_ROOT');
         $dir = dirname(substr($scriptFilename, strlen($documentRoot)));
         if ($dir == '.' || $dir == '..') {
             $dir = '';
         }
-        $request->server()->set('REQUEST_URI', substr($uri, strlen($dir)));
-        return $request;
+        return $dir;
     }
 }

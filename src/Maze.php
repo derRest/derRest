@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 namespace derRest;
 
 /**
@@ -105,7 +105,7 @@ class Maze
                         //echo "0";
                         $tmp[] = static::WHITE_SPACE;
                     }
-                    if ($this->walls[   $currWall++] == 1) {
+                    if ($this->walls[$currWall++] == 1) {
                         //echo "11";
                         $tmp[] = static::WALL;
                         $tmp[] = static::WALL;
@@ -144,14 +144,14 @@ class Maze
             //echo "<br />";
             $result[] = $tmp;
         }
-        do{
-            $rand1 = rand(1,($this->x)*2);
-            $rand2 = rand(1, ($this->x)*2+1);
-            if($result[$rand1][$rand2]==0){
-                $result[$rand1][$rand2]=2;
+        do {
+            $rand1 = rand(1, ($this->x) * 2);
+            $rand2 = rand(1, ($this->x) * 2 + 1);
+            if ($result[$rand1][$rand2] == 0) {
+                $result[$rand1][$rand2] = 2;
                 $this->counter++;
             }
-        }while($this->counter!=$this->candyCount);
+        } while ($this->counter != $this->candyCount);
         return $result;
     }
 

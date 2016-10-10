@@ -1,5 +1,8 @@
 {
   "autoload": {
+    "files": [
+      "src/phpFunctions.php"
+    ],
     "psr-4": {
       "derRest\\": "src/"
     }
