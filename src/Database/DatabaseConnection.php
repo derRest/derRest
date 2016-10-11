@@ -1,8 +1,8 @@
 <?php
 declare(strict_types = 1);
-namespace derRest;
+namespace derRest\Database;
 
-class DatabaseAbstraction extends \medoo
+class DatabaseConnection extends \medoo
 {
     const DATABASE_FILE = 'data/database.db';
     const INITIAL_DATABASE_FILE = 'data/initial_database.db';

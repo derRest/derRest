@@ -1,15 +1,15 @@
 <?php
 require "vendor/autoload.php";
 
-if(file_exists(\derRest\DatabaseAbstraction::DATABASE_FILE)){
-    unlink(\derRest\DatabaseAbstraction::DATABASE_FILE);
+if(file_exists(\derRest\Database\DatabaseConnection::DATABASE_FILE)){
+    unlink(\derRest\Database\DatabaseConnection::DATABASE_FILE);
 }
-if(file_exists(\derRest\DatabaseAbstraction::INITIAL_DATABASE_FILE)){
-    unlink(\derRest\DatabaseAbstraction::INITIAL_DATABASE_FILE);
+if(file_exists(\derRest\Database\DatabaseConnection::INITIAL_DATABASE_FILE)){
+    unlink(\derRest\Database\DatabaseConnection::INITIAL_DATABASE_FILE);
 }
 $db = new medoo([
     'database_type' => 'sqlite',
-    'database_file' => \derRest\DatabaseAbstraction::INITIAL_DATABASE_FILE
+    'database_file' => \derRest\Database\DatabaseConnection::INITIAL_DATABASE_FILE
 ]);
 $db->query(
     'CREATE TABLE highscore ' .

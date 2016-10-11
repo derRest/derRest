@@ -1,27 +1,14 @@
 <?php
 declare(strict_types = 1);
-namespace derRest;
+namespace derRest\Generator;
+use derRest\Generator\MazeInterface;
 
 /**
- * Maze.php
- *
- * This file contains the declaration for the Maze class.
- *
- * @file       Maze.php
- * @author     Bill Parrott <bparrott@ku.edu>
- * @date       11/30/2012
- * @version    1.0.0
+ * Class Maze
+ * @package derRest
  */
-class Maze
+class Maze implements MazeInterface
 {
-    const WHITE_SPACE = 0;
-    const WALL = 1;
-    const CANDY = 2;
-
-    const DEFAULT_MAZE_HEIGHT = 15;
-    const DEFAULT_MAZE_WIDTH = 15;
-    const DEFAULT_CANDY_AMOUNT = 10;
-
     protected $cells = array();
     protected $walls = array();
     protected $eqClasses = array();

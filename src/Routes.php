@@ -2,9 +2,12 @@
 declare(strict_types = 1);
 namespace derRest;
 
+use derRest\Database\DatabaseConnection;
+use derRest\Generator\Maze;
 use Klein\Klein;
 use Klein\Request;
 use Klein\Response;
+use derRest\Functions\phtml;
 
 final class Routes
 {
@@ -15,14 +18,14 @@ final class Routes
             `git pull && composer install`;
         });
         $klein->respond('GET', '/', function (Request $request, Response $response) {
-            $response->body(phtml('html/index.phtml', [
+            $response->body(phtml::phtml('html/index.phtml', [
                 'baseUrl' => $this->getBasePathFromRequest($request),
             ]));
         });
         $klein->respond('POST', '/api/highscore', function (Request $request, Response $response) {
             $json = json_decode($request->body());
             if ($json && isset($json->name) && isset($json->score) && isset($json->level) && isset($json->elapsedTime)) {
-                $db = new DatabaseAbstraction;
+                $db = new DatabaseConnection;
                 $db->insert('highscore', [
                     'name' => $json->name,
                     'score' => $json->score,
@@ -38,7 +41,7 @@ final class Routes
         });
         $klein->respond('GET', '/api/highscore', function (Request $request, Response $response) {
 
-            $db = new DatabaseAbstraction;
+            $db = new DatabaseConnection;
             $result = $db->select('highscore', '*', [
                 'ORDER' => ['score' => 'DESC'],
                 'LIMIT' => 10,
