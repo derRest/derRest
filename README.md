@@ -14,6 +14,15 @@ MIT or
 */
 ````
 
+## Tools and Frameworks
+
+### Frontend
+
+We are using <a href="materializecss.com"/>Marial Design</a> as the overall design experience.
+The Map-Design is going to be an own development.
+For animations and physics the libary <a href="https://popmotion.io">PopMotion</a> will be used.
+Highscore and DOM-Manipulation are going to made by some micro javascript framework
+
 ## Installation
 
 1. clone it
