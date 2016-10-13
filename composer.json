@@ -5,6 +5,7 @@
     }
   },
   "require": {
+    "php": ">=7",
     "klein/klein": "2.*",
     "filp/whoops": "2.*",
     "catfan/Medoo": "^1.1"

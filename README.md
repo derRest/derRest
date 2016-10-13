@@ -23,6 +23,16 @@ The Map-Design is going to be an own development.
 For animations and physics the libary <a href="https://popmotion.io">PopMotion</a> will be used.
 Highscore and DOM-Manipulation are going to made by some micro javascript framework
 
+### Backend
+
+PHP >= 7.0
+We are using Composer for autoloading and Dependency management.  
+We will use 
+ - klein/klein as Router.  
+ - catfan/medoo as Database Abstraction Layer.  
+ - filp/whoops for nicer Error reporting.
+ - sqlite as Database infrastructure.  
+
 ## Installation
 
 1. clone it
