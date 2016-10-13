@@ -13,6 +13,9 @@ MIT or
 * ----------------------------------------------------------------------------
 */
 ````
+##Art der Anwendung
+Diese Anwendung soll ein Labyrinth-Spiel werden, bei dem man als Spieler durch zufällig generierte Labyrinthe navigieren muss.
+
 
 ## Tools and Frameworks
 
