@@ -18,7 +18,7 @@ MIT or
 
 ### Frontend
 
-We are using <a href="http://materializecss.com"/>Marterial Design</a> as the overall design experience.
+We are using <a href="https://materializecss.com"/>Marterial Design</a> as the overall design experience.
 The Map-Design is going to be an own development.
 For animations and physics the libary <a href="https://popmotion.io">PopMotion</a> will be used.
 Highscore and DOM-Manipulation are going to made by some micro javascript framework
