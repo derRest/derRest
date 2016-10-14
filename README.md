@@ -13,8 +13,8 @@ MIT or
 * ----------------------------------------------------------------------------
 */
 ````
-##Art der Anwendung
-Diese Anwendung soll ein Labyrinth-Spiel werden, bei dem man als Spieler durch zufällig generierte Labyrinthe navigieren muss.
+##Type of application
+This app will be a little maze game, where the user will be able to navigate through the maze to find the exit in lots of random generated levels.
 
 
 ## Tools and Frameworks
