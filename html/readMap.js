@@ -12,15 +12,15 @@ maze.loadMap = function (map) {
         var text = "";
         x++;
 
-        text += maze.createStruct('','map',x,'start');
+        text += maze.createStruct('',x,'start');
 
         for(var i = 0; i < value.length;i++){
             if(value[i]==0){
-                text += maze.createStruct("__",'map',x,i);
+                text += maze.createStruct("__",x,i);
             }else if(value[i]==1){
-                text += maze.createStruct('##','map',x,i);
+                text += maze.createStruct('##',x,i);
             }else if(value[i]==2){
-                text += maze.createStruct('&#127852;','map',x,i);
+                text += maze.createStruct('&#127852;',x,i);
             }
         }
 
@@ -30,7 +30,7 @@ maze.loadMap = function (map) {
 };
 
 
-maze.createStruct = function (zeichen, className, x, y) {
+maze.createStruct = function (zeichen, x, y) {
     var env;
     if(y==="start"){
         env = '<div id="'+x+'">'+zeichen;
