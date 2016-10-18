@@ -32,8 +32,8 @@ class Maze implements MazeInterface
      */
     public function __construct(int $x = self::DEFAULT_MAZE_WIDTH, int $y = self::DEFAULT_MAZE_HEIGHT, int $candyCount = self::DEFAULT_CANDY_AMOUNT)
     {
-        $this->x = $x;
-        $this->y = $y;
+        $this->x = (int)round($x/3);
+        $this->y = (int)round($y/2);
         $this->candyCount = $candyCount;
 
         $this->buildBaseMaze();
@@ -132,8 +132,11 @@ class Maze implements MazeInterface
             $result[] = $tmp;
         }
         do {
-            $rand1 = rand(1, ($this->x) * 2);
-            $rand2 = rand(1, ($this->x) * 2 + 1);
+            $array = array_map("count",$result);
+            $var2 = $array[0];
+            $var1 = count($array);
+            $rand1 = rand(0, $var1-1);
+            $rand2 = rand(0, $var2-1);
             if ($result[$rand1][$rand2] == 0) {
                 $result[$rand1][$rand2] = 2;
                 $this->counter++;
