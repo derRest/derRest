@@ -7,6 +7,7 @@
 </head>
 <body>
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="html/MapAuslesen.js"></script>
 <script>
     function loadJson() {
         var url = location.protocol + '//' + location.host + location.pathname + 'api/maze';
@@ -16,6 +17,7 @@
     }
     jQuery(document).ready(function() {
         loadJson();
+        maze.helloWorld("hello World");
     });
 </script>
 <div class="json"></div>
