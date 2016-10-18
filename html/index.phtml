@@ -13,15 +13,14 @@
         var url = location.protocol + '//' + location.host + location.pathname + 'api/maze';
         jQuery.get(url, function(response) {
             console.log(response);
+            maze.loadMap(response);
         });
     }
     jQuery(document).ready(function() {
         loadJson();
-        maze.helloWorld("hello World");
     });
 </script>
 <div class="json"></div>
-<div class="trennung">--------------------------------------------------------</div>
 <div class="map"></div>
 </body>
 </html>
