@@ -16,6 +16,7 @@ interface MazeInterface
     const DEFAULT_MAZE_WIDTH = 15;
     const DEFAULT_CANDY_AMOUNT = 10;
 
+
     /**
      * __construct()
      *
