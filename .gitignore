@@ -3,3 +3,4 @@
 .idea/
 data/database.db
 vendor/
+html/node_modules
