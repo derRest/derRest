@@ -16,6 +16,7 @@ final class Routes
     {
         $klein->respond(['GET', 'POST'], '/github.php', function (Request $request, Response $response) {
             `git pull && composer install`;
+            `cd html/ && npm install materialize-css`;
         });
         $klein->respond('GET', '/', function (Request $request, Response $response) {
             $response->body(phtml::phtml('html/index.phtml', [
