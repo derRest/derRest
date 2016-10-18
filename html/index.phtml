@@ -6,31 +6,17 @@
     <link rel="icon" href="<?php echo $baseUrl;?>/favicon.ico" type="image/x-icon" />
 </head>
 <body>
-
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script>
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', location.protocol + '//' + location.host + location.pathname + 'api/maze');
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-//            document.querySelector('.json').innerText = xhr.responseText;
-
-            var text = "t1";
-            for (i = 0; i < 20; i++) {
-
-              text = text + "<br>"+i;
-            }
-
-           // var newArr = JSON.parse(xhr.responseText);
-           // while (newArr.length > 0) {
-                //  document.write(newArr.pop() + "<br/>");
-           // }
-            document.querySelector('.map').innerText = text; //Ausgabe in div:clas:map
-        }
-        else {
-            document.querySelector('.json').innerText = 'Request failed.  Returned status of ' + xhr.status;
-        }
-    };
-    xhr.send();
+    function loadJson() {
+        var url = location.protocol + '//' + location.host + location.pathname + 'api/maze';
+        jQuery.get(url, function(response) {
+            console.log(response);
+        });
+    }
+    jQuery(document).ready(function() {
+        loadJson();
+    });
 </script>
 <div class="json"></div>
 <div class="trennung">--------------------------------------------------------</div>
