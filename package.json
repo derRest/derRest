@@ -1,0 +1,22 @@
+{
+  "name": "derrest",
+  "version": "1.0.0",
+  "description": "DH-Projekt derRest",
+  "main": "index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/derRest/derRest.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/derRest/derRest/issues"
+  },
+  "homepage": "https://github.com/derRest/derRest#readme",
+  "dependencies": {
+    "materialize-css": "^0.97.7"
+  }
+}
