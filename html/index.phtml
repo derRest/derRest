@@ -10,7 +10,7 @@
 <script src="html/MapAuslesen.js"></script>
 <script>
     function loadJson() {
-        var url = location.protocol + '//' + location.host + location.pathname + 'api/maze';
+        var url = location.protocol + '//' + location.host + location.pathname + 'api/maze?x=10&y=15';
         jQuery.get(url, function(response) {
             console.log(response);
             maze.loadMap(response);

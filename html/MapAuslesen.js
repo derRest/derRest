@@ -7,13 +7,10 @@ var maze = {};
 maze.loadMap = function (map) {
 
     $.each(map, function (index, value) {
-      //  console.log(index + ": " + value );
-        console.log("value" + index + ": " + value );
+       console.log("value" + index + ": " + value );
 
       //  maze.printMap('[','map')
         for(var i = 0; i < value.length;i++){
-
-        //    console.log("for" + i + ": " + value[i]);
 
             if(value[i]==0){
                 maze.printMap("__",'map')
@@ -26,11 +23,9 @@ maze.loadMap = function (map) {
         //maze.printMap(']','map')
         maze.printMap('<br>','map')
     })
-
 }
 
 
 maze.printMap = function (zeichen, className) {
-
     jQuery("." + className).append(zeichen);
 }
