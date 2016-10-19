@@ -106,6 +106,8 @@ class Maze implements MazeInterface
                 if ($i != ($printRows - 1)) {
                     $tmp[] = static::WALL;
                     //echo "1";
+                }else{
+                    $tmp[] = static::WHITE_SPACE;
                 }
             } else {
                 // Printing the cell itself
@@ -126,15 +128,16 @@ class Maze implements MazeInterface
                 if ($this->walls[$currWall++] == 1) {
                     //echo "1";
                     $tmp[] = static::WALL;
+                }else{
+                    $tmp[] = static::WHITE_SPACE;
                 }
             }
             //echo "<br />";
             $result[] = $tmp;
         }
         do {
-            $array = array_map("count",$result);
-            $var2 = $array[0];
-            $var1 = count($array);
+            $var2 = count($result[0]);
+            $var1 = count($result);
             $rand1 = rand(0, $var1-1);
             $rand2 = rand(0, $var2-1);
             if ($result[$rand1][$rand2] == 0) {
