@@ -15,12 +15,18 @@ final class Routes
     public function routes(Klein $klein):Klein
     {
         $klein->respond(['GET', 'POST'], '/github.php', function (Request $request, Response $response) {
-            `git pull && composer install`;
-            `npm install`;
+            `git pull && composer install && npm install`;
         });
         $klein->respond('GET', '/', function (Request $request, Response $response) {
-            $response->body(phtml::phtml('html/index.phtml', [
+            $response->body(phtml::phtml('frontend/html/game.phtml', [
                 'baseUrl' => $this->getBasePathFromRequest($request),
+            ]));
+        });
+        $klein->respond('GET', '/Highscore', function (Request $request, Response $response) {
+            $db = new DatabaseConnection;
+            $response->body(phtml::phtml('frontend/html/highscore.phtml', [
+                'baseUrl' => $this->getBasePathFromRequest($request),
+                'scores' => $db->select('highscore', '*', [ 'ORDER' => ['score' => 'DESC'], 'LIMIT' => 20, ])
             ]));
         });
         $klein->respond('POST', '/api/highscore', function (Request $request, Response $response) {

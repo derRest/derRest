@@ -1,0 +1,16 @@
+<div class="container">
+    <ul class="collection with-header">
+        <li class="collection-header"><h4>Highscore</h4></li>
+        <?php foreach ($scores as $index => $score):?>
+        <li class="collection-item">
+            <span class="new badge" data-badge-caption="points"><?php echo $score['score'];?></span>
+            <span class="title truncate"><?php echo $score['name'];?></span>
+
+            <span class="new badge" data-badge-caption="s"><?php echo $score['elapsedTime'];?></span>
+            <span>Datum: <?php echo date('m.d.Y',$score['timestamp']);?></span><br>
+            <!--span>benötigte Zeit: <?php echo $score['elapsedTime'];?>s</span-->
+            <!--span class="badge" data-badge-caption="level"><?php echo $score['level'];?></span-->
+        </li>
+        <?php endforeach;?>
+    </ul>
+</div>
