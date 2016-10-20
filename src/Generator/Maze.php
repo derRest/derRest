@@ -1,7 +1,6 @@
 <?php
 declare(strict_types = 1);
 namespace derRest\Generator;
-use derRest\Generator\MazeInterface;
 
 /**
  * Class Maze
@@ -32,8 +31,14 @@ class Maze implements MazeInterface
      */
     public function __construct(int $x = self::DEFAULT_MAZE_WIDTH, int $y = self::DEFAULT_MAZE_HEIGHT, int $candyCount = self::DEFAULT_CANDY_AMOUNT)
     {
-        $this->x = (int)round($x/3);
-        $this->y = (int)round($y/2);
+        if (($x % 2) === 0 || ($y % 2) === 0 || $x <= 0 || $y <= 0) {
+            throw new \InvalidArgumentException("x AND y only odd numbers above 0 are allowed");
+        }
+        if ($candyCount < 0) {
+            throw new \InvalidArgumentException("candyCount must be positive");
+        }
+        $this->x = (int)($x / 2);
+        $this->y = (int)($y / 2);
         $this->candyCount = $candyCount;
 
         $this->buildBaseMaze();
@@ -95,18 +100,18 @@ class Maze implements MazeInterface
                     if ($this->walls[$currWall++] == 1) {
                         //echo "11";
                         $tmp[] = static::WALL;
-                        $tmp[] = static::WALL;
+                        //$tmp[] = static::WALL;
                     } else {
                         //echo "00";
                         $tmp[] = static::WHITE_SPACE;
-                        $tmp[] = static::WHITE_SPACE;
+                        //$tmp[] = static::WHITE_SPACE;
                     }
                 }
                 // Bottom-right corner does not need bottom-right divider
                 if ($i != ($printRows - 1)) {
                     $tmp[] = static::WALL;
                     //echo "1";
-                }else{
+                } else {
                     $tmp[] = static::WHITE_SPACE;
                 }
             } else {
@@ -121,30 +126,30 @@ class Maze implements MazeInterface
                     }
                     //echo "00";
                     $tmp[] = static::WHITE_SPACE;
-                    $tmp[] = static::WHITE_SPACE;
+                    //$tmp[] = static::WHITE_SPACE;
                 }
 
                 // Print the right wall if needed
                 if ($this->walls[$currWall++] == 1) {
                     //echo "1";
                     $tmp[] = static::WALL;
-                }else{
+                } else {
                     $tmp[] = static::WHITE_SPACE;
                 }
             }
             //echo "<br />";
             $result[] = $tmp;
         }
-        do {
+        while ($this->counter < $this->candyCount) {
             $var2 = count($result[0]);
             $var1 = count($result);
-            $rand1 = rand(0, $var1-1);
-            $rand2 = rand(0, $var2-1);
+            $rand1 = rand(0, $var1 - 1);
+            $rand2 = rand(0, $var2 - 1);
             if ($result[$rand1][$rand2] == 0) {
                 $result[$rand1][$rand2] = 2;
                 $this->counter++;
             }
-        } while ($this->counter != $this->candyCount);
+        }
         return $result;
     }
 
@@ -404,5 +409,23 @@ class Maze implements MazeInterface
         }
 
         return false;
+    }
+
+    public static function printToCli(array $mazeArray)
+    {
+        $symbols = [
+            static::WHITE_SPACE => '_',
+            static::WALL => '#',
+            static::CANDY => 'o',
+        ];
+
+        echo PHP_EOL;
+        foreach ($mazeArray as $mazeLine) {
+            foreach ($mazeLine as $item) {
+                echo $symbols[$item] . ' ';
+            }
+            echo PHP_EOL;
+            echo PHP_EOL;
+        }
     }
 }

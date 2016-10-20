@@ -44,7 +44,7 @@ maze.createStructure = function (character, x, y) {
 
 
 function loadJson() {
-    var url = location.protocol + '//' + location.host + location.pathname + 'api/maze?x=10&y=15';
+    var url = location.protocol + '//' + location.host + location.pathname + 'api/maze?x=11&y=15';
     $(maze.config.SelectorLoadingIcon).show();
     $(maze.config.selectorMap).html('');
     $.get(url, function (response) {
