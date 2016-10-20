@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>derRest</title>
+    <link rel="icon" href="<?php echo $baseUrl; ?>/favicon.ico" type="image/x-icon"/>
+
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet"
+          href="<?php echo $baseUrl; ?>/node_modules/materialize-css/dist/css/materialize.min.css"
+          media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper">
+        <a href="<?php echo $baseUrl;?>" class="brand-logo center">derRest</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="<?php echo $baseUrl;?>/Highscore">Highscores</a></li>
+            <li><a target="_blank" href="https://github.com/derRest/derRest/issues">Issues</a></li>
+        </ul>
+    </div>
+</nav>
+<?php echo $body; ?>
+<footer class="page-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">derRest</h5>
+                <p class="grey-text text-lighten-4">Spiel das Spiel!</p>
+            </div>
+            <div class="col l3 s6">
+                <h5 class="white-text">Autoren</h5>
+                <ul>
+                    <li><a class="grey-text text-lighten-3" target="_blank" href="https://github.com/ChrisB9">ChrisB9</a></li>
+                    <li><a class="grey-text text-lighten-3" target="_blank" href="https://github.com/janjj">janjj</a></li>
+                    <li><a class="grey-text text-lighten-3" target="_blank" href="https://github.com/jujulchen">jujulchen</a></li>
+                    <li><a class="grey-text text-lighten-3" target="_blank" href="https://github.com/Kanti">Kanti</a></li>
+                    <li><a class="grey-text text-lighten-3" target="_blank" href="https://github.com/schuesslerf">schuesslerf</a></li>
+                </ul>
+            </div>
+            <div class="col l3 s6">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                    <li><a class="grey-text text-lighten-3" href="<?php echo $baseUrl;?>/Highscore">Highscores</a></li>
+                    <li><a class="grey-text text-lighten-3" target="_blank" href="https://github.com/derRest/derRest">Github</a></li>
+                    <li><a class="grey-text text-lighten-3" target="_blank" href="https://github.com/derRest/derRest/issues">Issues</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            © <?php echo date('Y'); ?> Copyright derRest
+            <a class="grey-text text-lighten-4 right" target="_blank" href="https://github.com/derRest/derRest">Github</a>
+        </div>
+    </div>
+</footer>
+<div class="hidden javascripts">
+    <script src="<?php echo $baseUrl; ?>/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="<?php echo $baseUrl; ?>/frontend/js/readMap.js"></script>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript"
+            src="<?php echo $baseUrl; ?>/node_modules/materialize-css/dist/js/materialize.min.js"></script>
+</div>
+</body>
+</html>
