@@ -113,8 +113,14 @@ game.exit = function () {
     var timeInSeconds = timeInMiliSeconds/1000;
     console.log(game.player.name + 0 + timeInSeconds);
     saveScore(game.player.name, game.calculateScore(game.player.collectedCandys, timeInSeconds), timeInSeconds);
-    maze.isLoaded = false;
-    maze.width = maze.width + 2;
-    maze.length = maze.length + 2;
-    loadJson();
+    game.reset();
 };
+
+game.reset = function () {
+	game.startTime = 0;
+	game.player.name = "";
+	maze.isLoaded = false;
+    maze.config.width = maze.width + 2;
+    maze.config.length = maze.length + 2;
+    loadJson();
+}
