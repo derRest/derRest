@@ -45,7 +45,7 @@ maze.isLoaded = false;
 
 maze.loadMap = function (map) {
     if (!maze.isLoaded) {
-        $.each(map, function (index, value) {
+        jQuery.each(map, function (index, value) {
             var singleLine = "";
             singleLine += maze.createStructure('', index, 'start');
 
@@ -54,7 +54,7 @@ maze.loadMap = function (map) {
             }
 
             singleLine += maze.createStructure('', 'map', index, 'end');
-            $(maze.config.selectorMap).append(singleLine);
+            jQuery(maze.config.selectorMap).append(singleLine);
         });
     }
 };
@@ -84,31 +84,26 @@ function loadJson() {
                 + maze.config.width
                 +'&y='
                 + maze.config.length;
-    $(maze.config.SelectorLoadingIcon).show();
-    $(maze.config.selectorMap).html('');
-    $.get(url, function (response) {
-        $(maze.config.SelectorLoadingIcon).hide();
+    jQuery(maze.config.SelectorLoadingIcon).show();
+    jQuery(maze.config.selectorMap).html('');
+    jQuery.get(url, function (response) {
+        jQuery(maze.config.SelectorLoadingIcon).hide();
         //console.log(response);
         maze.loadMap(response);
     });
 }
 
-function saveScore(name, points, timeInSeconds) {
-    var url = location.protocol + '//' + location.host + location.pathname + 'api/highscore';
-    $.ajax({
-        type: "POST",
-        url: url,
-        dataType: 'json',
-        data: JSON.stringify({
-            name: name,
-            score: points,
-            level: 1,
-            elapsedTime: timeInSeconds
-        })
-    });
+maze.unload = function () {
+    jQuery(maze.config.selectorMap).html('');
 }
 
-$(function () {
-    if($(maze.config.selectorMap).length)
+maze.printResult = function(points, time) {
+    var result = "<h3><b>SUCCESS!</b> you earned "+points+" Points</h3>";
+    result += "<p>It took you "+time+"s to succeed</p>";
+    jQuery(maze.config.selectorMap).html(result);
+}
+
+jQuery(function () {
+    if(jQuery(maze.config.selectorMap).length)
     loadJson();
 });

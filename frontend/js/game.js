@@ -42,9 +42,14 @@ game.player.setPos = function (x, y) {
 
 
 game.keyevent = function () {
-    jQuery(document).on("keydown", function (event) {
+    jQuery(document).on("keydown", jQuery(document), function (event) {
         if (event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 37) {
             var playerPos = game.player.getPos();
+            if (typeof(playerPos) == "undefined") {
+            	console.log("limitless space of undefinedness");
+            	game.exit();
+            	return;
+            }
             var playerPosXY = playerPos.split(maze.config.splitChar);
             switch (event.keyCode) {
                 case 37:
@@ -86,6 +91,7 @@ game.player.setPlayer = function (x,y) {
 
 game.startGame = function () {
     //loadJson();
+    game.reset();
     if(game.startTime==0){
         game.player.setPos(game.config.startPosX,game.config.startPosY);
         game.timeMeassure("start");
@@ -108,11 +114,30 @@ game.timeMeassure = function (start) {
     }
 };
 
+game.saveScore = function(name, points, timeInSeconds) {
+    var url = location.protocol + '//' + location.host + location.pathname + 'api/highscore';
+    jQuery.ajax({
+        type: "POST",
+        url: url,
+        dataType: 'json',
+        data: JSON.stringify({
+            name: name,
+            score: points,
+            level: 1,
+            elapsedTime: timeInSeconds
+        })
+    });
+}
+
 game.exit = function () {
+	jQuery(document).off("keydown", jQuery(document), function () {console.log("Control stopped")});
     var timeInMiliSeconds = game.timeMeassure("stop");
     var timeInSeconds = timeInMiliSeconds/1000;
     console.log(game.player.name + 0 + timeInSeconds);
-    saveScore(game.player.name, game.calculateScore(game.player.collectedCandys, timeInSeconds), timeInSeconds);
+    var points = game.calculateScore(game.player.collectedCandys, timeInSeconds);
+    game.saveScore(game.player.name, points, timeInSeconds);
+    maze.unload();
+    maze.printResult(points, timeInSeconds);
     game.reset();
 };
 
@@ -120,7 +145,8 @@ game.reset = function () {
 	game.startTime = 0;
 	game.player.name = "";
 	maze.isLoaded = false;
-    maze.config.width = maze.width + 2;
-    maze.config.length = maze.length + 2;
-    loadJson();
+	jQuery(document).off("keydown", jQuery(document), function () {console.log("Control stopped")});
+    //maze.config.width = maze.config.width + 2;
+    //maze.config.length = maze.config.length + 2;
+    //loadJson();
 }
