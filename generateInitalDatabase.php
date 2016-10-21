@@ -23,29 +23,29 @@ $db->query(
 );
 $db->insert('highscore', [
     'name' => 'A',
-    'score' => 1000,
-    'level' => 10,
-    'elapsedTime' => 120,
+    'score' => 20,
+    'level' => 1,
+    'elapsedTime' => 15,
     'timestamp' => 1475762432,
 ]);
 $db->insert('highscore', [
     'name' => 'B',
-    'score' => 500,
-    'level' => 5,
-    'elapsedTime' => 240,
+    'score' => 17,
+    'level' => 1,
+    'elapsedTime' => 24,
     'timestamp' => 1475762431,
 ]);
 $db->insert('highscore', [
     'name' => 'C',
-    'score' => 250,
-    'level' => 2,
-    'elapsedTime' => 300,
+    'score' => 10,
+    'level' => 1,
+    'elapsedTime' => 31,
     'timestamp' => 1475762430,
 ]);
 $db->insert('highscore', [
     'name' => 'D',
-    'score' => 100,
+    'score' => 9,
     'level' => 1,
-    'elapsedTime' => 500,
+    'elapsedTime' => 39,
     'timestamp' => 1475762429,
 ]);
