@@ -1,7 +1,3 @@
-/**
- * Created by JanJJ on 18.10.2016.
- */
-
 var maze = {};
 
 maze.config = {
@@ -9,6 +5,7 @@ maze.config = {
     SelectorLoadingIcon: '.js-map-loading-icon ',
     length: 17,
     width: 17,
+    candyCount: 10,
     chars: {
         0: '&nbsp;',
         1: '#',
@@ -36,7 +33,9 @@ maze.isCandy = function (x, y) {
     return false;
 }
 maze.isOnExit = function (x, y) {
-    if (x == (maze.config.width-1) && y == (maze.config.length-1))
+    var exitSquareX = [maze.config.width-1, maze.config.width];
+    var exitSquareY = [maze.config.length-1, maze.config.length];
+    if (exitSquareX.indexOf(x) != -1 && exitSquareY.indexOf(y) != -1)
         return true;
     return false;
 }
@@ -74,25 +73,6 @@ maze.createStructure = function (character, x, y) {
     return env;
 };
 
-
-function loadJson() {
-    var url = location.protocol
-                + '//' 
-                + location.host 
-                + location.pathname 
-                + 'api/maze?x='
-                + maze.config.width
-                +'&y='
-                + maze.config.length;
-    jQuery(maze.config.SelectorLoadingIcon).show();
-    jQuery(maze.config.selectorMap).html('');
-    jQuery.get(url, function (response) {
-        jQuery(maze.config.SelectorLoadingIcon).hide();
-        //console.log(response);
-        maze.loadMap(response);
-    });
-}
-
 maze.unload = function () {
     jQuery(maze.config.selectorMap).html('');
 }
@@ -103,7 +83,3 @@ maze.printResult = function(points, time) {
     jQuery(maze.config.selectorMap).html(result);
 }
 
-jQuery(function () {
-    if(jQuery(maze.config.selectorMap).length)
-    loadJson();
-});
