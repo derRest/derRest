@@ -3,6 +3,7 @@
  */
 
 var maze = {};
+
 maze.config = {
     selectorMap: '.js-map',
     SelectorLoadingIcon: '.js-map-loading-icon ',
@@ -11,9 +12,12 @@ maze.config = {
         0: '&nbsp;',
         1: '#',
         2: '&copy;'
-    }
+    },
+
+    splitChar: "-"
 
 };
+
 
 maze.loadMap = function (map) {
     $.each(map, function (index, value) {
@@ -29,7 +33,6 @@ maze.loadMap = function (map) {
     })
 };
 
-
 maze.createStructure = function (character, x, y) {
     var env;
     var candyclass;
@@ -40,7 +43,7 @@ maze.createStructure = function (character, x, y) {
     } else if (y === "end") {
         env = character + '</div>';
     } else {
-        env = '<span '+candyclass+' id="' + x + '.' + y + '">' + character + '</span>';
+        env = '<span '+candyclass+' id="' + x + maze.config.splitChar + y + '">' + character + '</span>';
     }
     return env;
 };
