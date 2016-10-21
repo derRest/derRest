@@ -15,11 +15,14 @@
     </div>
     <div class="js-map">
     </div>
-
+          
     <div class="menue">
-        <div class="input-field col s6">
-            <input placeholder="Enter your name here" name="name" id="first_name" type="text" class="validate">
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="first_name" type="text" length="15" required="" aria-required="true">
+            <label for="first_name" data-error="Input can't be empty" data-success="perfect">your name</label>
+          </div>
         </div>
-        <button onclick="game.startGame()">Starten</button>
+        <button class="btn" onclick="validate()">Starten</button>
     </div>
 </div>
