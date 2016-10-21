@@ -79,7 +79,10 @@ game.keyevent = function () {
     });
 }
 
-game.calculateScore = function (candy, )
+game.calculateScore = function (candy, time) {
+    var result = (1/(Math.sqrt(time)) * (candy*Math.PI))
+    return Math.round(Math.abs(result*Math.sqrt(candy)));
+}
 
 maze.loadMap = function (map) {
     if (!maze.isLoaded) {
