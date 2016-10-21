@@ -8,9 +8,9 @@ maze.config = {
     SelectorLoadingIcon: '.js-map-loading-icon ',
 
     chars: {
-        0: '__',
-        1: '##',
-        2: '&#127852;'
+        0: '&nbsp;',
+        1: '#',
+        2: '&copy;'
     }
 
 };
@@ -32,19 +32,22 @@ maze.loadMap = function (map) {
 
 maze.createStructure = function (character, x, y) {
     var env;
+    var candyclass;
+    if (character == "&copy;")
+        candyclass = "class='candy'";
     if (y === "start") {
-        env = '<div id="' + x + '">' + character;
+        env = '<div '+candyclass+' id="' + x + '">' + character;
     } else if (y === "end") {
         env = character + '</div>';
     } else {
-        env = '<span id="' + x + '.' + y + '">' + character + '</span>';
+        env = '<span '+candyclass+' id="' + x + '.' + y + '">' + character + '</span>';
     }
     return env;
 };
 
 
 function loadJson() {
-    var url = location.protocol + '//' + location.host + location.pathname + 'api/maze?x=11&y=15';
+    var url = location.protocol + '//' + location.host + location.pathname + 'api/maze?x=17&y=17';
     $(maze.config.SelectorLoadingIcon).show();
     $(maze.config.selectorMap).html('');
     $.get(url, function (response) {
