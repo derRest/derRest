@@ -59,6 +59,22 @@ function loadJson() {
         maze.loadMap(response);
     });
 }
+
+function saveScore(name, points, timeInSeconds) {
+    var url = location.protocol + '//' + location.host + location.pathname + 'api/highscore';
+    $.ajax({
+        type: "POST",
+        url: url,
+        dataType: 'json',
+        data: JSON.stringify({
+            name: name,
+            score: points,
+            level: 1,
+            elapsedTime: timeInSeconds
+        })
+    });
+}
+
 $(function () {
     loadJson();
 });
