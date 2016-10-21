@@ -7,7 +7,9 @@ game.player={};
 
 game.config = {
     player: "player",
-    playerSymbol: "&#916;"
+    playerSymbol: "&#916;",
+    startPosX: "1",
+    startPosY: "1"
 };
 
 game.player = {
@@ -19,15 +21,13 @@ game.startTime = 0;
 
 game.player.setPos = function (x, y) {
     var locationId = x + maze.config.splitChar + y;
-    if(maze.isWall(x,y)===true){                //Prüft ob nicht auf Mauer gelaufen wird
-        console.log("isWall: "+maze.isWall(x,y));
+    if(maze.isWall(x,y)===true){                    //Prüft ob nicht auf Mauer gelaufen wird
+        console.log("isWall: " + maze.isWall(x,y));
 
         game.player.setPlayer(x,y);
         jQuery("#"+game.player.getPos()).removeAttr(game.config.player,"");     //Altes Attribut für Position löschen
         jQuery("#"+locationId).attr(game.config.player,"test");                 //Neues Attribut für Position setzen
-
         //TODO maze.candyInPosition()
-
     }else{
         console.log("Unerlaubter Zug!");
     }
@@ -48,16 +48,21 @@ game.player.setPlayer = function (x,y) {
 };
 
 game.startGame = function () {
-    loadJson();
-    game.timeMeassure("start");
-    game.player.name = jQuery("#first_name").val();
-    //game.keyevent();       //Startet möglichkeit zu Steuern
+    //loadJson();
+    if(game.startTime==0){
+        game.player.setPos(game.config.startPosX,game.config.startPosY);
+        game.timeMeassure("start");
+        game.player.name = jQuery("#first_name").val();
+        //game.keyevent();       //Startet möglichkeit zu Steuern
+    }else{
+        console.log("Allready started!");
+    }
 };
 
 game.timeMeassure = function (start) {
     var jetzt = new Date();
 
-    if(start==="start"&&(game.startTime==0)){
+    if(start==="start"){
         game.startTime = Date.now();
         console.log("Zeit Messung gestartet: "+ game.startTime);
     }
@@ -72,5 +77,6 @@ game.exit = function () {
     var timeInMiliSeconds = game.timeMeassure("stop");
     var timeInSeconds = timeInMiliSeconds/1000;
     console.log(game.player.name + 0 + timeInSeconds);
+    //TODO calculateScore;
     saveScore(game.player.name,0,timeInSeconds);
 };
