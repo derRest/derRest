@@ -38,7 +38,7 @@ We will use
 
 ## Installation
 
-1. clone it
+1. clone repository
 2. composer install
 3. npm install
 3. open the website in that folder
