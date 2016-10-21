@@ -18,6 +18,25 @@ maze.config = {
 
 };
 
+maze.validatePosition = function(x,y, char) {
+    var element = jQuery("#" + x+maze.config.splitChar+y);
+    if (element.text() == char) {
+        return false;
+    }
+    return true;
+}
+maze.isWall = function (x, y) {
+    return maze.validatePosition(x, y, maze.config.chars[1]);
+}
+maze.isCandy = function (x, y) {
+    return maze.validatePosition(x, y, maze.config.chars[2]);
+}
+maze.candyInPosition = function (x, y) {
+    if (maze.isCandy(x, y)) {
+        jQuery("#" + x+maze.config.splitChar+y).html(maze.config.chars[0]);
+        game.collectedCandys++;
+    }
+}
 
 maze.loadMap = function (map) {
     $.each(map, function (index, value) {
