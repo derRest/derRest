@@ -14,7 +14,8 @@ game.config = {
 
 game.player = {
   name: "",
-  collectedCandys: 0
+  collectedCandys: 0,
+  keyCount: 0
 };
 
 game.startTime = 0;
@@ -23,13 +24,12 @@ game.player.setPos = function (x, y) {
     var locationId = x + maze.config.splitChar + y;
     if(!maze.isWall(x,y)){                    //Prüft ob nicht auf Mauer gelaufen wird
         console.log("isWall: " + maze.isWall(x,y));
-
-        game.player.setPlayer(x,y);
         if (maze.isCandy(x, y)) {
 	        jQuery("#" + x+maze.config.splitChar+y).html(maze.config.chars[0]);
 	        jQuery("#" + x+maze.config.splitChar+y).removeClass("candy");  
 	        game.player.collectedCandys++;
 	    }
+	    game.player.setPlayer(x,y);
         jQuery("#"+game.player.getPos()).removeAttr(game.config.player,"");     //Altes Attribut für Position löschen
         jQuery("#"+locationId).attr(game.config.player,"test");  //Neues Attribut für Position setzen
         if (maze.isOnExit(x, y)) {
@@ -42,6 +42,10 @@ game.player.setPos = function (x, y) {
 
 
 game.keyevent = function () {
+	if (game.startTime == 0) {
+		jQuery(document).off("keydown");
+		return;
+	}
     jQuery(document).on("keydown", jQuery(document), function (event) {
         if (event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 37) {
             var playerPos = game.player.getPos();
@@ -50,6 +54,10 @@ game.keyevent = function () {
             	game.exit();
             	return;
             }
+            if (game.startTime == 0) {
+            	return;
+            }
+            game.player.keyCount++;
             var playerPosXY = playerPos.split(maze.config.splitChar);
             switch (event.keyCode) {
                 case 37:
@@ -70,8 +78,8 @@ game.keyevent = function () {
 }
 
 game.calculateScore = function (candy, time) {
-    var result = (1/(Math.sqrt(time)) * (candy*Math.PI))
-    return Math.round(Math.abs(result*Math.sqrt(candy)));
+    var result = (1/(Math.sqrt(time)) * ((candy*(maze.config.candyCount/100))*Math.PI));
+    return Math.round(Math.abs(result*maze.config.length * maze.config.width / Math.sqrt (game.player.keyCount)));
 }
 
 
@@ -91,11 +99,16 @@ game.player.setPlayer = function (x,y) {
 
 game.startGame = function () {
     //loadJson();
+    game.player.name = jQuery("#first_name").val();
+    //if (game.player.name == "")
+    //{
+    //	jQuery("#first_name")
+    //}
+    document.body.style.overflow = "hidden";
     game.reset();
     if(game.startTime==0){
         game.player.setPos(game.config.startPosX,game.config.startPosY);
         game.timeMeassure("start");
-        game.player.name = jQuery("#first_name").val();
         game.keyevent();       //Startet möglichkeit zu Steuern
     }else{
         console.log("Already started!");
@@ -130,9 +143,12 @@ game.saveScore = function(name, points, timeInSeconds) {
 }
 
 game.exit = function () {
-	jQuery(document).off("keydown", jQuery(document), function () {console.log("Control stopped")});
+	//document.onkeydown = null;
+	jQuery(document).off("keydown");
+	document.body.style.overflow = "auto";
     var timeInMiliSeconds = game.timeMeassure("stop");
     var timeInSeconds = timeInMiliSeconds/1000;
+    game.startTime = 0;
     console.log(game.player.name + 0 + timeInSeconds);
     var points = game.calculateScore(game.player.collectedCandys, timeInSeconds);
     game.saveScore(game.player.name, points, timeInSeconds);
@@ -145,7 +161,8 @@ game.reset = function () {
 	game.startTime = 0;
 	game.player.name = "";
 	maze.isLoaded = false;
-	jQuery(document).off("keydown", jQuery(document), function () {console.log("Control stopped")});
+	//document.onkeydown = null;
+	//jQuery.off("keydown");
     //maze.config.width = maze.config.width + 2;
     //maze.config.length = maze.config.length + 2;
     //loadJson();
