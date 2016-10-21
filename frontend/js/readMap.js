@@ -35,15 +35,15 @@ maze.loadMap = function (map) {
 
 maze.createStructure = function (character, x, y) {
     var env;
-    var candyclass="";
+    var candyclass = "";
     if (character == "&copy;")
         candyclass = "class='candy'";
     if (y === "start") {
-        env = '<div '+candyclass+' id="' + x + '">' + character;
+        env = '<div ' + candyclass + ' id="' + x + '">' + character;
     } else if (y === "end") {
         env = character + '</div>';
     } else {
-        env = '<span '+candyclass+' id="' + x + maze.config.splitChar + y + '">' + character + '</span>';
+        env = '<span ' + candyclass + ' id="' + x + maze.config.splitChar + y + '">' + character + '</span>';
     }
     return env;
 };
@@ -76,5 +76,6 @@ function saveScore(name, points, timeInSeconds) {
 }
 
 $(function () {
+    if($(maze.config.selectorMap).length)
     loadJson();
 });
