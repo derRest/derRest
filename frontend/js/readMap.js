@@ -35,7 +35,7 @@ maze.loadMap = function (map) {
 
 maze.createStructure = function (character, x, y) {
     var env;
-    var candyclass;
+    var candyclass="";
     if (character == "&copy;")
         candyclass = "class='candy'";
     if (y === "start") {
