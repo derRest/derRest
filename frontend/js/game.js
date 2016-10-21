@@ -5,14 +5,20 @@
 
 var game={};
 game.player={};
+game.config = {
+    player: "player"
+};
 
 game.player.setPos = function (x, y) {
-
     var locationId = x + maze.config.splitChar + y;
+    //if(maze.validatePostition()===true){
+        //console.log(locationId);
+        jQuery("#"+game.player.getPos()).removeAttr(game.config.player,"");     //Alte Position löschen
+        jQuery("#"+locationId).attr(game.config.player,"test");                 //Neue Position setzen
 
-    console.log(locationId);
-    //$(maze.config.selectorMap).append(singleLine);
-    jQuery("#locationId").val();
+    //TODO game.player.setPos aufrufen
+
+    //}else{console.log("Unerlaubter Zug!";}
 };
 
 game.player.getPos = function () {
