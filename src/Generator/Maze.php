@@ -126,6 +126,7 @@ class Maze implements MazeInterface
         $result[0][0] = static::WALL;
         $result[0][1] = static::WALL;
         $result[1][0] = static::WALL;
+        $this->checkCandyMax($result);
         while ($this->counter < $this->candyCount) {
             $var2 = count($result[0]);
             $var1 = count($result);
@@ -137,6 +138,20 @@ class Maze implements MazeInterface
             }
         }
         return $result;
+    }
+
+    protected function checkCandyMax(array $maze){
+        $count = 0;
+        foreach ($maze as $mazeline){
+            foreach ($mazeline as $cell){
+                if($cell === static::WHITE_SPACE){
+                    $count++;
+                }
+            }
+        }
+        if ($count < $this->candyCount){
+            $this->candyCount = $count;
+        }
     }
 
 
