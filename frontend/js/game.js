@@ -18,7 +18,7 @@ game.player.setPos = function (x, y) {
         game.player.setPlayer(x,y);
         jQuery("#"+game.player.getPos()).removeAttr(game.config.player,"");     //Alte Position löschen
         jQuery("#"+locationId).attr(game.config.player,"test");                 //Neue Position setzen
-    
+
     //}else{console.log("Unerlaubter Zug!";}
 };
 
@@ -28,6 +28,10 @@ game.player.getPos = function () {
 
 game.player.setPlayer = function (x,y) {
     var locationId = x + maze.config.splitChar + y;
+
     jQuery("#"+game.player.getPos()).html(maze.config.chars[0]);            //Alte Position löschen
+    jQuery("#"+game.player.getPos()).toggleClass("player");                 //setze Klasse "player" zurück für die Farbe
+
     jQuery("#"+locationId).html(game.config.playerSymbol);                  //Neue Position setzen
+    jQuery("#"+locationId).toggleClass("player");                           //setze Klasse "player" für die Farbe
 };
