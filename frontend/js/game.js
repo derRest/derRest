@@ -45,6 +45,11 @@ game.keyevent = function () {
     jQuery(document).on("keydown", function (event) {
         if (event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 37) {
             var playerPos = game.player.getPos();
+            if (typeof(playerPos) == "undefined") {
+            	console.log("limitless space of undefinedness");
+            	game.exit();
+            	return;
+            }
             var playerPosXY = playerPos.split(maze.config.splitChar);
             switch (event.keyCode) {
                 case 37:
