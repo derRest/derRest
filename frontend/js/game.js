@@ -22,6 +22,7 @@ game.player.setPos = function (x, y) {
     //}else{console.log("Unerlaubter Zug!";}
 };
 
+
 game.player.getPos = function () {
     return jQuery("span[player]").attr("id");
 };
