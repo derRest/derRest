@@ -4,3 +4,5 @@
 data/database.db
 vendor/
 node_modules/
+sftp-config.json
+.gitignore
