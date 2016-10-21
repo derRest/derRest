@@ -20,10 +20,10 @@ maze.config = {
 
 maze.validatePosition = function(x,y, char) {
     var element = jQuery("#" + x+maze.config.splitChar+y);
-    if (element.text() == char) {
-        return false;
+    if (element.html() == char) {
+        return true;
     }
-    return true;
+    return false;
 }
 maze.isWall = function (x, y) {
     return maze.validatePosition(x, y, maze.config.chars[1]);
