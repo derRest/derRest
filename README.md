@@ -40,4 +40,7 @@ We will use
 
 1. clone it
 2. composer install
+3. npm install
 3. open the website in that folder
+
+Alternatively you can access the game at https://lab.cben.co/derRest/
