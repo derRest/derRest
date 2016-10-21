@@ -11,7 +11,7 @@ maze.config = {
     chars: {
         0: '&nbsp;',
         1: '#',
-        2: '&#&copy;'
+        2: '&copy;'
     },
 
     splitChar: "-"
