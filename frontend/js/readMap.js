@@ -40,49 +40,8 @@ maze.isOnExit = function (x, y) {
         return true;
     return false;
 }
-//maze.candyInPosition = function (x, y) {
-//    if (maze.isCandy(x, y)) {
-//        jQuery("#" + x+maze.config.splitChar+y).html(maze.config.chars[0]);
-//        game.collectedCandys++;
-//    }
-//}
 
 maze.isLoaded = false;
-
-//maze.candyInPosition = function (x, y) {
-//    if (maze.isCandy(x, y)) {
-//        jQuery("#" + x+maze.config.splitChar+y).html(maze.config.chars[0]);
-//        game.collectedCandys++;
-//    }
-//}
-
-game.keyevent = function () {
-    jQuery(document).on("keydown", function (event) {
-        if (event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 37) {
-            var playerPos = game.player.getPos();
-            var playerPosXY = playerPos.split(maze.config.splitChar);
-            switch (event.keyCode) {
-                case 37:
-                    game.player.setPos(parseInt(playerPosXY[0]), parseInt(playerPosXY[1])-1);
-                    break; 
-                case 38:
-                    game.player.setPos(parseInt(playerPosXY[0])-1, parseInt(playerPosXY[1]));
-                    break;
-                case 39:
-                    game.player.setPos(parseInt(playerPosXY[0]), parseInt(playerPosXY[1])+1);
-                    break;
-                case 40:
-                    game.player.setPos(parseInt(playerPosXY[0])+1, parseInt(playerPosXY[1]));
-                    break;
-            }
-        }
-    });
-}
-
-game.calculateScore = function (candy, time) {
-    var result = (1/(Math.sqrt(time)) * (candy*Math.PI))
-    return Math.round(Math.abs(result*Math.sqrt(candy)));
-}
 
 maze.loadMap = function (map) {
     if (!maze.isLoaded) {
