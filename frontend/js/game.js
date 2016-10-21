@@ -8,7 +8,11 @@ game.player={};
 
 game.player.setPos = function (x, y) {
 
+    var locationId = x + maze.config.splitChar + y;
 
+    console.log(locationId);
+    //$(maze.config.selectorMap).append(singleLine);
+    jQuery("#locationId").val();
 };
 
 game.player.getPos = function () {

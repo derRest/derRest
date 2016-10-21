@@ -90,27 +90,16 @@ class Maze implements MazeInterface
                 for ($j = 0; $j < $this->x; $j++) {
                     // Top-left corner does not need top-left divider; needs a space
                     // to line everything up, though.
-                    if ($j > 0 || $i > 0) {
-                        //echo "1";
-                        $tmp[] = static::WALL;
-                    } else {
-                        //echo "0";
-                        $tmp[] = static::WHITE_SPACE;
-                    }
+                    $tmp[] = static::WALL;
                     if ($this->walls[$currWall++] == 1) {
-                        //echo "11";
                         $tmp[] = static::WALL;
-                        //$tmp[] = static::WALL;
                     } else {
-                        //echo "00";
                         $tmp[] = static::WHITE_SPACE;
-                        //$tmp[] = static::WHITE_SPACE;
                     }
                 }
                 // Bottom-right corner does not need bottom-right divider
                 if ($i != ($printRows - 1)) {
                     $tmp[] = static::WALL;
-                    //echo "1";
                 } else {
                     $tmp[] = static::WHITE_SPACE;
                 }
@@ -119,27 +108,25 @@ class Maze implements MazeInterface
                 for ($j = 0; $j < $this->x; $j++) {
                     if ($this->walls[$currWall++] == 1) {
                         $tmp[] = static::WALL;
-                        //echo "1";
                     } else {
-                        //echo "0";
                         $tmp[] = static::WHITE_SPACE;
                     }
-                    //echo "00";
                     $tmp[] = static::WHITE_SPACE;
-                    //$tmp[] = static::WHITE_SPACE;
                 }
 
                 // Print the right wall if needed
                 if ($this->walls[$currWall++] == 1) {
-                    //echo "1";
                     $tmp[] = static::WALL;
                 } else {
                     $tmp[] = static::WHITE_SPACE;
                 }
             }
-            //echo "<br />";
             $result[] = $tmp;
         }
+        $result[0][0] = static::WALL;
+        $result[0][1] = static::WALL;
+        $result[1][0] = static::WALL;
+        $this->checkCandyMax($result);
         while ($this->counter < $this->candyCount) {
             $var2 = count($result[0]);
             $var1 = count($result);
@@ -151,6 +138,20 @@ class Maze implements MazeInterface
             }
         }
         return $result;
+    }
+
+    protected function checkCandyMax(array $maze){
+        $count = 0;
+        foreach ($maze as $mazeline){
+            foreach ($mazeline as $cell){
+                if($cell === static::WHITE_SPACE){
+                    $count++;
+                }
+            }
+        }
+        if ($count < $this->candyCount){
+            $this->candyCount = $count;
+        }
     }
 
 
@@ -414,7 +415,7 @@ class Maze implements MazeInterface
     public static function printToCli(array $mazeArray)
     {
         $symbols = [
-            static::WHITE_SPACE => '_',
+            static::WHITE_SPACE => ' ',
             static::WALL => '#',
             static::CANDY => 'o',
         ];
@@ -422,9 +423,9 @@ class Maze implements MazeInterface
         echo PHP_EOL;
         foreach ($mazeArray as $mazeLine) {
             foreach ($mazeLine as $item) {
-                echo $symbols[$item] . ' ';
+                echo $symbols[$item] . '';
             }
-            echo PHP_EOL;
+            //echo PHP_EOL;
             echo PHP_EOL;
         }
     }
