@@ -10,6 +10,11 @@ game.config = {
     playerSymbol: "&#916;"
 };
 
+game.player = {
+  name: ""
+
+};
+
 game.startTime = 0;
 
 game.player.setPos = function (x, y) {
@@ -40,25 +45,32 @@ game.player.setPlayer = function (x,y) {
 
     jQuery("#"+locationId).html(game.config.playerSymbol);                  //Neue Position setzen
     jQuery("#"+locationId).toggleClass("player");                           //setze Klasse "player" für die Farbe
-
 };
 
 game.startGame = function () {
     loadJson();
     game.timeMeassure("start");
+    game.player.name = jQuery("#first_name").val();
+    //game.keyevent();       //Startet möglichkeit zu Steuern
 };
 
 game.timeMeassure = function (start) {
     var jetzt = new Date();
-    if(start=="start"){
+
+    if(start==="start"&&(game.startTime==0)){
         game.startTime = Date.now();
         console.log("Zeit Messung gestartet: "+ game.startTime);
-    }else{
-        var TimeDiff = 0;
-       return TimeDiff = Date.now() - game.startTime;
+    }
+    if(start==="stop"&&(game.startTime!=0)){
+        var TimeDiff = Date.now() - game.startTime;
         console.log("Zeit Messung beendet Diff: "+ TimeDiff);
+        return TimeDiff;
     }
 };
 
-
-
+game.exit = function () {
+    var timeInMiliSeconds = game.timeMeassure("stop");
+    var timeInSeconds = timeInMiliSeconds/1000;
+    console.log(game.player.name + 0 + timeInSeconds);
+    saveScore(game.player.name,0,timeInSeconds);
+};
