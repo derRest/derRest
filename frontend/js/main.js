@@ -1,33 +1,35 @@
-jQuery(document).ready(function() {
-    jQuery('input#input_text').characterCounter();
-    if(jQuery(maze.config.selectorMap).length)
-    	loadJson();
-});
+function formSubmit(event) {
+    event.preventDefault();
 
-function validate() {
-	if (jQuery("#first_name").val() == "") {
-		jQuery("#first_name").toggleClass("invalid");
-	} else {
-		game.startGame();
-	}
+    var $name = $("#nameInput");
+    if ($name.val() == "") {
+        $name.toggleClass("invalid");
+    } else {
+        game.startGame($name.val());
+    }
+
+    return false;
 }
 
 function loadJson() {
-    var url = location.protocol
-                + '//' 
-                + location.host 
-                + location.pathname 
-                + 'api/maze?x='
-                + maze.config.width
-                + '&y='
-                + maze.config.length
-                + '&candyCount='
-                + maze.config.candyCount;
-    jQuery(maze.config.SelectorLoadingIcon).show();
-    jQuery(maze.config.selectorMap).html('');
-    jQuery.get(url, function (response) {
-        jQuery(maze.config.SelectorLoadingIcon).hide();
+    var url = location.protocol + '//' + location.host + location.pathname
+        + 'api/maze?x=' + maze.config.width
+        + '&y=' + maze.config.height
+        + '&candyCount=' + maze.config.candyCount;
+
+    $(maze.config.SelectorLoadingIcon).show();
+    $(maze.config.selectorMap).html('');
+    $.get(url, function (response) {
+        $(maze.config.SelectorLoadingIcon).hide();
         //console.log(response);
-        maze.loadMap(response);
+        maze.load(response);
     });
 }
+
+$(function () {
+    $('input#nameInput').characterCounter();//Was macht das?
+
+    if ($(maze.config.selectorMap).length) {
+        loadJson();
+    }
+});

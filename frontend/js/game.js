@@ -2,134 +2,125 @@
  * Created by JanJJ on 21.10.2016.
  */
 
-var game={};
-game.player={};
+var game = {};
+game.player = {
+    name: "",
+    collectedCandies: 0,
+    keyCount: 0
+};
+
+game.player.movePlayerTo = function (x, y) {
+    var locationId = x + maze.config.splitChar + y;
+    if (!maze.isWall(x, y)) { //Prüft ob nicht auf Mauer gelaufen wird
+        if (maze.isCandy(x, y)) {
+            var $xyPosElement = $("#" + x + maze.config.splitChar + y);
+            $xyPosElement.html(maze.config.chars[0]);
+            $xyPosElement.removeClass("candy");
+            game.player.collectedCandies++;
+        }
+        game.player.setPos(x, y);
+        $("#" + game.player.getPos()).removeAttr(game.config.selectorPlayerClass, ""); //Altes Attribut für Position löschen
+        $("#" + locationId).attr(game.config.selectorPlayerClass, "test"); //Neues Attribut für Position setzen
+        if (maze.isOnExit(x, y)) {
+            game.finishGameAndDisplayText();
+        }
+    }
+};
+
+game.player.getPos = function () {
+    return $("span[player]").attr("id");
+};
+
+game.player.setPos = function (x, y) {
+
+    //Alte Position löschen UND setze Klasse game.config.selectorPlayerClass zurück für die Farbe
+    var $playerPos = $("#" + game.player.getPos());
+    $playerPos.html(maze.config.chars[0]);
+    $playerPos.removeClass(game.config.selectorPlayerClass);
+
+    //Neue Position setzen UND setze Klasse game.config.selectorPlayerClass für die Farbe
+    var $newPlayerPos = $("#" + x + maze.config.splitChar + y);
+    $newPlayerPos.html(game.config.playerSymbol);
+    $newPlayerPos.addClass(game.config.selectorPlayerClass);
+};
+
+game.startTime = 0;
 
 game.config = {
-    player: "player",
+    selectorPlayerClass: "player",
     playerSymbol: "&#916;",
     startPosX: 1,
     startPosY: 1
 };
 
-game.player = {
-  name: "",
-  collectedCandys: 0,
-  keyCount: 0
-};
-
-game.startTime = 0;
-
-game.player.setPos = function (x, y) {
-    var locationId = x + maze.config.splitChar + y;
-    if(!maze.isWall(x,y)){                    //Prüft ob nicht auf Mauer gelaufen wird
-        console.log("isWall: " + maze.isWall(x,y));
-        if (maze.isCandy(x, y)) {
-	        jQuery("#" + x+maze.config.splitChar+y).html(maze.config.chars[0]);
-	        jQuery("#" + x+maze.config.splitChar+y).removeClass("candy");  
-	        game.player.collectedCandys++;
-	    }
-	    game.player.setPlayer(x,y);
-        jQuery("#"+game.player.getPos()).removeAttr(game.config.player,"");     //Altes Attribut für Position löschen
-        jQuery("#"+locationId).attr(game.config.player,"test");  //Neues Attribut für Position setzen
-        if (maze.isOnExit(x, y)) {
-        	game.exit();
-        }               
-    }else{
-        console.log("Unerlaubter Zug!");
+game.initialiseKeyEvent = function () {
+    console.log('initialiseKeyEvent', game.player.name);
+    if (game.startTime == 0) {
+        $(document).off("keydown");
+        return;
     }
-};
-
-
-game.keyevent = function () {
-	if (game.startTime == 0) {
-		jQuery(document).off("keydown");
-		return;
-	}
-    jQuery(document).on("keydown", jQuery(document), function (event) {
+    $(document).on("keydown", $(document), function (event) {
+        console.log('keyEvent', game.player.name);
         if (event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 37) {
             var playerPos = game.player.getPos();
             if (typeof(playerPos) == "undefined") {
-            	console.log("limitless space of undefinedness");
-            	game.exit();
-            	return;
+                game.finishGameAndDisplayText();
+                return;
             }
             if (game.startTime == 0) {
-            	return;
+                return;
             }
             game.player.keyCount++;
             var playerPosXY = playerPos.split(maze.config.splitChar);
             switch (event.keyCode) {
                 case 37:
-                    game.player.setPos(parseInt(playerPosXY[0]), parseInt(playerPosXY[1])-1);
-                    break; 
+                    game.player.movePlayerTo(parseInt(playerPosXY[0]), parseInt(playerPosXY[1]) - 1);
+                    break;
                 case 38:
-                    game.player.setPos(parseInt(playerPosXY[0])-1, parseInt(playerPosXY[1]));
+                    game.player.movePlayerTo(parseInt(playerPosXY[0]) - 1, parseInt(playerPosXY[1]));
                     break;
                 case 39:
-                    game.player.setPos(parseInt(playerPosXY[0]), parseInt(playerPosXY[1])+1);
+                    game.player.movePlayerTo(parseInt(playerPosXY[0]), parseInt(playerPosXY[1]) + 1);
                     break;
                 case 40:
-                    game.player.setPos(parseInt(playerPosXY[0])+1, parseInt(playerPosXY[1]));
+                    game.player.movePlayerTo(parseInt(playerPosXY[0]) + 1, parseInt(playerPosXY[1]));
                     break;
             }
         }
     });
-}
+};
 
 game.calculateScore = function (candy, time) {
-    var result = (1/(Math.sqrt(time)) * ((candy*(maze.config.candyCount/100))*Math.PI));
-    return Math.round(Math.abs(result*maze.config.length * maze.config.width / Math.sqrt (game.player.keyCount)));
-}
-
-
-game.player.getPos = function () {
-    return jQuery("span[player]").attr("id");
+    var result = (1 / (Math.sqrt(time)) * ((candy * (maze.config.candyCount / 100)) * Math.PI));
+    return Math.round(Math.abs(result * maze.config.height * maze.config.width / Math.sqrt(game.player.keyCount)));
 };
 
-game.player.setPlayer = function (x,y) {
-    var locationId = x + maze.config.splitChar + y;
-
-    jQuery("#"+game.player.getPos()).html(maze.config.chars[0]);            //Alte Position löschen
-    jQuery("#"+game.player.getPos()).toggleClass("player");                 //setze Klasse "player" zurück für die Farbe
-
-    jQuery("#"+locationId).html(game.config.playerSymbol);                  //Neue Position setzen
-    jQuery("#"+locationId).toggleClass("player");                           //setze Klasse "player" für die Farbe
-};
-
-game.startGame = function () {
-    //loadJson();
-    game.player.name = jQuery("#first_name").val();
-    //if (game.player.name == "")
-    //{
-    //	jQuery("#first_name")
-    //}
-    document.body.style.overflow = "hidden";
+game.startGame = function (name) {
     game.reset();
-    if(game.startTime==0){
-        game.player.setPos(game.config.startPosX,game.config.startPosY);
-        game.timeMeassure("start");
-        game.keyevent();       //Startet möglichkeit zu Steuern
-    }else{
-        console.log("Already started!");
+    game.player.name = name;
+    console.log('setName', game.player.name);
+    document.body.style.overflow = "hidden";
+    if (game.startTime == 0) {
+        game.player.movePlayerTo(game.config.startPosX, game.config.startPosY);
+        game.timeMeasure("start");
+        game.initialiseKeyEvent(); //Startet möglichkeit zu Steuern
     }
 };
 
-game.timeMeassure = function (start) {
-    if(start==="start"){
+game.timeMeasure = function (start) {
+    if (start === "start") {
         game.startTime = Date.now();
-        console.log("Zeit Messung gestartet: "+ game.startTime);
     }
-    if(start==="stop"&&(game.startTime!=0)){
-        var TimeDiff = Date.now() - game.startTime;
-        console.log("Zeit Messung beendet Diff: "+ TimeDiff);
-        return TimeDiff;
+    if (start === "stop" && (game.startTime != 0)) {
+        return (Date.now() - game.startTime) / 1000;
     }
+
 };
 
-game.saveScore = function(name, points, timeInSeconds) {
+game.saveScore = function (name, points, timeInSeconds) {
+    console.log('saveScore', name);
     var url = location.protocol + '//' + location.host + location.pathname + 'api/highscore';
-    jQuery.ajax({
+    $.ajax({
         type: "POST",
         url: url,
         dataType: 'json',
@@ -140,17 +131,14 @@ game.saveScore = function(name, points, timeInSeconds) {
             elapsedTime: timeInSeconds
         })
     });
-}
+};
 
-game.exit = function () {
-	//document.onkeydown = null;
-	jQuery(document).off("keydown");
-	document.body.style.overflow = "auto";
-    var timeInMiliSeconds = game.timeMeassure("stop");
-    var timeInSeconds = timeInMiliSeconds/1000;
-    game.startTime = 0;
-    console.log(game.player.name + 0 + timeInSeconds);
-    var points = game.calculateScore(game.player.collectedCandys, timeInSeconds);
+game.finishGameAndDisplayText = function () {
+    $(document).off("keydown");
+    document.body.style.overflow = "auto";
+    var timeInSeconds = game.timeMeasure("stop");
+
+    var points = game.calculateScore(game.player.collectedCandies, timeInSeconds);
     game.saveScore(game.player.name, points, timeInSeconds);
     maze.unload();
     maze.printResult(points, timeInSeconds);
@@ -158,12 +146,7 @@ game.exit = function () {
 };
 
 game.reset = function () {
-	game.startTime = 0;
-	game.player.name = "";
-	maze.isLoaded = false;
-	//document.onkeydown = null;
-	//jQuery.off("keydown");
-    //maze.config.width = maze.config.width + 2;
-    //maze.config.length = maze.config.length + 2;
-    //loadJson();
-}
+    game.startTime = 0;
+    game.player.name = "";
+    maze.isLoaded = false;
+};

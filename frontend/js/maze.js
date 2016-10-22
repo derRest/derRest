@@ -3,48 +3,41 @@ var maze = {};
 maze.config = {
     selectorMap: '.js-map',
     SelectorLoadingIcon: '.js-map-loading-icon ',
-    length: 17,
+    height: 17,
     width: 17,
+    splitChar: "-",
     candyCount: 10,
     chars: {
         0: '&nbsp;',
         1: '#',
         2: '&copy;'
-    },
+    }
+};
 
-    splitChar: "-"
+maze.validatePosition = function (x, y, char) {
+    var element = $("#" + x + maze.config.splitChar + y);
+    return element.text() == char;
+};
+maze.isWall = function (x, y) {
+    return maze.validatePosition(x, y, maze.config.chars[1]);
+};
+maze.isCandy = function (x, y) {
+    var element = $("#" + x + maze.config.splitChar + y);
+    return !!element.hasClass("candy");
+
+};
+maze.isOnExit = function (x, y) {
+    var exitSquareX = [maze.config.width - 1, maze.config.width];
+    var exitSquareY = [maze.config.height - 1, maze.config.height];
+    return !!(exitSquareX.indexOf(x) != -1 && exitSquareY.indexOf(y) != -1);
 
 };
 
-maze.validatePosition = function(x,y, char) {
-    var element = jQuery("#" + x+maze.config.splitChar+y);
-    if (element.text() == char) {
-        return true;
-    }
-    return false;
-}
-maze.isWall = function (x, y) {
-    return maze.validatePosition(x, y, maze.config.chars[1]);
-}
-maze.isCandy = function (x, y) {
-    var element = jQuery("#" + x+maze.config.splitChar+y);
-    if (element.hasClass("candy"))
-        return true;
-    return false;
-}
-maze.isOnExit = function (x, y) {
-    var exitSquareX = [maze.config.width-1, maze.config.width];
-    var exitSquareY = [maze.config.length-1, maze.config.length];
-    if (exitSquareX.indexOf(x) != -1 && exitSquareY.indexOf(y) != -1)
-        return true;
-    return false;
-}
-
 maze.isLoaded = false;
 
-maze.loadMap = function (map) {
+maze.load = function (map) {
     if (!maze.isLoaded) {
-        jQuery.each(map, function (index, value) {
+        $.each(map, function (index, value) {
             var singleLine = "";
             singleLine += maze.createStructure('', index, 'start');
 
@@ -53,9 +46,13 @@ maze.loadMap = function (map) {
             }
 
             singleLine += maze.createStructure('', 'map', index, 'end');
-            jQuery(maze.config.selectorMap).append(singleLine);
+            $(maze.config.selectorMap).append(singleLine);
         });
     }
+};
+
+maze.unload = function () {
+    $(maze.config.selectorMap).html('');
 };
 
 maze.createStructure = function (character, x, y) {
@@ -73,13 +70,9 @@ maze.createStructure = function (character, x, y) {
     return env;
 };
 
-maze.unload = function () {
-    jQuery(maze.config.selectorMap).html('');
-}
-
-maze.printResult = function(points, time) {
-    var result = "<h3><b>SUCCESS!</b> you earned "+points+" Points</h3>";
-    result += "<p>It took you "+time+"s to succeed</p>";
-    jQuery(maze.config.selectorMap).html(result);
-}
+maze.printResult = function (points, time) {
+    var result = "<h3><b>SUCCESS!</b> you earned " + points + " Points</h3>";
+    result += "<p>It took you " + time + "s to succeed</p>";
+    $(maze.config.selectorMap).html(result);
+};
 

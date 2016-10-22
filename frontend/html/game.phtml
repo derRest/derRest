@@ -15,14 +15,16 @@
     </div>
     <div class="js-map">
     </div>
-          
+
     <div class="menue">
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="first_name" type="text" length="15" required="" aria-required="true">
-            <label for="first_name" data-error="Input can't be empty" data-success="perfect">your name</label>
-          </div>
-        </div>
-        <button class="btn" onclick="validate()">Starten</button>
+        <form onsubmit="return formSubmit(event);">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="nameInput" type="text" required aria-required="true">
+                    <label for="nameInput" data-error="Input can't be empty" data-success="perfect">your name</label>
+                </div>
+            </div>
+            <button type="submit" class="btn">Starten</button>
+        </form>
     </div>
 </div>
