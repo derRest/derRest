@@ -54,20 +54,13 @@ game.config = {
 };
 
 game.initialiseKeyEvent = function () {
-    console.log('initialiseKeyEvent', game.player.name);
-    if (game.startTime == 0) {
-        $(document).off("keydown");
-        return;
-    }
+    $(document).off("keydown");
     $(document).on("keydown", $(document), function (event) {
-        console.log('keyEvent', game.player.name);
         if (event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 37) {
+            event.preventDefault();
             var playerPos = game.player.getPos();
             if (typeof(playerPos) == "undefined") {
                 game.finishGameAndDisplayText();
-                return;
-            }
-            if (game.startTime == 0) {
                 return;
             }
             game.player.keyCount++;
@@ -96,15 +89,13 @@ game.calculateScore = function (candy, time) {
 };
 
 game.startGame = function (name) {
+    $(':focus').blur();
     game.reset();
     game.player.name = name;
-    console.log('setName', game.player.name);
-    document.body.style.overflow = "hidden";
-    if (game.startTime == 0) {
-        game.player.movePlayerTo(game.config.startPosX, game.config.startPosY);
-        game.timeMeasure("start");
-        game.initialiseKeyEvent(); //Startet möglichkeit zu Steuern
-    }
+
+    game.player.movePlayerTo(game.config.startPosX, game.config.startPosY);
+    game.timeMeasure("start");
+    game.initialiseKeyEvent(); //Startet möglichkeit zu Steuern
 };
 
 game.timeMeasure = function (start) {
@@ -118,7 +109,6 @@ game.timeMeasure = function (start) {
 };
 
 game.saveScore = function (name, points, timeInSeconds) {
-    console.log('saveScore', name);
     var url = location.protocol + '//' + location.host + location.pathname + 'api/highscore';
     $.ajax({
         type: "POST",
@@ -135,7 +125,6 @@ game.saveScore = function (name, points, timeInSeconds) {
 
 game.finishGameAndDisplayText = function () {
     $(document).off("keydown");
-    document.body.style.overflow = "auto";
     var timeInSeconds = game.timeMeasure("stop");
 
     var points = game.calculateScore(game.player.collectedCandies, timeInSeconds);

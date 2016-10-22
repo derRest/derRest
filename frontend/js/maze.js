@@ -27,9 +27,14 @@ maze.isCandy = function (x, y) {
 
 };
 maze.isOnExit = function (x, y) {
-    var exitSquareX = [maze.config.width - 1, maze.config.width];
-    var exitSquareY = [maze.config.height - 1, maze.config.height];
-    return !!(exitSquareX.indexOf(x) != -1 && exitSquareY.indexOf(y) != -1);
+    //x ^= height;
+    var exitPositions = [
+        (maze.config.height - 1) + '#' + (maze.config.width),
+        (maze.config.height - 2) + '#' + (maze.config.width),
+        (maze.config.height) + '#' + (maze.config.width - 1),
+        (maze.config.height) + '#' + (maze.config.width - 2)
+    ];
+    return exitPositions.indexOf(x + '#' + y) != -1;
 
 };
 

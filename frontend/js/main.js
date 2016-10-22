@@ -5,31 +5,26 @@ function formSubmit(event) {
     if ($name.val() == "") {
         $name.toggleClass("invalid");
     } else {
-        game.startGame($name.val());
+        loadJson($name.val());
     }
 
     return false;
 }
 
-function loadJson() {
+function loadJson(name) {
+    $(maze.config.SelectorLoadingIcon).show();
+
     var url = location.protocol + '//' + location.host + location.pathname
         + 'api/maze?x=' + maze.config.width
         + '&y=' + maze.config.height
         + '&candyCount=' + maze.config.candyCount;
-
-    $(maze.config.SelectorLoadingIcon).show();
     $(maze.config.selectorMap).html('');
     $.get(url, function (response) {
-        $(maze.config.SelectorLoadingIcon).hide();
         //console.log(response);
         maze.load(response);
+        $(maze.config.SelectorLoadingIcon).hide();
+        game.startGame(name);
     });
 }
 
-$(function () {
-    $('input#nameInput').characterCounter();//Was macht das?
-
-    if ($(maze.config.selectorMap).length) {
-        loadJson();
-    }
-});
+$('input#nameInput').characterCounter();//Was macht das?
