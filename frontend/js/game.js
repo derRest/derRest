@@ -89,6 +89,7 @@ game.calculateScore = function (candy, time) {
 };
 
 game.startGame = function (name) {
+    $('button').text('Restart Game');
     $(':focus').blur();
     game.reset();
     game.player.name = name;
@@ -131,7 +132,6 @@ game.finishGameAndDisplayText = function () {
     game.saveScore(game.player.name, points, timeInSeconds);
     maze.unload();
     maze.printResult(points, timeInSeconds);
-    game.reset();
 };
 
 game.reset = function () {
