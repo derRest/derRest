@@ -9,7 +9,7 @@ game.player = {
     keyCount: 0
 };
 
-game.player.movePlayerTo = function (x, y) {
+game.player.moveToIfPossible = function (x, y) {
     var locationId = x + maze.config.splitChar + y;
     if (!maze.isWall(x, y)) { //Prüft ob nicht auf Mauer gelaufen wird
         if (maze.isCandy(x, y)) {
@@ -67,16 +67,16 @@ game.initialiseKeyEvent = function () {
             var playerPosXY = playerPos.split(maze.config.splitChar);
             switch (event.keyCode) {
                 case 37:
-                    game.player.movePlayerTo(parseInt(playerPosXY[0]), parseInt(playerPosXY[1]) - 1);
+                    game.player.moveToIfPossible(parseInt(playerPosXY[0]), parseInt(playerPosXY[1]) - 1);
                     break;
                 case 38:
-                    game.player.movePlayerTo(parseInt(playerPosXY[0]) - 1, parseInt(playerPosXY[1]));
+                    game.player.moveToIfPossible(parseInt(playerPosXY[0]) - 1, parseInt(playerPosXY[1]));
                     break;
                 case 39:
-                    game.player.movePlayerTo(parseInt(playerPosXY[0]), parseInt(playerPosXY[1]) + 1);
+                    game.player.moveToIfPossible(parseInt(playerPosXY[0]), parseInt(playerPosXY[1]) + 1);
                     break;
                 case 40:
-                    game.player.movePlayerTo(parseInt(playerPosXY[0]) + 1, parseInt(playerPosXY[1]));
+                    game.player.moveToIfPossible(parseInt(playerPosXY[0]) + 1, parseInt(playerPosXY[1]));
                     break;
             }
         }
@@ -88,13 +88,13 @@ game.calculateScore = function (candy, time) {
     return Math.round(Math.abs(result * maze.config.height * maze.config.width / Math.sqrt(game.player.keyCount)));
 };
 
-game.startGame = function (name) {
-    $('button').text('Restart Game');
+game.start = function (name) {
+    $('button').text('restart game');
     $(':focus').blur();
     game.reset();
     game.player.name = name;
 
-    game.player.movePlayerTo(game.config.startPosX, game.config.startPosY);
+    game.player.moveToIfPossible(game.config.startPosX, game.config.startPosY);
     game.timeMeasure("start");
     game.initialiseKeyEvent(); //Startet möglichkeit zu Steuern
 };

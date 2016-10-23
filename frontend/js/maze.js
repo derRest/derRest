@@ -23,7 +23,7 @@ maze.isWall = function (x, y) {
 };
 maze.isCandy = function (x, y) {
     var element = $("#" + x + maze.config.splitChar + y);
-    return !!element.hasClass("candy");
+    return element.hasClass("candy");
 
 };
 maze.isOnExit = function (x, y) {

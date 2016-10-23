@@ -23,7 +23,7 @@ function loadJson(name) {
         //console.log(response);
         maze.load(response);
         $(maze.config.SelectorLoadingIcon).hide();
-        game.startGame(name);
+        game.start(name);
     });
 }
 
