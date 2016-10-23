@@ -26,7 +26,7 @@ final class Routes
             $db = new DatabaseConnection;
             $response->body(phtml::phtml('frontend/html/highscore.phtml', [
                 'baseUrl' => $this->getBasePathFromRequest($request),
-                'scores' => $db->select('highscore', '*', [ 'ORDER' => ['score' => 'DESC'], 'LIMIT' => 20, ])
+                'scores' => $db->select('highscore', '*', [ 'ORDER' => ['score' => 'DESC'], 'LIMIT' => 200, ])
             ]));
         });
         $klein->respond('POST', '/api/highscore', function (Request $request, Response $response) {
