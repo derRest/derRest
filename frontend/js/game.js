@@ -89,9 +89,11 @@ game.calculateScore_deprecated = function (candy, time) {
     return Math.round(Math.abs(result * maze.config.height * maze.config.width / Math.sqrt(game.player.keyCount)));
 };
 
-game.calculateScore = function (candy, time) {
+game.calculateScore = function (candy, time, maxTime) {
     var level = parseInt(2*Math.PI*(Math.sqrt(maze.config.height+maze.config.width)/10)+0.5);
-    var maxTime = 2*Math.pow((maze.config.height*maze.config.width), -0.5)*100;
+    if (typeof(maxTime) == "undefined") {
+        maxTime = 2*Math.pow((maze.config.height*maze.config.width), -0.5)*100;
+    }
     var levelFactor = (2*Math.PI*level+(2*candy*maze.config.candyCount)/10)+(Math.pow(Math.sqrt(game.player.keyCount+1), -0.8)*10);
     var timeFactor = (maxTime-(time*((level*game.config.difficulty/maxTime)*(time*maxTime/100))));
     var result = parseInt((Math.E*(levelFactor)-Math.abs(timeFactor))+0.5);
@@ -138,7 +140,7 @@ game.finishGameAndDisplayText = function () {
     $(document).off("keydown");
     var timeInSeconds = game.timeMeasure("stop");
 
-    var points = game.calculateScore(game.player.collectedCandies, timeInSeconds);
+    var points = game.calculateScore(game.player.collectedCandies, timeInSeconds, 15);
     game.saveScore(game.player.name, points, timeInSeconds);
     maze.unload();
     maze.printResult(points, timeInSeconds);
