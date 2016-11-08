@@ -143,5 +143,7 @@ game.finishGameAndDisplayText = function () {
 game.reset = function () {
     game.startTime = 0;
     game.player.name = "";
+    game.player.collectedCandies = 0;
+    game.player.keyCountWall = 0;
     maze.isLoaded = false;
 };
