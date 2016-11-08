@@ -8,6 +8,10 @@
     color:#ee6e73;
 }
 
+.hitWall {
+	color: gray;
+}
+
 .player{
     color:#01DF01;
 }

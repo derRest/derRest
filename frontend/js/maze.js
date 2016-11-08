@@ -7,6 +7,7 @@ maze.config = {
     width: 17,
     splitChar: "-",
     candyCount: 10,
+    markingWallhits: true,
     chars: {
         0: '&nbsp;',
         1: '#',
@@ -19,7 +20,8 @@ maze.validatePosition = function (x, y, char) {
     return element.text() == char;
 };
 maze.isWall = function (x, y) {
-    return maze.validatePosition(x, y, maze.config.chars[1]);
+    var isWall = maze.validatePosition(x, y, maze.config.chars[1]);
+    return isWall;
 };
 maze.isCandy = function (x, y) {
     var element = $("#" + x + maze.config.splitChar + y);
