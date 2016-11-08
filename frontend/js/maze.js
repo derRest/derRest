@@ -63,7 +63,7 @@ maze.unload = function () {
 maze.createStructure = function (character, x, y) {
     var env;
     var candyclass = "";
-    if (character == "&copy;")
+    if (character == maze.config.chars[2]) //candy
         candyclass = "class='candy'";
     if (y === "start") {
         env = '<div ' + candyclass + ' id="' + x + '">' + character;
