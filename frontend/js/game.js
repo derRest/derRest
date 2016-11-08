@@ -91,7 +91,7 @@ game.calculateScore = function (candy, time, maxTime) {
     var timePoints = Math.min(level * 1000, maxTime/(time * game.config.difficulty)); // Kurzform für: 1000/(Zeit*(1000/60/Schwierigkeit)) 
     var candyPoints = level * 1000 * Math.pow((candy / maze.config.candyCount), 2); 
     var errorPoints = Math.max(100 - game.player.keyCountWall * 10, 0); 
-    return (candyPoints * timePoints) + errorPoints;
+    return parseInt((candyPoints * timePoints)/2 + errorPoints);
 };
 
 game.start = function (name) {
