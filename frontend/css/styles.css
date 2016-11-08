@@ -1,3 +1,18 @@
+main {
+	min-height: 80vh;
+	padding-top:20px;
+}
+
+.menue {
+	min-height: 30vh;
+}
+
+.aligner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .js-map{
     font-family: monospace;
     line-height:80%;
@@ -18,8 +33,4 @@
 
 #nameInput {
     text-align:center;
-}
-
-main{
-    padding-top:20px;
 }
