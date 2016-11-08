@@ -10,4 +10,6 @@ $whoops = new Run;
 $whoops->pushHandler(new PrettyPageHandler);
 $whoops->register();
 
-(new Routes)->dispatch();
+(new Routes)
+    ->setConfig(json_decode(file_get_contents(__DIR__ . '/config.json'), true))
+    ->dispatch();

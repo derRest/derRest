@@ -11,8 +11,12 @@ use derRest\Functions\phtml;
 
 final class Routes
 {
+    /**
+     * @var array
+     */
+    protected $config;
 
-    public function routes(Klein $klein):Klein
+    public function routes(Klein $klein): Klein
     {
         $klein->respond(['GET', 'POST'], '/github.php', function (Request $request, Response $response) {
             `git pull && composer install && npm install`;
@@ -26,7 +30,7 @@ final class Routes
             $db = new DatabaseConnection;
             $response->body(phtml::phtml('frontend/html/highscore.phtml', [
                 'baseUrl' => $this->getBasePathFromRequest($request),
-                'scores' => $db->select('highscore', '*', [ 'ORDER' => ['score' => 'DESC'], 'LIMIT' => 200, ])
+                'scores' => $db->select('highscore', '*', ['ORDER' => ['score' => 'DESC'], 'LIMIT' => 200,])
             ]));
         });
         $klein->respond('POST', '/api/highscore', function (Request $request, Response $response) {
@@ -74,8 +78,11 @@ final class Routes
             $resultData = $m->generate()->getMaze();
             $response->json($resultData);
         });
-        $klein->onHttpError(function ($code) {
+        $klein->onHttpError(function ($code, Klein $router) {
             echo $code;
+            echo "<pre>If this is wrong, please edit the config.json and adjust the BasePath</pre>";
+            echo "<pre>BasePath (config): " . print_r($this->config['BasePath'], true) . "</pre>";
+            echo "<pre>BasePath (used): " . print_r($this->getBasePathFromRequest($router->request()), true) . "</pre>";
         });
 
         return $klein;
@@ -90,7 +97,7 @@ final class Routes
         $klein->dispatch($this->generateRequest());
     }
 
-    protected function generateRequest():Request
+    protected function generateRequest(): Request
     {
         $request = Request::createFromGlobals();
         $uri = $request->server()->get('REQUEST_URI');
@@ -99,8 +106,11 @@ final class Routes
         return $request;
     }
 
-    protected function getBasePathFromRequest(Request $request):string
+    protected function getBasePathFromRequest(Request $request): string
     {
+        if (isset($this->config['BasePath']) && is_string($this->config['BasePath'])) {
+            return '/' . trim(trim($this->config['BasePath']), '/');
+        }
         $scriptFilename = $request->server()->get('SCRIPT_FILENAME');
         $documentRoot = $request->server()->get('DOCUMENT_ROOT');
         $dir = dirname(substr($scriptFilename, strlen($documentRoot)));
@@ -109,4 +119,24 @@ final class Routes
         }
         return $dir;
     }
+
+    /**
+     * @return array
+     */
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
+
+    /**
+     * @param array $config
+     * @return Routes
+     */
+    public function setConfig(array $config): self
+    {
+        $this->config = $config;
+        return $this;
+    }
+
+
 }

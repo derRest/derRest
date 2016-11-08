@@ -142,8 +142,8 @@ class Maze implements MazeInterface
 
     protected function checkCandyMax(array $maze){
         $count = 0;
-        foreach ($maze as $mazeline){
-            foreach ($mazeline as $cell){
+        foreach ($maze as $mazeLine){
+            foreach ($mazeLine as $cell){
                 if($cell === static::WHITE_SPACE){
                     $count++;
                 }
