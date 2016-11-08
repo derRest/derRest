@@ -6,7 +6,7 @@ var game = {};
 game.player = {
     name: "",
     collectedCandies: 0,
-    keyCount: 0
+    keyCountWall: 0
 };
 
 game.player.moveToIfPossible = function (x, y) {
@@ -24,6 +24,8 @@ game.player.moveToIfPossible = function (x, y) {
         if (maze.isOnExit(x, y)) {
             game.finishGameAndDisplayText();
         }
+    } else {
+        game.player.keyCountWall++;
     }
 };
 
@@ -50,7 +52,8 @@ game.config = {
     selectorPlayerClass: "player",
     playerSymbol: "&#916;",
     startPosX: 1,
-    startPosY: 1
+    startPosY: 1,
+    difficulty: 1
 };
 
 game.initialiseKeyEvent = function () {
@@ -83,9 +86,12 @@ game.initialiseKeyEvent = function () {
     });
 };
 
-game.calculateScore = function (candy, time) {
-    var result = (1 / (Math.sqrt(time)) * ((candy * (maze.config.candyCount / 100)) * Math.PI));
-    return Math.round(Math.abs(result * maze.config.height * maze.config.width / Math.sqrt(game.player.keyCount)));
+game.calculateScore = function (candy, time, maxTime) {
+    var level = 1;
+    var timePoints = Math.max(level * 1000, maxTime/(time * game.config.difficulty)); // Kurzform für: 1000/(Zeit*(1000/60/Schwierigkeit)) 
+    var candyPoints = level * 1000 * Math.pow((candy / maze.config.candyCount), 2); 
+    var errorPoints = Math.max(100 - game.player.keyCountWall * 10, 0); 
+    return (candyPoints * timePoints) + errorPoints;
 };
 
 game.start = function (name) {
@@ -128,7 +134,7 @@ game.finishGameAndDisplayText = function () {
     $(document).off("keydown");
     var timeInSeconds = game.timeMeasure("stop");
 
-    var points = game.calculateScore(game.player.collectedCandies, timeInSeconds);
+    var points = game.calculateScore(game.player.collectedCandies, timeInSeconds, 60);
     game.saveScore(game.player.name, points, timeInSeconds);
     maze.unload();
     maze.printResult(points, timeInSeconds);
