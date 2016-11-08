@@ -86,9 +86,6 @@ game.initialiseKeyEvent = function () {
 
 game.calculateScore = function (candy, time, maxTime) {
     var level = parseInt(2*Math.PI*(Math.sqrt(maze.config.height+maze.config.width)/10)+0.5);
-    if (typeof(maxTime) == "undefined") {
-        maxTime = 2*Math.pow((maze.config.height*maze.config.width), -0.5)*100;
-    }
     var levelFactor = (2*Math.PI*level+(2*candy*maze.config.candyCount)/10)+(Math.pow(Math.sqrt(game.player.keyCount+1), -0.8)*10);
     var timeFactor = (maxTime-(time*((level*game.config.difficulty/maxTime)*(time*maxTime/100))));
     var result = parseInt((Math.E*(levelFactor)-Math.abs(timeFactor))+0.5);
