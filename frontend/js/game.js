@@ -84,12 +84,12 @@ game.initialiseKeyEvent = function () {
     });
 };
 
-game.calculateScore = function (candy, time) {
+game.calculateScore_deprecated = function (candy, time) {
     var result = (1 / (Math.sqrt(time)) * ((candy * (maze.config.candyCount / 100)) * Math.PI));
     return Math.round(Math.abs(result * maze.config.height * maze.config.width / Math.sqrt(game.player.keyCount)));
 };
 
-game.calculateScoreV2 = function (candy, time) {
+game.calculateScore = function (candy, time) {
     var level = parseInt(2*Math.PI*(Math.sqrt(maze.config.height+maze.config.width)/10)+0.5);
     var maxTime = 2*Math.pow((maze.config.height*maze.config.width), -0.5)*100;
     var levelFactor = (2*Math.PI*level+(2*candy*maze.config.candyCount)/10)+(Math.pow(Math.sqrt(game.player.keyCount+1), -0.8)*10);
