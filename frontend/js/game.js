@@ -25,7 +25,12 @@ game.player.moveToIfPossible = function (x, y) {
             game.finishGameAndDisplayText();
         }
     } else {
-        game.player.keyCountWall++;
+        if (!$("#" + x + maze.config.splitChar + y).hasClass("hitWall")) {
+            game.player.keyCountWall++;
+        }
+        if (maze.config.markingWallhits) {
+            $("#" + x + maze.config.splitChar + y).addClass("hitWall");
+        }
     }
 };
 
@@ -47,6 +52,7 @@ game.player.setPos = function (x, y) {
 };
 
 game.startTime = 0;
+game.interval;
 
 game.config = {
     selectorPlayerClass: "player",
@@ -66,7 +72,6 @@ game.initialiseKeyEvent = function () {
                 game.finishGameAndDisplayText();
                 return;
             }
-            game.player.keyCount++;
             var playerPosXY = playerPos.split(maze.config.splitChar);
             switch (event.keyCode) {
                 case 37:
@@ -105,14 +110,17 @@ game.start = function (name) {
     game.initialiseKeyEvent(); //Startet möglichkeit zu Steuern
 };
 
-game.timeMeasure = function (start) {
-    if (start === "start") {
+game.timeMeasure = function (action) {
+    if (action === "start") {
         game.startTime = Date.now();
+        game.interval = setInterval(function() {
+            $("#brandlogo").text("Zeit: " + Math.round((Date.now() - game.startTime) / 1000) + " - Candies: " + game.player.collectedCandies);
+        }, 500);
     }
-    if (start === "stop" && (game.startTime != 0)) {
+    if (action === "stop" && (game.startTime != 0)) {
+        clearInterval(game.interval);
         return (Date.now() - game.startTime) / 1000;
     }
-
 };
 
 game.saveScore = function (name, points, timeInSeconds) {
@@ -133,7 +141,7 @@ game.saveScore = function (name, points, timeInSeconds) {
 game.finishGameAndDisplayText = function () {
     $(document).off("keydown");
     var timeInSeconds = game.timeMeasure("stop");
-
+    $("#brandlogo").text("derRest");
     var points = game.calculateScore(game.player.collectedCandies, timeInSeconds, 60);
     game.saveScore(game.player.name, points, timeInSeconds);
     maze.unload();
