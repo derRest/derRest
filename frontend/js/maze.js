@@ -78,6 +78,8 @@ maze.createStructure = function (character, x, y) {
 maze.printResult = function (points, time) {
     var result = "<h3><b>SUCCESS!</b> you earned " + points + " Points</h3>";
     result += "<p>It took you " + time + "s to succeed</p>";
+    result += "<p>You collected " + game.player.collectedCandies + " of " + maze.config.candyCount + "</p>";
+    result += "<p>You hit " + game.player.keyCountWall + " Walls</p>";
     $(maze.config.selectorMap).html(result);
 };
 
