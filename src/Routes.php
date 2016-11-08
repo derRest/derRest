@@ -60,7 +60,9 @@ final class Routes
             $response->json($result);
         });
         $klein->respond('GET', '/api/highscore/clear', function (Request $request, Response $response) {
-            unlink("data/database.db");
+            if (file_exists("data/database.db")) {
+                unlink("data/database.db");
+            }
             $response->redirect($this->getBasePathFromRequest($request), 302);
         });
         $klein->respond('GET', '/api/maze', function (Request $request, Response $response) {
