@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace derRest\Functions;
 
-class phtml
+class PHtml
 {
     /**
      * @param string $fileName
