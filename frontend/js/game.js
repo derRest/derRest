@@ -73,20 +73,22 @@ game.initialiseKeyEvent = function () {
                 return;
             }
             var playerPosXY = playerPos.split(maze.config.splitChar);
+            var move = [0,0]; // Movement step in x,y direction
             switch (event.keyCode) {
                 case 37:
-                    game.player.moveToIfPossible(parseInt(playerPosXY[0], 10), parseInt(playerPosXY[1], 10) - 1);
+                    move = [0, -1];
                     break;
                 case 38:
-                    game.player.moveToIfPossible(parseInt(playerPosXY[0], 10) - 1, parseInt(playerPosXY[1], 10));
+                    move = [-1, 0];
                     break;
                 case 39:
-                    game.player.moveToIfPossible(parseInt(playerPosXY[0], 10), parseInt(playerPosXY[1], 10) + 1);
+                    move = [0, 1];
                     break;
                 case 40:
-                    game.player.moveToIfPossible(parseInt(playerPosXY[0], 10) + 1, parseInt(playerPosXY[1], 10));
+                    move = [1, 0];
                     break;
             }
+            game.player.moveToIfPossible(parseInt(playerPosXY[0], 10) + move[0], parseInt(playerPosXY[1], 10) + move[1]);
         }
     });
 };
