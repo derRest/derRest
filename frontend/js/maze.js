@@ -17,7 +17,7 @@ maze.config = {
 
 maze.validatePosition = function (x, y, char) {
     var element = $("#" + x + maze.config.splitChar + y);
-    return element.text() == char;
+    return element.text() === char;
 };
 maze.isWall = function (x, y) {
     var isWall = maze.validatePosition(x, y, maze.config.chars[1]);
@@ -36,7 +36,7 @@ maze.isOnExit = function (x, y) {
         (maze.config.height) + '#' + (maze.config.width - 1),
         (maze.config.height) + '#' + (maze.config.width - 2)
     ];
-    return exitPositions.indexOf(x + '#' + y) != -1;
+    return exitPositions.indexOf(x + '#' + y) !== -1;
 
 };
 
@@ -65,7 +65,7 @@ maze.unload = function () {
 maze.createStructure = function (character, x, y) {
     var env;
     var candyclass = "";
-    if (character == maze.config.chars[2]) //candy
+    if (character === maze.config.chars[2]) //candy
         candyclass = "class='candy'";
     if (y === "start") {
         env = '<div ' + candyclass + ' id="' + x + '">' + character;
