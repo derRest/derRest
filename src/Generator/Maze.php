@@ -320,18 +320,23 @@ class Maze implements MazeInterface
         // Determine which row the cell is in
         $row = floor($cell['idx'] / $this->xCoordinate);
 
-        // Wall index for north
+        // Wall index for north, west, east, south
         $north = $cell['idx'] + ($row * $this->xCoordinate) + $row;
-
-        switch ($wall) {
-            case ($north):
-                return $this->cells[$cell['idx'] - $this->xCoordinate]; // north
-            case ($north + $this->xCoordinate):
-                return $this->cells[$cell['idx'] - 1]; // west
-            case ($north + $this->xCoordinate + 1):
-                return $this->cells[$cell['idx'] + 1]; // east
-            case ($north + (2 * $this->xCoordinate) + 1):
-                return $this->cells[$cell['idx'] + $this->xCoordinate]; // south
+        $west = $north + $this->xCoordinate;
+        $east = $north + $this->xCoordinate + 1;
+        $south = $north + (2 * $this->xCoordinate) + 1;
+        // Indexes for the cells to the north, west, east, and south
+        if ($wall == $north) {
+            return $this->cells[$cell['idx'] - $this->xCoordinate];
+        }
+        if ($wall == $west) {
+            return $this->cells[$cell['idx'] - 1];
+        }
+        if ($wall == $east) {
+            return $this->cells[$cell['idx'] + 1];
+        }
+        if ($wall == $south) {
+            return $this->cells[$cell['idx'] + $this->xCoordinate];
         }
 
         throw new \Exception('Internal Error');
