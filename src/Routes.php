@@ -59,7 +59,7 @@ final class Routes
             ]);
             $response->json($result);
         });
-        $klein->respond('GET', '/api/highscore/clear', function (Request $request, Response $response) {
+        $klein->respond(['GET', 'DELETE'], '/api/highscore/clear', function (Request $request, Response $response) {
             if (file_exists("data/database.db")) {
                 unlink("data/database.db");
             }
