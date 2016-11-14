@@ -52,7 +52,7 @@ game.player.setPos = function (x, y) {
 };
 
 game.startTime = 0;
-game.interval;
+game.interval = null;
 
 game.config = {
     selectorPlayerClass: "player",
@@ -65,28 +65,30 @@ game.config = {
 game.initialiseKeyEvent = function () {
     $(document).off("keydown");
     $(document).on("keydown", $(document), function (event) {
-        if (event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 37) {
+        if (event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40 || event.keyCode === 37) {
             event.preventDefault();
             var playerPos = game.player.getPos();
-            if (typeof(playerPos) == "undefined") {
+            if (typeof(playerPos) === "undefined") {
                 game.finishGameAndDisplayText();
                 return;
             }
             var playerPosXY = playerPos.split(maze.config.splitChar);
+            var move = [0,0]; // Movement step in x,y direction
             switch (event.keyCode) {
                 case 37:
-                    game.player.moveToIfPossible(parseInt(playerPosXY[0]), parseInt(playerPosXY[1]) - 1);
+                    move = [0, -1];
                     break;
                 case 38:
-                    game.player.moveToIfPossible(parseInt(playerPosXY[0]) - 1, parseInt(playerPosXY[1]));
+                    move = [-1, 0];
                     break;
                 case 39:
-                    game.player.moveToIfPossible(parseInt(playerPosXY[0]), parseInt(playerPosXY[1]) + 1);
+                    move = [0, 1];
                     break;
                 case 40:
-                    game.player.moveToIfPossible(parseInt(playerPosXY[0]) + 1, parseInt(playerPosXY[1]));
+                    move = [1, 0];
                     break;
             }
+            game.player.moveToIfPossible(parseInt(playerPosXY[0], 10) + move[0], parseInt(playerPosXY[1], 10) + move[1]);
         }
     });
 };
@@ -96,7 +98,7 @@ game.calculateScore = function (candy, time, maxTime) {
     var timePoints = Math.min(level * 1000, maxTime/(time * game.config.difficulty)); // Kurzform für: 1000/(Zeit*(1000/60/Schwierigkeit)) 
     var candyPoints = level * 1000 * Math.pow((candy / maze.config.candyCount), 2); 
     var errorPoints = Math.max(100 - game.player.keyCountWall * 10, 0); 
-    return parseInt((candyPoints * timePoints)/2 + errorPoints);
+    return parseInt((candyPoints * timePoints)/2 + errorPoints, 10);
 };
 
 game.start = function (name) {
@@ -117,7 +119,7 @@ game.timeMeasure = function (action) {
             $("#brandlogo").text("Zeit: " + Math.round((Date.now() - game.startTime) / 1000) + " - Candies: " + game.player.collectedCandies);
         }, 500);
     }
-    if (action === "stop" && (game.startTime != 0)) {
+    if (action === "stop" && (game.startTime !== 0)) {
         clearInterval(game.interval);
         return (Date.now() - game.startTime) / 1000;
     }

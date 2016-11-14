@@ -2,7 +2,7 @@ function formSubmit(event) {
     event.preventDefault();
 
     var $name = $("#nameInput");
-    if ($name.val() == "") {
+    if ($name.val() === "") {
         $name.toggleClass("invalid");
     } else {
         loadJson($name.val());
