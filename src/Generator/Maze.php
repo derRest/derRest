@@ -84,27 +84,7 @@ class Maze implements MazeInterface
 
         $currWall = 0;
         for ($iFor = 0; $iFor < $printRows; $iFor++) {
-            $tmp = [];
-            if ($iFor % 2 == 0) {
-                // Printing a top border
-                for ($jFor = 0; $jFor < $this->xCoordinate; $jFor++) {
-                    // Top-left corner does not need top-left divider; needs a space
-                    // to line everything up, though.
-                    $tmp[] = static::WALL;
-                    $tmp[] = $this->getWallType($currWall++);
-                }
-                // Bottom-right corner does not need bottom-right divider
-                $tmp[] = $iFor != ($printRows - 1) ? static::WALL : static::WHITE_SPACE;
-            } else {
-                // Printing the cell itself
-                for ($jFor = 0; $jFor < $this->xCoordinate; $jFor++) {
-                    $tmp[] = $this->getWallType($currWall++);
-                    $tmp[] = static::WHITE_SPACE;
-                }
-                // Print the right wall if needed
-                $tmp[] = $this->getWallType($currWall++);
-            }
-            $result[] = $tmp;
+            $result[] = $this->generateWallArray($iFor, $currWall, $printRows);
         }
         $result[0][0] = $result[0][1] = $result[1][0] = static::WALL;
         $this->checkCandyMax($result);
@@ -124,9 +104,36 @@ class Maze implements MazeInterface
      * @param int $currentWall
      * @return int
      */
-    protected function getWallType($currentWall):int
+    protected function getWallType($currentWall, $printRows = 0):int
     {
+        if ($printRows != 0) {
+            return $currentWall != ($printRows - 1) ? static::WALL : static::WHITE_SPACE;
+        }
         return $this->walls[$currentWall] == 1 ? static::WALL : static::WHITE_SPACE;
+    }
+
+    protected function generateWallArray($row, &$currentWall, $printRows): array
+    {
+        $tmp = [];
+        if ($row % 2 == 0) {
+            // Printing a top border
+            for ($jFor = 0; $jFor < $this->xCoordinate; $jFor++) {
+                // Top-left corner does not need top-left divider; needs a space
+                // to line everything up, though.
+                $tmp[] = static::WALL;
+                $tmp[] = $this->getWallType($currentWall++);
+            }
+            $tmp[] = $this->getWallType($row, $printRows);
+            return $tmp;
+        }
+            // Printing the cell itself
+        for ($jFor = 0; $jFor < $this->xCoordinate; $jFor++) {
+            $tmp[] = $this->getWallType($currentWall++);
+            $tmp[] = static::WHITE_SPACE;
+        }
+            // Print the right wall if needed
+        $tmp[] = $this->getWallType($currentWall++);
+        return $tmp;
     }
 
     protected function checkCandyMax(array $maze)
