@@ -1,4 +1,6 @@
-<a target="_blank" href="https://gitter.im/derRest/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"> ![Join the chat at https://gitter.im/derRest/Lobby](https://badges.gitter.im/derRest/Lobby.svg)</a>
+[![Join the chat at https://gitter.im/derRest/Lobby](https://badges.gitter.im/derRest/Lobby.svg)](https://gitter.im/derRest/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/derRest/derRest.svg?branch=master)](https://travis-ci.org/derRest/derRest)
+[![Code Climate](https://codeclimate.com/github/derRest/derRest/badges/gpa.svg)](https://codeclimate.com/github/derRest/derRest)
 # derRest
 ## LICENSE
 MIT or
@@ -44,3 +46,4 @@ We will use
 3. open the website in that folder
 
 Alternatively you can access the game at https://lab.cben.co/derRest/
+
