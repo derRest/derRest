@@ -3,11 +3,12 @@ declare(strict_types = 1);
 namespace derRest;
 
 use derRest\Database\DatabaseConnection;
+use derRest\Database\Highscore;
 use derRest\Generator\Maze;
 use Klein\Klein;
 use Klein\Request;
 use Klein\Response;
-use derRest\Functions\phtml;
+use derRest\Functions\PHtml;
 
 final class Routes
 {
@@ -22,41 +23,27 @@ final class Routes
             `git pull && composer install && npm install`;
         });
         $klein->respond('GET', '/', function (Request $request, Response $response) {
-            $response->body(phtml::phtml('frontend/html/game.phtml', [
+            $response->body(PHtml::phtml('frontend/html/game.phtml', [
                 'baseUrl' => $this->getBasePathFromRequest($request),
             ]));
         });
         $klein->respond('GET', '/Highscore', function (Request $request, Response $response) {
-            $db = new DatabaseConnection;
-            $response->body(phtml::phtml('frontend/html/highscore.phtml', [
+            $score = (new Highscore)->getHighscore(200);
+            $response->body(PHtml::phtml('frontend/html/highscore.phtml', [
                 'baseUrl' => $this->getBasePathFromRequest($request),
-                'scores' => $db->select('highscore', '*', ['ORDER' => ['score' => 'DESC'], 'LIMIT' => 200,])
+                'scores' => $score
             ]));
         });
         $klein->respond('POST', '/api/highscore', function (Request $request, Response $response) {
             $json = json_decode($request->body());
+            $response->json(['error' => true]);
             if ($json && isset($json->name) && isset($json->score) && isset($json->level) && isset($json->elapsedTime)) {
-                $db = new DatabaseConnection;
-                $db->insert('highscore', [
-                    'name' => $json->name,
-                    'score' => $json->score,
-                    'level' => $json->level,
-                    'elapsedTime' => $json->elapsedTime,
-                    'timestamp' => time(),
-                ]);
-                //save things
+                (new Highscore)->addHighscore($json);
                 $response->json(['message' => 'saved']);
-            } else {
-                $response->json(['error' => true]);
             }
         });
         $klein->respond('GET', '/api/highscore', function (Request $request, Response $response) {
-
-            $db = new DatabaseConnection;
-            $result = $db->select('highscore', '*', [
-                'ORDER' => ['score' => 'DESC'],
-                'LIMIT' => 10,
-            ]);
+            $result = (new Highscore)->getHighscore(10);
             $response->json($result);
         });
         $klein->respond(['GET', 'DELETE'], '/api/highscore/clear', function (Request $request, Response $response) {

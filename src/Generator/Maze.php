@@ -12,8 +12,8 @@ class Maze implements MazeInterface
     protected $walls = array();
     protected $eqClasses = array();
     protected $remainingClasses = 0;
-    protected $x = 0;
-    protected $y = 0;
+    protected $xCoordinate = 0;
+    protected $yCoordinate = 0;
     protected $cellCount = 0;
     protected $wallCount = 0;
     protected $candyCount = 10;
@@ -25,20 +25,20 @@ class Maze implements MazeInterface
      * Class constructor. This sets the height and width of the maze then calls
      * buildBaseMaze() to initialize the arrays.
      *
-     * @param int $x The width of the maze to generate; defaults to DEFAULT_MAZE_WIDTH
-     * @param int $y The height of the maze to generate; defaults to DEFAULT_MAZE_HEIGHT
+     * @param int $xCoordinate The width of the maze to generate; defaults to DEFAULT_MAZE_WIDTH
+     * @param int $yCoordinate The height of the maze to generate; defaults to DEFAULT_MAZE_HEIGHT
      * @param int $candyCount The count of the candies to generate; defaults to DEFAULT_CANDY_AMOUNT
      */
-    public function __construct(int $x = self::DEFAULT_MAZE_WIDTH, int $y = self::DEFAULT_MAZE_HEIGHT, int $candyCount = self::DEFAULT_CANDY_AMOUNT)
+    public function __construct(int $xCoordinate = self::DEFAULT_MAZE_WIDTH, int $yCoordinate = self::DEFAULT_MAZE_HEIGHT, int $candyCount = self::DEFAULT_CANDY_AMOUNT)
     {
-        if (($x % 2) === 0 || ($y % 2) === 0 || $x <= 0 || $y <= 0) {
+        if (($xCoordinate % 2) === 0 || ($yCoordinate % 2) === 0 || $xCoordinate <= 0 || $yCoordinate <= 0) {
             throw new \InvalidArgumentException("x AND y only odd numbers above 0 are allowed");
         }
         if ($candyCount < 0) {
             throw new \InvalidArgumentException("candyCount must be positive");
         }
-        $this->x = (int)($x / 2);
-        $this->y = (int)($y / 2);
+        $this->xCoordinate = (int)($xCoordinate / 2);
+        $this->yCoordinate = (int)($yCoordinate / 2);
         $this->candyCount = $candyCount;
 
         $this->buildBaseMaze();
@@ -59,13 +59,13 @@ class Maze implements MazeInterface
     public function generate():self
     {
         while ($this->disjointCellsExist()) {
-            $c = $this->getRandomCell();
-            $wall = $this->getRandomInnerWall($c);
-            $n = $this->getNeighboringCell($c, $wall);
+            $cell = $this->getRandomCell();
+            $wall = $this->getRandomInnerWall($cell);
+            $neighbor = $this->getNeighboringCell($cell, $wall);
 
-            if (!$this->checkConnected($c, $n)) {
+            if (!$this->checkConnected($cell, $neighbor)) {
                 $this->removeWall($wall);
-                $this->connect($c, $n);
+                $this->connect($cell, $neighbor);
             }
         }
         return $this;
@@ -80,58 +80,37 @@ class Maze implements MazeInterface
         $result = [];
         // Each row is 2 character lines high, including top border, then add 1 for
         // bottom border of the maze
-        $printRows = (2 * $this->y) + 1;
+        $printRows = (2 * $this->yCoordinate) + 1;
 
         $currWall = 0;
-        for ($i = 0; $i < $printRows; $i++) {
+        for ($iFor = 0; $iFor < $printRows; $iFor++) {
             $tmp = [];
-            if ($i % 2 == 0) {
+            if ($iFor % 2 == 0) {
                 // Printing a top border
-                for ($j = 0; $j < $this->x; $j++) {
+                for ($jFor = 0; $jFor < $this->xCoordinate; $jFor++) {
                     // Top-left corner does not need top-left divider; needs a space
                     // to line everything up, though.
                     $tmp[] = static::WALL;
-                    if ($this->walls[$currWall++] == 1) {
-                        $tmp[] = static::WALL;
-                    } else {
-                        $tmp[] = static::WHITE_SPACE;
-                    }
+                    $tmp[] = $this->getWallType($currWall++);
                 }
                 // Bottom-right corner does not need bottom-right divider
-                if ($i != ($printRows - 1)) {
-                    $tmp[] = static::WALL;
-                } else {
-                    $tmp[] = static::WHITE_SPACE;
-                }
+                $tmp[] = $iFor != ($printRows - 1) ? static::WALL : static::WHITE_SPACE;
             } else {
                 // Printing the cell itself
-                for ($j = 0; $j < $this->x; $j++) {
-                    if ($this->walls[$currWall++] == 1) {
-                        $tmp[] = static::WALL;
-                    } else {
-                        $tmp[] = static::WHITE_SPACE;
-                    }
+                for ($jFor = 0; $jFor < $this->xCoordinate; $jFor++) {
+                    $tmp[] = $this->getWallType($currWall++);
                     $tmp[] = static::WHITE_SPACE;
                 }
-
                 // Print the right wall if needed
-                if ($this->walls[$currWall++] == 1) {
-                    $tmp[] = static::WALL;
-                } else {
-                    $tmp[] = static::WHITE_SPACE;
-                }
+                $tmp[] = $this->getWallType($currWall++);
             }
             $result[] = $tmp;
         }
-        $result[0][0] = static::WALL;
-        $result[0][1] = static::WALL;
-        $result[1][0] = static::WALL;
+        $result[0][0] = $result[0][1] = $result[1][0] = static::WALL;
         $this->checkCandyMax($result);
         while ($this->counter < $this->candyCount) {
-            $var2 = count($result[0]);
-            $var1 = count($result);
-            $rand1 = rand(0, $var1 - 1);
-            $rand2 = rand(0, $var2 - 1);
+            $rand1 = rand(0, count($result) - 1);
+            $rand2 = rand(0, count($result[0]) - 1);
             if ($result[$rand1][$rand2] == 0) {
                 $result[$rand1][$rand2] = 2;
                 $this->counter++;
@@ -140,16 +119,27 @@ class Maze implements MazeInterface
         return $result;
     }
 
-    protected function checkCandyMax(array $maze){
+    /**
+     *
+     * @param int $currentWall
+     * @return int
+     */
+    protected function getWallType($currentWall):int
+    {
+        return $this->walls[$currentWall] == 1 ? static::WALL : static::WHITE_SPACE;
+    }
+
+    protected function checkCandyMax(array $maze)
+    {
         $count = 0;
-        foreach ($maze as $mazeLine){
-            foreach ($mazeLine as $cell){
-                if($cell === static::WHITE_SPACE){
+        foreach ($maze as $mazeLine) {
+            foreach ($mazeLine as $cell) {
+                if ($cell === static::WHITE_SPACE) {
                     $count++;
                 }
             }
         }
-        if ($count < $this->candyCount){
+        if ($count < $this->candyCount) {
             $this->candyCount = $count;
         }
     }
@@ -167,31 +157,28 @@ class Maze implements MazeInterface
      */
     protected function buildBaseMaze():self
     {
-        $this->cellCount = $this->x * $this->y;
-        $this->wallCount = ($this->x * ($this->y + 1)) + ($this->y * ($this->x + 1));
+        $this->cellCount = $this->xCoordinate * $this->yCoordinate;
+        $this->wallCount = ($this->xCoordinate * ($this->yCoordinate + 1))
+            + ($this->yCoordinate * ($this->xCoordinate + 1));
         $this->remainingClasses = $this->cellCount;
 
         // Set all the walls to be on to start
-        for ($i = 0; $i < $this->wallCount; $i++) {
-            $this->walls[$i] = 1;
+        for ($iFor = 0; $iFor < $this->wallCount; $iFor++) {
+            $this->walls[$iFor] = 1;
         }
 
         // Initialize the cells to be independent of one another
-        for ($i = 0; $i < $this->cellCount; $i++) {
-            $c = array(
-                'idx' => $i,
-                'parent' => NULL,
-            );
-            $this->cells[$i] = $c;
-            $this->eqClasses[$i] = $i;
+        for ($iFor = 0; $iFor < $this->cellCount; $iFor++) {
+            $this->cells[$iFor] = ['idx' => $iFor, 'parent' => NULL,];
+            $this->eqClasses[$iFor] = $iFor;
         }
 
         // Remove top-left corner walls
         $this->removeWall(0);
-        $this->removeWall($this->x);
+        $this->removeWall($this->xCoordinate);
 
         // Remove bottom-right corner walls
-        $this->removeWall($this->wallCount - ($this->x + 1));
+        $this->removeWall($this->wallCount - ($this->xCoordinate + 1));
         $this->removeWall($this->wallCount - 1);
         return $this;
     }
@@ -204,17 +191,13 @@ class Maze implements MazeInterface
      * specified cells have the same equivalence class (i.e. whether they)
      * are connected within the maze.
      *
-     * @param array $c1
-     * @param array $c2
+     * @param array $classOne
+     * @param array $classTwo
      * @return bool Whether two cells have the same equivalence class.
      */
-    protected function checkConnected(array $c1, array $c2):bool
+    protected function checkConnected(array $classOne, array $classTwo):bool
     {
-        if ($this->eqClasses[$c1['idx']] == $this->eqClasses[$c2['idx']]) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->eqClasses[$classOne['idx']] == $this->eqClasses[$classTwo['idx']];
     }
 
 
@@ -223,26 +206,26 @@ class Maze implements MazeInterface
      *
      * Using the union portion of the union/find algorithm, this method
      * connects two cells/rooms in the maze. It gets the equivalence class
-     * of c1 and sets c2's parent to c1's root parent. It then sets the
-     * equivalence class of all cells that matched c2's old class to equal
-     * c1's equivalence class.
+     * of classOne and sets classTwo's parent to classOne's root parent. It then sets the
+     * equivalence class of all cells that matched classTwo's old class to equal
+     * classOne's equivalence class.
      *
-     * @param array $c1
-     * @param array $c2
+     * @param array $classOne
+     * @param array $classTwo
      * @return self
      */
-    protected function connect(array $c1, array $c2):self
+    protected function connect(array $classOne, array $classTwo):self
     {
-        // The root parent of c1 is its equivalence class.
-        $temp1 = $this->cells[$this->eqClasses[$c1['idx']]];
-        $temp1['parent'] = $c2['idx'];
+        // The root parent of classOne is its equivalence class.
+        $temp1 = $this->cells[$this->eqClasses[$classOne['idx']]];
+        $temp1['parent'] = $classTwo['idx'];
 
         $oldClass = $this->eqClasses[$temp1['idx']];
-        $newClass = $this->eqClasses[$c2['idx']];
+        $newClass = $this->eqClasses[$classTwo['idx']];
 
-        for ($i = 0; $i < $this->cellCount; $i++) {
-            if ($this->eqClasses[$i] == $oldClass) {
-                $this->eqClasses[$i] = $newClass;
+        for ($iFor = 0; $iFor < $this->cellCount; $iFor++) {
+            if ($this->eqClasses[$iFor] == $oldClass) {
+                $this->eqClasses[$iFor] = $newClass;
             }
         }
 
@@ -288,60 +271,38 @@ class Maze implements MazeInterface
      * at random. An inner wall is one that is adjacent to another cell/room
      * in the maze and not part of the outer border of the overall grid.
      *
-     * @param array $c
+     * @param array $cell
      * @return int The index of a random inner wall adjacent to the room.
      * @throws \Exception
      */
-    protected function getRandomInnerWall(array $c):int
+    protected function getRandomInnerWall(array $cell):int
     {
-        $n = $s = $e = $w = true;
-        if ($c['idx'] < $this->x) {
-            $n = false;
-        }
-        if ($c['idx'] >= ($this->cellCount - $this->x)) {
-            $s = false;
-        }
-        if ($c['idx'] % $this->x == ($this->x - 1)) {
-            $e = false;
-        }
-        if ($c['idx'] % $this->x == 0) {
-            $w = false;
-        }
-
         // Determine which row the cell is in
-        $row = floor($c['idx'] / $this->x);
+        $row = floor($cell['idx'] / $this->xCoordinate);
 
         // Wall indexes for the north, west, east, and south
-        $nx = (int)($c['idx'] + ($row * $this->x) + $row);
-        $wx = $nx + $this->x;
-        $ex = $nx + $this->x + 1;
-        $sx = $nx + (2 * $this->x) + 1;
+        $northX = (int)($cell['idx'] + ($row * $this->xCoordinate) + $row);
+        $westX = $northX + $this->xCoordinate;
+        $eastX = $northX + $this->xCoordinate + 1;
+        $southX = $northX + (2 * $this->xCoordinate) + 1;
 
-        while (true) {
-            switch (rand(1, 4)) {
-                case 1:
-                    if ($n === true) {
-                        return $nx;
-                    }
-                    break;
-                case 2:
-                    if ($w === true) {
-                        return $wx;
-                    }
-                    break;
-                case 3:
-                    if ($e === true) {
-                        return $ex;
-                    }
-                    break;
-                case 4:
-                    if ($s === true) {
-                        return $sx;
-                    }
-                    break;
-            }
+        $possibleResults = [];
+        if (!($cell['idx'] < $this->xCoordinate)) {
+            $possibleResults[] = $northX;
         }
-        throw new \Exception('internal error');
+        if (!($cell['idx'] % $this->xCoordinate == 0)) {
+            $possibleResults[] = $westX;
+        }
+        if (!($cell['idx'] % $this->xCoordinate == ($this->xCoordinate - 1))) {
+            $possibleResults[] = $eastX;
+        }
+        if (!($cell['idx'] >= ($this->cellCount - $this->xCoordinate))) {
+            $possibleResults[] = $southX;
+        }
+        if (empty($possibleResults)) {
+            throw new \Exception('internal error');
+        }
+        return $possibleResults[array_rand($possibleResults)];
     }
 
 
@@ -351,41 +312,36 @@ class Maze implements MazeInterface
      * Given a cell and a wall, this method determines which room is on the
      * other side of said wall.
      *
-     * @param array $c
+     * @param array $cell
      * @param int $wall
      * @return array Returns a pointer to the cell on the other side of the
      *               wall.
      * @throws \Exception
      */
-    protected function getNeighboringCell(array $c, int $wall):array
+    protected function getNeighboringCell(array $cell, int $wall):array
     {
         // Determine which row the cell is in
-        $row = floor($c['idx'] / $this->x);
+        $row = floor($cell['idx'] / $this->xCoordinate);
 
-        // Wall indexes for the north, west, east, and south
-        $n = $c['idx'] + ($row * $this->x) + $row;
-        $w = $n + $this->x;
-        $e = $n + $this->x + 1;
-        $s = $n + (2 * $this->x) + 1;
-
+        // Wall index for north, west, east, south
+        $north = $cell['idx'] + ($row * $this->xCoordinate) + $row;
+        $west = $north + $this->xCoordinate;
+        $east = $north + $this->xCoordinate + 1;
+        $south = $north + (2 * $this->xCoordinate) + 1;
         // Indexes for the cells to the north, west, east, and south
-        $nx = $c['idx'] - $this->x;
-        $wx = $c['idx'] - 1;
-        $ex = $c['idx'] + 1;
-        $sx = $c['idx'] + $this->x;
+        if ($wall == $north) {
+            return $this->cells[$cell['idx'] - $this->xCoordinate];
+        }
+        if ($wall == $west) {
+            return $this->cells[$cell['idx'] - 1];
+        }
+        if ($wall == $east) {
+            return $this->cells[$cell['idx'] + 1];
+        }
+        if ($wall == $south) {
+            return $this->cells[$cell['idx'] + $this->xCoordinate];
+        }
 
-        if ($wall == $n) {
-            return $this->cells[$nx];
-        }
-        if ($wall == $w) {
-            return $this->cells[$wx];
-        }
-        if ($wall == $e) {
-            return $this->cells[$ex];
-        }
-        if ($wall == $s) {
-            return $this->cells[$sx];
-        }
         throw new \Exception('Internal Error');
     }
 
@@ -405,11 +361,7 @@ class Maze implements MazeInterface
      */
     protected function disjointCellsExist():bool
     {
-        if ($this->remainingClasses > 1) {
-            return true;
-        }
-
-        return false;
+        return $this->remainingClasses > 1;
     }
 
     public static function printToCli(array $mazeArray)
@@ -425,7 +377,6 @@ class Maze implements MazeInterface
             foreach ($mazeLine as $item) {
                 echo $symbols[$item] . '';
             }
-            //echo PHP_EOL;
             echo PHP_EOL;
         }
     }
