@@ -3,6 +3,7 @@ declare(strict_types = 1);
 namespace derRest;
 
 use derRest\Database\DatabaseConnection;
+use derRest\Database\Highscore;
 use derRest\Generator\Maze;
 use Klein\Klein;
 use Klein\Request;
