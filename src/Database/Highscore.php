@@ -13,10 +13,10 @@ class Highscore
 
     public function addHighscore($json) {
     	(new DatabaseConnection)->insert('highscore', [
-            'name' => $json->name,
-            'score' => $json->score,
-            'level' => $json->level,
-            'elapsedTime' => $json->elapsedTime,
+            'name' => htmlspecialchars($json->name),
+            'score' => (int) $json->score,
+            'level' => (int) $json->level,
+            'elapsedTime' => (float) $json->elapsedTime,
             'timestamp' => time(),
         ]);
     }
