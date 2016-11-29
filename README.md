@@ -58,6 +58,6 @@ Alternatively you can access the game at https://lab.cben.co/derRest/
  - Unterschied zwischen 2 Laybrinthen prüfen (1) Matze
  - Highscore eintragen prüfen (1) Matze
  
- ###Ausführen der Tests
+###Ausführen der Tests
  1. composer install
  2. composer test
