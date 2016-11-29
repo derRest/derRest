@@ -48,11 +48,16 @@ We will use
 Alternatively you can access the game at https://lab.cben.co/derRest/
 
 
-### Tests-Verteilung
+## Tests
+###Verteilung
 
- - h w (3) Julia
- - Zeichen (1) Jan
- - Lösbar (1) Chris
- - Candys (3) Flo
- - Diff Maze (1) Matze
- - H.score (1) Matze
+ - Höhe Breite überprüfen (3) Julia
+ - Zeichen überprüfen (1) Jan
+ - Lösbarkeit prüfen (1) Chris
+ - Candys überprüfen (3) Flo
+ - Unterschied zwischen 2 Laybrinthen prüfen (1) Matze
+ - Highscore eintragen prüfen (1) Matze
+ 
+ ###Ausführen der Tests
+ 1. composer install
+ 2. composer test
