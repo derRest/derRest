@@ -31,7 +31,7 @@ script:
 #  - ./vendor/bin/phpcs --standard=PSR2 ./src ./tests -n
 #  - ./vendor/bin/phpcpd ./src ./tests -n
 #  - ./vendor/bin/phpunit -c tests/phpunit.xml
-  - php testMaze.php
+  - composer test
 #  - >
 #    if [[ "$CODECLIMATE" == "yes" ]]; then
 #      CODECLIMATE_REPO_TOKEN=6e0832b132335780ef874dc6f2a44602453ed07df36254e4c6d46bcf435ddfbc ./vendor/bin/test-reporter -vvv
