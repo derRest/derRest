@@ -32,48 +32,64 @@ class MazeTest extends \PHPUnit_Framework_TestCase
 
     public function testCandyCount1()
     {
-        //Test for correct amount of candies
-        $maze = new Maze(15,15,5);
-        $maze = $maze->generate()->getMaze();
+        $array = [
+            [5, 5, 1],
+            [9, 9, 2],
+            [15, 13, 4],
+            [43, 43, 170]
+        ];
+        foreach ($array as $row) {
 
-        $candyCount = 0;
-        foreach ($maze as $mazeLine) {
-            foreach ($mazeLine as $cell) {
-                if ($cell === Maze::CANDY) {
-                    $candyCount++;
+            //Test for correct amount of candies
+            $maze = new Maze($row[0], $row[1], $row[2]);
+            $maze = $maze->generate()->getMaze();
+
+            $candyCount = 0;
+            foreach ($maze as $mazeLine) {
+                foreach ($mazeLine as $cell) {
+                    if ($cell === Maze::CANDY) {
+                        $candyCount++;
+                    }
                 }
             }
+            $this->assertEquals($row[2], $candyCount);
         }
-
-        $this->assertEquals(5, $candyCount);
     }
 
     public function testCandyCount2()
     {
-        //more then max candies
-        $maze = new Maze(15,15,5000);
-        $maze = $maze->generate()->getMaze();
+        $array = [
+            [5, 5, 500],
+            [9, 9, 999],
+            [15, 13, 1334],
+            [43, 43, 17000]
+        ];
+        foreach ($array as $row) {
+            //more then max candies
+            $maze = new Maze($row[0], $row[1], $row[2]);
+            $maze = $maze->generate()->getMaze();
 
-        $candyCount = 0;
-        foreach ($maze as $mazeLine) {
-            foreach ($mazeLine as $cell) {
-                if ($cell === Maze::CANDY) {
-                    $candyCount++;
+            $candyCount = 0;
+            foreach ($maze as $mazeLine) {
+                foreach ($mazeLine as $cell) {
+                    if ($cell === Maze::CANDY) {
+                        $candyCount++;
+                    }
                 }
             }
-        }
 
-        $whitespaceCount = 0;
-        foreach ($maze as $mazeLine) {
-            foreach ($mazeLine as $cell) {
-                if ($cell === Maze::WHITE_SPACE) {
-                    $whitespaceCount++;
+            $whitespaceCount = 0;
+            foreach ($maze as $mazeLine) {
+                foreach ($mazeLine as $cell) {
+                    if ($cell === Maze::WHITE_SPACE) {
+                        $whitespaceCount++;
+                    }
                 }
             }
-        }
 
-        $this->assertEquals(0, $whitespaceCount);
-        $this->assertGreaterThanOrEqual(1, $candyCount);
+            $this->assertEquals(0, $whitespaceCount);
+            $this->assertGreaterThanOrEqual(1, $candyCount);
+        }
     }
 
     /**
@@ -82,7 +98,7 @@ class MazeTest extends \PHPUnit_Framework_TestCase
     public function testCandyCount3()
     {
         //negative number of candies
-        $maze = new Maze(15,15,-5);
+        $maze = new Maze(15, 15, -5);
     }
 
     public function testMazeChanging()
