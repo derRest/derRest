@@ -2,6 +2,7 @@
 
 .idea/
 data/database.db
+build/
 vendor/
 node_modules/
 sftp-config.json

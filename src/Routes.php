@@ -20,7 +20,7 @@ final class Routes
     public function routes(Klein $klein): Klein
     {
         $klein->respond(['GET', 'POST'], '/github.php', function (Request $request, Response $response) {
-            `git pull && composer install && npm install`;
+            `git pull && composer install --no-dev && npm install`;
         });
         $klein->respond('GET', '/', function (Request $request, Response $response) {
             $response->body(PHtml::phtml('frontend/html/game.phtml', [
