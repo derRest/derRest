@@ -1,6 +1,7 @@
 [![Join the chat at https://gitter.im/derRest/Lobby](https://badges.gitter.im/derRest/Lobby.svg)](https://gitter.im/derRest/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/derRest/derRest.svg?branch=master)](https://travis-ci.org/derRest/derRest)
 [![Code Climate](https://codeclimate.com/github/derRest/derRest/badges/gpa.svg)](https://codeclimate.com/github/derRest/derRest)
+[![Test Coverage](https://codeclimate.com/github/derRest/derRest/badges/coverage.svg)](https://codeclimate.com/github/derRest/derRest/coverage)
 # derRest
 ## LICENSE
 MIT or
