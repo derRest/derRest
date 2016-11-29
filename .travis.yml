@@ -27,6 +27,9 @@ install:
 # Commands you want to run that will verify your build.
 script:
   - composer test
+
+after_success:
+  - vendor/bin/test-reporter
 # Customize when the notification emails are sent.
 notifications:
     on_success: never
