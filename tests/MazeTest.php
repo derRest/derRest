@@ -103,6 +103,18 @@ class MazeTest extends \PHPUnit_Framework_TestCase
 
     public function testMazeChanging()
     {
+        $sizesArray = [
+            [7, 7],
+            [9, 5],
+            [5, 9],
+            [5, 11],
+            [11, 5],
+        ];
+        foreach ($sizesArray as $size) {
+            $maze1 = (new Maze($size[0], $size[1], 1))->generate()->getMaze();
+            $maze2 = (new Maze($size[0], $size[1], 1))->generate()->getMaze();
 
+            $this->assertNotEquals($maze1, $maze2);
+        }
     }
 }
