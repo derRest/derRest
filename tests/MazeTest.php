@@ -22,6 +22,53 @@ class MazeTest extends \PHPUnit_Framework_TestCase
 
     public function testValidChars()
     {
+        $sizesArray = [
+            [7, 7, 1],
+            [9, 5, 1],
+            [5, 9, 1],
+            [5, 11, 1],
+            [11, 5, 1],
+        ];
+        foreach ($sizesArray as $size) {
+            //Mehrere Arrays prüfen mit unterschiedlicher größe
+            $maze = (new Maze($size[0], $size[1], $size[2]))->generate()->getMaze();
+
+            $wSpaceCount = 0;
+            $wallCount = 0;
+            $candyCount = 0;
+            $wrongCount = 0;
+
+            foreach ($maze as $mazeLine) {
+                foreach ($mazeLine as $cell) {
+                    if ($cell === Maze::CANDY) {
+                        $candyCount++;
+                    }elseif ($cell === Maze::WALL) {
+                        $wallCount++;
+                    }elseif ($cell === Maze::WHITE_SPACE) {
+                        $wSpaceCount++;
+                    }else{
+                        $wrongCount++;
+                    }
+                }
+            }
+            echo "Falsch: ".$wrongCount;
+
+            $this->assertEquals($wrongCount, 0);
+
+        }
+
+
+
+//$this->fail();
+//$this->assertEmpty();
+//$this->assertEquals();
+//$this->assertAttributeCount();
+
+
+//$this->fail();
+//$this->assertEmpty();
+//$this->assertEquals();
+//$this->assertAttributeCount();
 
     }
 
