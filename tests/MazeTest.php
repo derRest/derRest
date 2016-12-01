@@ -45,22 +45,24 @@ class MazeTest extends \PHPUnit_Framework_TestCase
             foreach ($maze as $mazeLine) {
                 //Jedes Zeichen pro Reihe durchgehen und zählen
                 foreach ($mazeLine as $cell) {
-                    if ($cell === Maze::CANDY) {
-                        $candyCount++;
-                    }elseif ($cell === Maze::WALL) {
-                        $wallCount++;
-                    }elseif ($cell === Maze::WHITE_SPACE) {
-                        $wSpaceCount++;
-                    }else{
-                        $wrongCount++;
-                        $this->fail("Nicht erkanntes zeichen: ".$cell);
+                    switch ($cell){
+                        case Maze::CANDY:
+                            $candyCount++;
+                            break;
+                        case Maze::WALL:
+                            $wallCount++;
+                            break;
+                        case Maze::WHITE_SPACE:
+                            $wSpaceCount++;
+                            break;
+                        default:
+                            $wrongCount++;
+                            $this->fail("Nicht erkanntes zeichen: ".$cell);
                     }
                 }
             }
-            //    echo "\n".$size[0]."-".$size[1]."-".$size[2]." Wand: ".$wallCount;
-            //    echo "\n".$size[0]."-".$size[1]."-".$size[2]." Falsch: ".$wrongCount;
-
-            $this->assertEquals($wrongCount, 0); //Reduntant
+            //Möglichkeit: Einbau eines Zählers möglich, um auf Anzahl der Wände usw. prüfen zu können
+            //$this->assertEquals($wrongCount, 0); //Reduntant
         }
     }
 
