@@ -52,21 +52,13 @@ class MazeTest extends \PHPUnit_Framework_TestCase
                     }
                 }
             }
-            echo "\n".$size[0]."-".$size[1]."-".$size[2]." Wand: ".$wallCount;
-            echo "\n".$size[0]."-".$size[1]."-".$size[2]." Candys: ".$candyCount;
-            echo "\n".$size[0]."-".$size[1]."-".$size[2]." Space: ".$wSpaceCount;
-            echo "\n".$size[0]."-".$size[1]."-".$size[2]." Falsch: ".$wrongCount;
+            //    echo "\n".$size[0]."-".$size[1]."-".$size[2]." Wand: ".$wallCount;
+            //    echo "\n".$size[0]."-".$size[1]."-".$size[2]." Candys: ".$candyCount;
+            //    echo "\n".$size[0]."-".$size[1]."-".$size[2]." Space: ".$wSpaceCount;
+            //    echo "\n".$size[0]."-".$size[1]."-".$size[2]." Falsch: ".$wrongCount;
 
-            $this->assertEquals($wrongCount, 0);
+            $this->assertEquals($wrongCount, 0); //Reduntant
         }
-
-
-
-
-//$this->assertEmpty();
-//$this->assertEquals();
-//$this->assertAttributeCount();
-
     }
 
     public function testSolvable()
