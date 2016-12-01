@@ -181,8 +181,8 @@ class MazeSolver {
 
 	public function printMazeSolution() {
 		$pathbool = $this->drawPathIntoMaze();
-		foreach ($this->mazeDistanced as $key => $value) {
-			foreach ($value as $key2 => $value2) {
+		foreach ($this->mazeDistanced as $value) {
+			foreach ($value as $value2) {
 				$print = $value2;
 				if (is_int($value2) && $value2 > 2 && $pathbool)
 					$print = " ";
