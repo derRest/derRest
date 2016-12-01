@@ -2,6 +2,7 @@
 namespace derRest\Test;
 
 use derRest\Generator\Maze;
+use derRest\Generator\MazeSolver;
 
 class MazeTest extends \PHPUnit_Framework_TestCase
 {
@@ -68,7 +69,14 @@ class MazeTest extends \PHPUnit_Framework_TestCase
 
     public function testSolvable()
     {
-
+        $xcoordinate = rand(3, 101);
+        $xcoordinate = $xcoordinate % 2 == 0 ? $xcoordinate+1 : $xcoordinate;
+        $ycoordinate = rand(3, 101);
+        $ycoordinate = $ycoordinate % 2 == 0 ? $ycoordinate+1 : $ycoordinate;
+        $candies = rand(3, 10);
+        $mazeSolver = new MazeSolver($xcoordinate, $ycoordinate, $candies);
+        $mazeSolver->printMazeSolution();
+        $this->assertEquals($mazeSolver->isValid(), true);
     }
 
     public function testCandyCount1()
@@ -106,7 +114,7 @@ class MazeTest extends \PHPUnit_Framework_TestCase
             [43, 43, 17000]
         ];
         foreach ($array as $row) {
-            //more then max candies
+            //more than max candies
             $maze = new Maze($row[0], $row[1], $row[2]);
             $maze = $maze->generate()->getMaze();
 

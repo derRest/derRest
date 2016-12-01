@@ -7,3 +7,4 @@ vendor/
 node_modules/
 sftp-config.json
 .gitignore
+**.DS_Store
