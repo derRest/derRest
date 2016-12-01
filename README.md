@@ -55,9 +55,9 @@ Alternatively you can access the game at https://lab.cben.co/derRest/
  - Höhe Breite überprüfen (3) Julia
  - Zeichen überprüfen (1) Jan
  - Lösbarkeit prüfen (1) Chris
- - Candys überprüfen (3) Flo
- - Unterschied zwischen 2 Laybrinthen prüfen (1) Matze
- - Highscore eintragen prüfen (1) Matze
+ - ✔ Candys überprüfen (3) Flo
+ - ✔ Unterschied zwischen 2 Laybrinthen prüfen (1) Matze
+ - ✔ Highscore eintragen prüfen (1) Matze
  
 ###Ausführen der Tests
  1. composer install
