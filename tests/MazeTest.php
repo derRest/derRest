@@ -69,10 +69,8 @@ class MazeTest extends \PHPUnit_Framework_TestCase
 
     public function testSolvable()
     {
-        $xcoordinate = rand(3, 101);
-        $xcoordinate = $xcoordinate % 2 == 0 ? $xcoordinate+1 : $xcoordinate;
-        $ycoordinate = rand(3, 101);
-        $ycoordinate = $ycoordinate % 2 == 0 ? $ycoordinate+1 : $ycoordinate;
+        $xcoordinate = rand(3, 51) * 2 + 1; // to make it always odd
+        $ycoordinate = rand(3, 51) * 2 + 1;
         $candies = rand(3, 10);
         $mazeSolver = new MazeSolver($xcoordinate, $ycoordinate, $candies);
         $mazeSolver->printMazeSolution();
