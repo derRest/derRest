@@ -31,8 +31,8 @@ class Maze implements MazeInterface
      */
     public function __construct(int $xCoordinate = self::DEFAULT_MAZE_WIDTH, int $yCoordinate = self::DEFAULT_MAZE_HEIGHT, int $candyCount = self::DEFAULT_CANDY_AMOUNT)
     {
-        if (($xCoordinate % 2) === 0 || ($yCoordinate % 2) === 0 || $xCoordinate <= 0 || $yCoordinate <= 0) {
-            throw new \InvalidArgumentException("x AND y only odd numbers above 0 are allowed");
+        if (($xCoordinate % 2) === 0 || ($yCoordinate % 2) === 0 || $xCoordinate <= 1 || $yCoordinate <= 1) {
+            throw new \InvalidArgumentException("x AND y only odd numbers above 1 are allowed");
         }
         if ($candyCount < 0) {
             throw new \InvalidArgumentException("candyCount must be positive");

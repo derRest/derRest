@@ -52,7 +52,7 @@ Alternatively you can access the game at https://lab.cben.co/derRest/
 ## Tests
 ###Verteilung
 
- - Höhe Breite überprüfen (3) Julia
+ - ✔ Höhe Breite überprüfen (3) Julia
  - ✔ Zeichen überprüfen (1) Jan
  - ✔ Lösbarkeit prüfen (1) Chris
  - ✔ Candys überprüfen (3) Flo

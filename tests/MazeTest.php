@@ -6,19 +6,61 @@ use derRest\Generator\MazeSolver;
 
 class MazeTest extends \PHPUnit_Framework_TestCase
 {
+
     public function testHeightAndWidth1()
     {
-
+        //alles tut
+        $array = array(
+            [3, 3],
+            [3, 5],
+            [5, 3]
+        );
+        foreach ($array as $n) {
+            new Maze($n[0], $n[1], 1);
+        }
     }
 
     public function testHeightAndWidth2()
     {
-
+        //gerade Zahlen
+        $array = array(
+            [2, 2],
+            [2, 3],
+            [3, 2]
+        );
+        foreach ($array as $n) {
+            try {
+                new Maze($n[0], $n[1], 1);
+                $this->fail("Zahl, die nicht akzeptiert werden sollte, wurde akzeptiert.");
+            } catch (\InvalidArgumentException $e) {
+                $this->assertInstanceOf(\InvalidArgumentException::class, $e);
+            }
+        }
     }
 
     public function testHeightAndWidth3()
-    {
 
+    {
+        //zu kleine Zahlen
+        $array = array(
+            [1, 3],
+            [3, 1],
+            [1, 1],
+            [1, -1],
+            [-1, 1],
+            [3, -1],
+            [-1, 3],
+            [-1, -1]
+        );
+        foreach ($array as $n) {
+            try {
+                new Maze($n[0], $n[1], 1);
+                $this->fail("Zahl, die nicht akzeptiert werden sollte, wurde akzeptiert.");
+            } catch (\InvalidArgumentException $e) {
+                $this->assertInstanceOf(\InvalidArgumentException::class, $e);
+            }
+
+        }
     }
 
     public function testValidChars()
@@ -46,7 +88,7 @@ class MazeTest extends \PHPUnit_Framework_TestCase
             foreach ($maze as $mazeLine) {
                 //Jedes Zeichen pro Reihe durchgehen und zählen
                 foreach ($mazeLine as $cell) {
-                    switch ($cell){
+                    switch ($cell) {
                         case Maze::CANDY:
                             $candyCount++;
                             break;
@@ -58,7 +100,7 @@ class MazeTest extends \PHPUnit_Framework_TestCase
                             break;
                         default:
                             $wrongCount++;
-                            $this->fail("Nicht erkanntes zeichen: ".$cell);
+                            $this->fail("Nicht erkanntes zeichen: " . $cell);
                     }
                 }
             }
