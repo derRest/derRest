@@ -22,7 +22,48 @@ class MazeTest extends \PHPUnit_Framework_TestCase
 
     public function testValidChars()
     {
+        /*
+         * Testet mehrere Labyrinthe (Maze) ob nur valide Zeichen vorhanden sind. Sprich Leerzeichen, Candy's und Wände.
+         */
+        $sizesArray = [
+            [7, 7, 1],
+            [9, 5, 1],
+            [5, 9, 1],
+            [5, 11, 1],
+            [11, 5, 1],
+        ];
+        foreach ($sizesArray as $size) {
+            //Mehrere Arrays prüfen mit unterschiedlicher Größe
+            $maze = (new Maze($size[0], $size[1], $size[2]))->generate()->getMaze();
 
+            $wSpaceCount = 0;
+            $wallCount = 0;
+            $candyCount = 0;
+            $wrongCount = 0;
+
+            //Jede Zeile des Arrays durchgehen
+            foreach ($maze as $mazeLine) {
+                //Jedes Zeichen pro Reihe durchgehen und zählen
+                foreach ($mazeLine as $cell) {
+                    switch ($cell){
+                        case Maze::CANDY:
+                            $candyCount++;
+                            break;
+                        case Maze::WALL:
+                            $wallCount++;
+                            break;
+                        case Maze::WHITE_SPACE:
+                            $wSpaceCount++;
+                            break;
+                        default:
+                            $wrongCount++;
+                            $this->fail("Nicht erkanntes zeichen: ".$cell);
+                    }
+                }
+            }
+            //Möglichkeit: Einbau eines Zählers möglich, um auf Anzahl der Wände usw. prüfen zu können
+            //$this->assertEquals($wrongCount, 0); //Reduntant
+        }
     }
 
     public function testSolvable()
