@@ -53,22 +53,12 @@ final class Routes
             $response->redirect($this->getBasePathFromRequest($request), 302);
         });
         $klein->respond('GET', '/api/maze', function (Request $request, Response $response) {
+            $x = (int)$request->param('x', Maze::DEFAULT_MAZE_WIDTH);
+            $y = (int)$request->param('y', Maze::DEFAULT_MAZE_HEIGHT);
+            $candyCount = (int)$request->param('candyCount', Maze::DEFAULT_CANDY_AMOUNT);
 
-            $x = Maze::DEFAULT_MAZE_WIDTH;
-            $y = Maze::DEFAULT_MAZE_HEIGHT;
-            $candyCount = Maze::DEFAULT_CANDY_AMOUNT;
-
-            if (!empty($_GET['x']) && is_numeric($_GET['x'])) {
-                $x = (int)$_GET['x'];
-            }
-            if (!empty($_GET['y']) && is_numeric($_GET['y'])) {
-                $y = (int)$_GET['y'];
-            }
-            if (!empty($_GET['candyCount']) && is_numeric($_GET['candyCount'])) {
-                $candyCount = (int)$_GET['candyCount'];
-            }
-            $m = new Maze($x, $y, $candyCount);
-            $resultData = $m->generate()->getMaze();
+            $maze = new Maze($x, $y, $candyCount);
+            $resultData = $maze->generate()->getMaze();
             $response->json($resultData);
         });
         $klein->onHttpError(function ($code, Klein $router) {
