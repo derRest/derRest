@@ -73,7 +73,6 @@ class MazeTest extends \PHPUnit_Framework_TestCase
         $ycoordinate = rand(3, 51) * 2 + 1;
         $candies = rand(3, 10);
         $mazeSolver = new MazeSolver($xcoordinate, $ycoordinate, $candies);
-        $mazeSolver->printMazeSolution();
         $this->assertEquals($mazeSolver->isValid(), true);
     }
 
