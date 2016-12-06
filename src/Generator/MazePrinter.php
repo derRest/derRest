@@ -1,6 +1,7 @@
 <?php
 declare(strict_types = 1);
 namespace derRest\Generator;
+
 /**
  * Class MazePrinter
  * @package derRest
