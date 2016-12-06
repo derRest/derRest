@@ -6,18 +6,15 @@ namespace derRest\Generator;
  * Class MazePrinter
  * @package derRest
  */
+
 class MazePrinter
 {
-    const WHITE_SPACE = 0;
-    const WALL = 1;
-    const CANDY = 2;
-
     public static function printToCli(array $mazeArray)
     {
         $symbols = [
-            static::WHITE_SPACE => ' ',
-            static::WALL => '#',
-            static::CANDY => 'o',
+            MazeInterface::WHITE_SPACE => ' ',
+            MazeInterface::WALL => '#',
+            MazeInterface::CANDY => 'o',
         ];
 
         echo PHP_EOL;
