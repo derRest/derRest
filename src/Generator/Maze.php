@@ -370,21 +370,4 @@ class Maze implements MazeInterface
     {
         return $this->remainingClasses > 1;
     }
-
-    public static function printToCli(array $mazeArray)
-    {
-        $symbols = [
-            static::WHITE_SPACE => ' ',
-            static::WALL => '#',
-            static::CANDY => 'o',
-        ];
-
-        echo PHP_EOL;
-        foreach ($mazeArray as $mazeLine) {
-            foreach ($mazeLine as $item) {
-                echo $symbols[$item] . '';
-            }
-            echo PHP_EOL;
-        }
-    }
 }
