@@ -11,6 +11,7 @@ interface MazeInterface
     const WHITE_SPACE = 0;
     const WALL = 1;
     const CANDY = 2;
+    const PATH = 3;
 
     const DEFAULT_MAZE_HEIGHT = 15;
     const DEFAULT_MAZE_WIDTH = 15;
