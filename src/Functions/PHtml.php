@@ -5,22 +5,33 @@ namespace derRest\Functions;
 class PHtml
 {
     /**
+     * @var string
+     */
+    protected $output;
+
+    /**
      * @param string $fileName
      * @param string[] $vars
      * @param string $layout
-     * @return string
      */
-    public static function phtml(string $fileName, array $vars = [], string $layout = 'frontend/html/layout.phtml'):string
+    public function __construct(string $fileName, array $vars = [], string $layout = 'frontend/html/layout.phtml')
     {
         ob_start();
         extract($vars, EXTR_SKIP);
         /** @noinspection PhpIncludeInspection */
         require $fileName;
-        $output = trim(ob_get_clean());
+        $this->output = trim(ob_get_clean());
         if ($layout) {
-            $vars['body'] = $output;
-            $output = static::phtml($layout, $vars, '');
+            $vars['body'] = $this->output;
+            $this->output = (string)new static($layout, $vars, '');
         }
-        return $output;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->output;
     }
 }

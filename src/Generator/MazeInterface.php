@@ -1,5 +1,6 @@
 <?php
 namespace derRest\Generator;
+
 use derRest\Generator;
 
 /**
@@ -35,7 +36,7 @@ interface MazeInterface
      *
      * @return \derRest\Generator\Maze
      */
-    public function generate() : Generator\Maze;
+    public function generate(): Generator\Maze;
 
     /**
      * getMaze()
@@ -44,5 +45,5 @@ interface MazeInterface
      *
      * @return array
      */
-    public function getMaze() : array;
+    public function getMaze(): array;
 }
