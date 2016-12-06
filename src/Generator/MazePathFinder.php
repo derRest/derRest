@@ -13,19 +13,21 @@ class MazePathFinder extends MazeSolver
      * This works by iterating through all calculated distances within the labyrinth
      * until the starting point is reached
      * 
+     * @param array $maze maze-array with calculated distances
+     * @param array $visitedLocations array with all visited locations
      * @return bool|array returns either false if no path could be found 
      * or an array over the best x and y coordinates
      */
-    public function getShortestPath(): bool | array {
-        if (!$this->isValid()) return false;
+    public function getShortestPath(array $maze, array $visitedLocations): bool | array {
+        if (!$this->isValid($maze)) return false;
         $bestxy = [
-            $this->sizex-1,
-            $this->sizey-1,
+            $this->getMazeWidth($maze),
+            $this->getMazeHeight($maze),
         ];
         $path = [];
-        $distance = $this->mazeDistanced[$bestxy[0]][$bestxy[1]];
+        $distance = $maze[$bestxy[0]][$bestxy[1]];
         while ($distance !== 3) {
-            $bestxy = $this->getBestCoordinate($bestxy[0], $bestxy[1]);
+            $bestxy = $this->getBestCoordinate($bestxy[0], $bestxy[1], $visitedLocations);
             $path[] = $bestxy;
         }
         return $path;
@@ -38,15 +40,17 @@ class MazePathFinder extends MazeSolver
      * 
      * @param int $xcoord x coordinate
      * @param int $ycoord y coordinate
+     * @param array $maze maze with calculated distances
+     * @param array $visitedLocations array with all visited locations
      * @return array the best xy-coordinate
      */
-    public function getBestCoordinate(int $xcoord,int $ycoord): array {
+    public function getBestCoordinate(int $xcoord,int $ycoord, array $maze, array $visitedLocations): array {
         $tmpcoord = [$xcoord, $ycoord];
         foreach ($this->getDirectionValues() as $dir) {
             $tmpx = $xcoord+$dir[0];
             $tmpy = $ycoord+$dir[1];
-            if (in_array($tmpx.":".$tmpy, $this->visitedLocations)) {
-                $tmpdis = $this->mazeDistanced[$tmpx][$tmpy];
+            if (in_array($tmpx.":".$tmpy, $visitedLocations)) {
+                $tmpdis = $maze[$tmpx][$tmpy];
                 $tmpdis = $tmpdis < $distance ? $tmpdis : $distance;
                 if ($tmpdis < $distance) {
                     $distance = $tmpdis;
@@ -56,5 +60,4 @@ class MazePathFinder extends MazeSolver
         }
         return $tmpcoord;
     }
-
 }
