@@ -7,201 +7,158 @@ namespace derRest\Generator;
  * @package derRest
  */
 class MazeSolver {
-	private $sizex;
-	private $sizey;
-	private $maze;
-	private $visitedLocations = [];
-	private $mazeDistanced;
-	private $stack = [];
+    protected $sizex;
+    protected $sizey;
+    protected $maze;
+    protected $visitedLocations = [];
+    protected $mazeDistanced;
+    protected $stack = [];
 
-	public function __construct($sizex, $sizey, $candies, $maze = null) {
-		if (is_null($maze)) {
-			$maze = new Maze($sizey, $sizex, $candies);
-			$maze = $maze->generate()->getMaze();
-		}
-		$this->setMaze($maze);
-		$this->goThroughMaze();
-	}
+    /**
+     *  
+     * @param int $sizex labyrinth width
+     * @param int $sizey labyrinth height
+     * @param int $candies candies within the labyrinth
+     */
+    public function __construct(int $sizex, int $sizey, int $candies, array $maze = null) {
+        if (is_null($maze)) {
+            $maze = new Maze($sizey, $sizex, $candies);
+            $maze = $maze->generate()->getMaze();
+        }
+        $this->setMaze($maze);
+        $this->calculateAllPaths([1,1]);
+    }
 
-	public function setMaze($maze) {
-		$this->maze = $maze;
-		$this->mazeDistanced = $this->maze;
-		$this->sizex = count($maze);
-		$this->sizey = count($maze[0]);
-	}
+    public function calculateAllPaths($startingPoint) {
+        $this->goThroughMaze($startingPoint[0], $startingPoint[1]);
+    }
 
-	/**
-	 * @param int $xcoord starting point X, default is 1
-	 * @param int $ycoord starting point Y, default is 1
-	 */
-	public function goThroughMaze($xcoord = 1, $ycoord = 1) {
-		$this->stack[] = [$xcoord, $ycoord];
-		while ($coord = array_shift($this->stack)) {
-			$xcoord = $coord[0];
-			$ycoord = $coord[1];
-			if (in_array($xcoord.":".$ycoord, $this->visitedLocations)) {
-				continue;
-			}
-			$this->visitedLocations[] = $xcoord.":".$ycoord;
-			$neighbours = $this->getNeighbours($xcoord, $ycoord);
-			$distance = [];
-			foreach ($neighbours as $value) {
-				if ($value == 'w') {
-					$posval = $this->mazeDistanced[$xcoord-1][$ycoord];
-					if ($posval == 0 || $posval == 2) {
-						$this->stack[] = [$xcoord-1, $ycoord];
-					}
-					if ($posval >= 3) {
-						$distance[] = $posval;
-					}
-				}
-				if ($value == 'e') {
-					$posval = $this->mazeDistanced[$xcoord+1][$ycoord];
-					if ($posval == 0 || $posval == 2) {
-						$this->stack[] = [$xcoord+1, $ycoord];
-					}
-					if ($posval >= 3) {
-						$distance[] = $posval;
-					}
-				}
-				if ($value == 's') {
-					$posval = $this->mazeDistanced[$xcoord][$ycoord+1];
-					if ($posval == 0 || $posval == 2) {
-						$this->stack[] = [$xcoord, $ycoord+1];
-					}
-					if ($posval >= 3) {
-						$distance[] = $posval;
-					}
-				}
-				if ($value == 'n') {
-					$posval = $this->mazeDistanced[$xcoord][$ycoord-1];
-					if ($posval == 0 || $posval == 2) {
-						$this->stack[] = [$xcoord, $ycoord-1];
-					}
-					if ($posval >= 3) {
-						$distance[] = $posval;
-					}
-				}
-			}
-			$thisvalue = isset($distance[0]) ? $distance[0] : 2;
-			foreach ($distance as $value) {
-			 	if ($value < $thisvalue)
-			 		$thisvalue = $value;
-			}
-			$this->mazeDistanced[$xcoord][$ycoord] = ++$thisvalue;
-		}
-	}
+    public function getMazeWidth(array $maze = null): int {
+        return is_null($maze) ? $this->sizex-1 : count($maze)-1;
+    }
 
-	/**
-	 * Gets all possible neighours of a point
-	 * @param int $xcoord x coordinate of that point
-	 * @param int $ycoord y coordinate of that point
-	 * @return array possible directions (west, east, south and north)
-	 */
-	public function getNeighbours($xcoord, $ycoord) {
-		$result = [];
-		if (($xcoord-1) >= 0) {
-			$result["w"] = $this->maze[($xcoord-1)][$ycoord];
-		}
-		if (($xcoord+1) < $this->sizex) {
-			$result["e"] = $this->maze[($xcoord+1)][$ycoord];	
-		}
-		if (($ycoord-1) >= 0) {
-			$result["n"] = $this->maze[$xcoord][($ycoord-1)];
-		}
-		if (($ycoord+1) < $this->sizey) {
-			$result["s"] = $this->maze[$xcoord][($ycoord+1)];
-		}
-		$neighbours = [];
-		foreach ($result as $key => $neighbour) {
-			if ($neighbour == 0 || $neighbour == 2) {
-				$neighbours[] = $key;
-			}
-		}
-		return $neighbours;
-	}
+    public function getMazeHeight(array $maze = null): int {
+        return is_null($maze) ? $this->sizey-1 : count($maze[0])-1;
+    }
 
-	/**
-	 * checks whether the maze is solvable or not
-	 * @return bool valid or not valid, that is here the question
-	 */
-	public function isValid() {
-		return $this->mazeDistanced[$this->sizex-1][$this->sizey-1] > 2 ? true : false;
-	}
+    public function setMaze(array $maze) {
+        $this->maze = $maze;
+        $this->sizex = count($maze);
+        $this->sizey = count($maze[0]);
+    }
 
-	/**
-	 * Determines the shortest path through the labyrinth
-	 * @return bool|array returns either false if no path could be found 
-	 * or an array over the best x and y coordinates
-	 */
-	public function getShortestPath() {
-		if (!$this->isValid()) return false;
-		$bestxy = [
-			$this->sizex-1,
-			$this->sizey-1,
-		];
-		$path = [];
-		$distance = $this->mazeDistanced[$bestxy[0]][$bestxy[1]];
-		while ($distance != 3) {
-			$tmpcoord = $bestxy;
-			if (in_array(($bestxy[0]-1).":".$bestxy[1], $this->visitedLocations)) {
-				$tmpdis = $this->mazeDistanced[($bestxy[0]-1)][$bestxy[1]];
-				$tmpdis = $tmpdis < $distance ? $tmpdis : $distance;
-				if ($tmpdis < $distance) {
-					$distance = $tmpdis;
-					$tmpcoord = [($bestxy[0]-1), $bestxy[1]];
-				}
-			}
-			if (in_array(($bestxy[0]+1).":".$bestxy[1], $this->visitedLocations)) {
-				$tmpdis = $this->mazeDistanced[($bestxy[0]+1)][$bestxy[1]];
-				if ($tmpdis < $distance) {
-					$distance = $tmpdis;
-					$tmpcoord = [($bestxy[0]+1), $bestxy[1]];
-				}	
-			}
-			if (in_array($bestxy[0].":".($bestxy[1]-1), $this->visitedLocations)) {
-				$tmpdis = $this->mazeDistanced[$bestxy[0]][($bestxy[1]-1)];
-				if ($tmpdis < $distance) {
-					$distance = $tmpdis;
-					$tmpcoord = [$bestxy[0], ($bestxy[1]-1)];
-				}
-			}
-			if (in_array($bestxy[0].":".($bestxy[1]+1), $this->visitedLocations)) {
-				$tmpdis = $this->mazeDistanced[$bestxy[0]][($bestxy[1]+1)];
-				if ($tmpdis < $distance) {
-					$distance = $tmpdis;
-					$tmpcoord = [$bestxy[0], ($bestxy[1]+1)];
-				}
-			}
-			$bestxy = $tmpcoord;
-			$path[] = $bestxy;
-		}
-		return $path;
-	}
+    public function getMaze(): array {
+        return $this->maze;
+    }
 
-	public function printMazeSolution() {
-		$pathbool = $this->drawPathIntoMaze();
-		foreach ($this->mazeDistanced as $value) {
-			foreach ($value as $value2) {
-				$print = $value2;
-				if (is_int($value2) && $value2 > 2 && $pathbool)
-					$print = " ";
-				if ($value2 == '*')
-					$print = "*";
-				if ($value2 == 1)
-					$print = "#";
-				echo $print;
-			}
-			echo "\n";
-		}
-	}
+    public function getCalculatedMazes() {
+        return $this->mazeDistanced;
+    }
 
-	public function drawPathIntoMaze() {
-		$path = $this->getShortestPath();
-		if ($path === false) return false;
-		foreach ($path as $coord) {
-			$this->mazeDistanced[$coord[0]][$coord[1]] = "*";
-		}
-		return true;
-	}
+    /**
+     * @param int $xcoord starting point X, default is 1
+     * @param int $ycoord starting point Y, default is 1
+     */
+    public function goThroughMaze($xcoord = 1, $ycoord = 1) {
+        $this->stack[] = [$xcoord, $ycoord];
+        $mazeDistanceCalc = $this->maze;
+        $visitedLocations = [];
+        while ($coord = array_shift($this->stack)) {
+            $xcoord = $coord[0];
+            $ycoord = $coord[1];
+            if (in_array($xcoord.":".$ycoord, $visitedLocations)) {
+                continue;
+            }
+            $visitedLocations[] = $xcoord.":".$ycoord;
+            $neighbours = $this->getNeighbours($xcoord, $ycoord);
+            $distance = [];
+            foreach ($neighbours as $value) {
+                $direction = $this->mapDirectionToValue($value);
+                $tmpx = $xcoord + $direction[0];
+                $tmpy = $ycoord + $direction[1];
+                $posval = $mazeDistanceCalc[$tmpx][$tmpy];
+                if ($posval == 0 || $posval == 2) {
+                    $this->stack[] = [$tmpx, $tmpy];
+                }
+                if ($posval >= 3) {
+                    $distance[] = $posval;
+                }
+            }
+            $thisvalue = isset($distance[0]) ? $distance[0] : 2;
+            foreach ($distance as $value) {
+                if ($value < $thisvalue)
+                    $thisvalue = $value;
+            }
+            $mazeDistanceCalc[$xcoord][$ycoord] = ++$thisvalue;
+        }
+        $this->mazeDistanced[] = [
+            "distance" => $mazeDistanceCalc,
+            "locations" => $visitedLocations,
+        ];
+
+    }
+
+    public function getDirectionValues(): array {
+        return [
+            "w" => [-1, 0],
+            "e" => [1, 0],
+            "s" => [0, 1],
+            "n" => [0, -1],
+        ];
+    }
+
+    public function mapDirectionToValue(string $direction): array {
+        return $this->getDirectionValues()[$direction];
+    }
+
+    /**
+     * Gets all possible neighours of a point
+     * @param int $xcoord x coordinate of that point
+     * @param int $ycoord y coordinate of that point
+     * @return array possible directions (west, east, south and north)
+     */
+    public function getNeighbours(int $xcoord, int $ycoord) {
+        $result = [];
+        if (($xcoord-1) >= 0) {
+            $result["w"] = $this->maze[($xcoord-1)][$ycoord];
+        }
+        if (($xcoord+1) < $this->sizex) {
+            $result["e"] = $this->maze[($xcoord+1)][$ycoord];   
+        }
+        if (($ycoord-1) >= 0) {
+            $result["n"] = $this->maze[$xcoord][($ycoord-1)];
+        }
+        if (($ycoord+1) < $this->sizey) {
+            $result["s"] = $this->maze[$xcoord][($ycoord+1)];
+        }
+        $neighbours = [];
+        foreach ($result as $key => $neighbour) {
+            if ($neighbour == 0 || $neighbour == 2) {
+                $neighbours[] = $key;
+            }
+        }
+        return $neighbours;
+    }
+
+    public function validateMazes(): bool {
+        foreach ($this->mazeDistanced as $maze) {
+            if (!$this->isValid($maze["distance"])) {
+                return false;
+            }
+        } 
+        return true;
+    }
+
+    /**
+     * checks whether the maze is solvable or not
+     * @param array $maze maze with calculated distances
+     * @return bool valid or not valid, that is here the question
+     */
+    public function isValid(array $maze): bool {
+        return $maze[
+                $this->getMazeWidth($maze)
+            ][
+                $this->getMazeHeight($maze)
+            ] > 2 ? true : false;
+    }
 }

@@ -3,6 +3,8 @@ namespace derRest\Test;
 
 use derRest\Generator\Maze;
 use derRest\Generator\MazeSolver;
+use derRest\Generator\MazePathFinder;
+use derRest\Generator\MazePrinter;
 
 class MazeTest extends \PHPUnit_Framework_TestCase
 {
@@ -114,8 +116,44 @@ class MazeTest extends \PHPUnit_Framework_TestCase
         $xcoordinate = rand(3, 51) * 2 + 1; // to make it always odd
         $ycoordinate = rand(3, 51) * 2 + 1;
         $candies = rand(3, 10);
-        $mazeSolver = new MazeSolver($xcoordinate, $ycoordinate, $candies);
-        $this->assertEquals($mazeSolver->isValid(), true);
+        $mazeSolver = new MazePathFinder($xcoordinate, $ycoordinate, $candies);
+        foreach ($mazeSolver->getCalculatedMazes() as $mazes) {
+            $path = $mazeSolver->getShortestPath(
+                [
+                    $mazeSolver->getMazeWidth($mazes["distance"]),
+                    $mazeSolver->getMazeHeight($mazes["distance"]),
+                ],
+                $mazes["distance"],
+                $mazes["locations"]
+            );
+            // $printer = new MazePrinter();
+            // echo $printer->printMazeSolution($mazes["distance"], $path);
+        }
+        $this->assertEquals($mazeSolver->validateMazes(), true);
+    }
+
+    public function testPrintMaze() {
+        $mazeSolver = new MazeSolver(11, 11, 3);
+        foreach ($mazeSolver->getCalculatedMazes() as $mazes) {
+            $printer = new MazePrinter();
+            $this->assertNotEquals($printer->printToCli($mazeSolver->getMaze()), "");
+        }
+    }
+
+    public function testPrintMazeSolver() {
+        $mazeSolver = new MazePathFinder(11, 11, 3);
+        foreach ($mazeSolver->getCalculatedMazes() as $mazes) {
+            $path = $mazeSolver->getShortestPath(
+                [
+                    $mazeSolver->getMazeWidth($mazes["distance"]),
+                    $mazeSolver->getMazeHeight($mazes["distance"]),
+                ],
+                $mazes["distance"],
+                $mazes["locations"]
+            );
+            $printer = new MazePrinter();
+            $this->assertNotEquals($printer->printMazeSolution($mazes["distance"], $path), []);
+        }
     }
 
     public function testCandyCount1()

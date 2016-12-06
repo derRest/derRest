@@ -8,26 +8,25 @@ namespace derRest\Generator;
 */
 class MazePathFinder extends MazeSolver
 {
+    private $distance;
     /**
      * Determines the shortest path through the labyrinth.
      * This works by iterating through all calculated distances within the labyrinth
      * until the starting point is reached
      * 
+     * @param array $startingPoint set the point from where to calculate the best path
      * @param array $maze maze-array with calculated distances
      * @param array $visitedLocations array with all visited locations
      * @return bool|array returns either false if no path could be found 
      * or an array over the best x and y coordinates
      */
-    public function getShortestPath(array $maze, array $visitedLocations): bool | array {
+    public function getShortestPath(array $startingPoint, array $maze, array $visitedLocations) {
         if (!$this->isValid($maze)) return false;
-        $bestxy = [
-            $this->getMazeWidth($maze),
-            $this->getMazeHeight($maze),
-        ];
+        $bestxy = $startingPoint;
         $path = [];
-        $distance = $maze[$bestxy[0]][$bestxy[1]];
-        while ($distance !== 3) {
-            $bestxy = $this->getBestCoordinate($bestxy[0], $bestxy[1], $visitedLocations);
+        $this->distance = $maze[$bestxy[0]][$bestxy[1]];
+        while ($this->distance !== 3) {
+            $bestxy = $this->getBestCoordinate($bestxy[0], $bestxy[1], $maze, $visitedLocations);
             $path[] = $bestxy;
         }
         return $path;
@@ -51,9 +50,9 @@ class MazePathFinder extends MazeSolver
             $tmpy = $ycoord+$dir[1];
             if (in_array($tmpx.":".$tmpy, $visitedLocations)) {
                 $tmpdis = $maze[$tmpx][$tmpy];
-                $tmpdis = $tmpdis < $distance ? $tmpdis : $distance;
-                if ($tmpdis < $distance) {
-                    $distance = $tmpdis;
+                $tmpdis = $tmpdis < $this->distance ? $tmpdis : $this->distance;
+                if ($tmpdis < $this->distance) {
+                    $this->distance = $tmpdis;
                     $tmpcoord = [$tmpx, $tmpy];
                 }
             }
