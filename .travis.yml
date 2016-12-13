@@ -30,7 +30,7 @@ script:
 
 
 before_deploy:
-
+  - tar -cf build.tar ./build/
 
 deploy:
 
