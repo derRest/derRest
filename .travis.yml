@@ -37,11 +37,11 @@ before_deploy:
   - mkdir builds
   - zip -r "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" .
   - mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
-  - git branch -d travis-build
   - git checkout -b travis-build
   - git add .
   - git commit -m "[build] automated travis"
   - git push --set-upstream origin travis-build
+  - git branch -d travis-build
 #  - ./release.sh
   
 deploy:
