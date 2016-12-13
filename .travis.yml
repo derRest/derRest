@@ -26,13 +26,6 @@ install:
 script:
 - composer test
 
-
-before_deploy:
-  - tar -cf build.tar ./build/
-
-deploy:
-
-
 after_success:
 - vendor/bin/test-reporter
 
@@ -43,6 +36,9 @@ notifications:
 before_deploy:
 - echo "deployment started..."
 - mkdir builds
+
+- tar -cf build.tar ./build/
+
 - zip -q -r "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" .
 - mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
 - git config user.name "ChrisB9"
