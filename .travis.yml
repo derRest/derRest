@@ -38,11 +38,11 @@ before_deploy:
 - mkdir builds
 - zip -q -r "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" .
 - mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
-- git config user.email "chris.ben9@gmail.com"
 - git config user.name "ChrisB9"
+- git config user.email "chris.ben9@gmail.com"
 - git checkout -b travis-build
 - git add .
-- git commit -m "[build] automated travis: {$TRAVIS_BRANCH}-v{$RELEASE_VERSION}+{$TRAVIS_BUILD_NUMBER}"
+- git commit -m "[build] automated travis"
 - git remote rm origin
 - git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
 - git push -fqu origin travis-build
