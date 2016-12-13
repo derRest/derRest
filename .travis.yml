@@ -1,36 +1,60 @@
-# Required to run your project under the correct environment.
 language: php
-
 addons:
   code_climate:
     repo_token: 6e0832b132335780ef874dc6f2a44602453ed07df36254e4c6d46bcf435ddfbc
+env:
+  global:
+  - secure: lG2NK3cpkPH6J6xFcsVKdd+1fDOVE3Sm1IX9FaxjbVAOYRFF4AxOYZwrFc7o8UsFlJa84wqxm/ot8rSduuEu+X+ePQKYJtG4DwNQUYoqNeJfb8g73V8BgjBn6sgrE4vMv3VkX4Ld1j8MvQzhFZqSa4dmGLhHsgBGdLNqONs9qI+F7oMiGoXA8TVDS7R1g58Cc/NFFzF/E9E68RHRxESVcote1xUhIjiLEabpTWMJh4BDhm8EBAXffufRsF18rwCbJHd1dXRymA62L0wZ1DOmS2DdqgrWvheOYZ98lg56POMyWuucbNPSiyRv0kCtUP/fms4oQp7vICyvf7W/7WpYz8mnL7uBq+6bGUWnHwcK9ij5WCjSDpDYCSS4ScOqVItMRY4juKdAejzOK0cXakY73I9hmq0MLamDjbj1zfktqZZQ0gvmlhoYPThN8siHUs2qEjkR85SiGbnQoHSovumjcUHXePzU+A4MOJzOxCc85e1vEMJ5LS58/GaWORWNSMG5TDfR0S4wevSfPnDNPIWRHAUuWuNXl0nN3CBzEbxCp7OP/dE0jrxLLh/yS7ChjERMYqJFcS3sep0A3Q0ksw0GZ8QbHv2/1Vogfko31d1FG7Wam58FO/dbwnkc5zKm+IuAtXYIGjBsw2ihaZ6RUcDfGHxgFmmHRqv3TiBwkjsnOKg=
 
-# allow_failures: Allow this build to fail under the specified environments.
-# fast_finish: If your build fails do not continue trying to build, just stop.
+branches:
+  except:
+    - travis-build
+
 matrix:
   allow_failures:
-    - php: hhvm
-    - php: nightly
+  - php: nightly
   fast_finish: true
   include:
-    - php: 7.0
-    - php: 7.1
-    - php: hhvm
-    - php: nightly
+  - php: 7.0
+  - php: 7.1
+  - php: nightly
 
-
-# Commands to be run before your environment runs.
 install:
-  - composer install --dev --no-interaction --prefer-dist
-  - phpenv rehash
+- composer install --dev --no-interaction --prefer-dist
+- phpenv rehash
 
-# Commands you want to run that will verify your build.
 script:
-  - composer test
+- composer test
 
 after_success:
-  - vendor/bin/test-reporter
-# Customize when the notification emails are sent.
+- vendor/bin/test-reporter
+
 notifications:
-    on_success: never
-    on_failure: always
+  on_success: never
+  on_failure: always
+
+before_deploy:
+- echo "deployment started..."
+- mkdir builds
+- zip -q -r "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" .
+- mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
+- git config user.name "ChrisB9"
+- git config user.email "chris.ben9@gmail.com"
+- git checkout -b travis-build
+- git add .
+- git commit -m "[build] automated travis"
+- git remote rm origin
+- git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
+- git push -fqu origin travis-build
+- echo "done."
+
+deploy:
+  provider: releases
+  api_key:
+    secure: MHd6sFoDD5OgiyVYTP0B4dX5Z1cG8TZd6SMMR3XbkqqQff1YpjcoTwq3QKEmGyyUhWom4duTL/MM7dEso24y5o6q9QorSocgHFNkNnSld4bYPrkf5p6r/3gzxdvfnhS6woH6CEDuJCBaaZsvwNyyr9O55jmhjdILEdyfPGiuhgs3M25D6gljbdkJfq4AUKcuSou7w2xaDOyVWzZeiTsLRaQV4MBHU+LLUFPQbtI6Kf6fkrcuPexxQOesXuh8R/kA4dmaJtrAL1EJk3KdBBLpiB13g8cILIJWF8c9r1qvj1GjGFo9fiKGAvSOGNN2F5gEmu/f3BHKZsPlnA/z9q980pmlRz1fHo9/BIUZv18x7HjcQxYV/RbTWnybymGzvt8KbB0pRqeas7203dX1is8+/JdrM16YJ2Vikjbs21CjQn88qgefmCZTswvS3UbOrPZgfjo1PeqVgMCt8dgZPC/6dIYgXom6P49ekgXXZQu6JSGOtuB94EIoV+yzeeCr7lVzi2zgi1egpQgai6Nc4c4QOqaMRw7QaH2aem+VRKGNc9ZUu1K2Z/Q1I/mslholhO+ujrZPFRi60591+ix+HkmQjF85Yt9fEolpralQk1r4Oljhh/jSSJYx+n7LJgCURYDVPK6e3iJBVMlTIz23wZoEDVNiA1GIE5GcRFoyIRoC8Hc=
+  file: builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip
+  on:
+    repo: derRest/derRest
+    branch: chrisb9-patch-travis
+    tag: "build"
+    title: "Build $TRAVIS_BUILD_NUMBER"
