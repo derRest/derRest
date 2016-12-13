@@ -27,6 +27,7 @@ install:
 # Commands you want to run that will verify your build.
 script:
   - composer test
+  - phpunit --configuration $DB.phpunit.xml
 
 after_success:
   - vendor/bin/test-reporter
