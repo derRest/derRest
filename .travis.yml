@@ -48,6 +48,7 @@ before_deploy:
 - git push -fqu origin travis-build
 - echo "done."
 
+
 deploy:
   provider: releases
   api_key:
@@ -55,6 +56,6 @@ deploy:
   file: builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip
   on:
     repo: derRest/derRest
-    branch: chrisb9-patch-travis
+    branch: master
     tag: "build"
     title: "Build $TRAVIS_BUILD_NUMBER"
