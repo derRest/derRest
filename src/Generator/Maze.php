@@ -56,7 +56,7 @@ class Maze implements MazeInterface
      *
      * @return self
      */
-    public function generate():self
+    public function generate(): self
     {
         while ($this->disjointCellsExist()) {
             $cell = $this->getRandomCell();
@@ -75,7 +75,7 @@ class Maze implements MazeInterface
     /**
      * @return array
      */
-    public function getMaze():array
+    public function getMaze(): array
     {
         $result = [];
         // Each row is 2 character lines high, including top border, then add 1 for
@@ -104,7 +104,7 @@ class Maze implements MazeInterface
      * @param int $currentWall
      * @return int
      */
-    protected function getWallType($currentWall, $printRows = 0):int
+    protected function getWallType($currentWall, $printRows = 0): int
     {
         if ($printRows != 0) {
             return $currentWall != ($printRows - 1) ? static::WALL : static::WHITE_SPACE;
@@ -126,12 +126,12 @@ class Maze implements MazeInterface
             $tmp[] = $this->getWallType($row, $printRows);
             return $tmp;
         }
-            // Printing the cell itself
+        // Printing the cell itself
         for ($jFor = 0; $jFor < $this->xCoordinate; $jFor++) {
             $tmp[] = $this->getWallType($currentWall++);
             $tmp[] = static::WHITE_SPACE;
         }
-            // Print the right wall if needed
+        // Print the right wall if needed
         $tmp[] = $this->getWallType($currentWall++);
         return $tmp;
     }
@@ -162,7 +162,7 @@ class Maze implements MazeInterface
      *
      * @return self
      */
-    protected function buildBaseMaze():self
+    protected function buildBaseMaze(): self
     {
         $this->cellCount = $this->xCoordinate * $this->yCoordinate;
         $this->wallCount = ($this->xCoordinate * ($this->yCoordinate + 1))
@@ -202,7 +202,7 @@ class Maze implements MazeInterface
      * @param array $classTwo
      * @return bool Whether two cells have the same equivalence class.
      */
-    protected function checkConnected(array $classOne, array $classTwo):bool
+    protected function checkConnected(array $classOne, array $classTwo): bool
     {
         return $this->eqClasses[$classOne['idx']] == $this->eqClasses[$classTwo['idx']];
     }
@@ -221,7 +221,7 @@ class Maze implements MazeInterface
      * @param array $classTwo
      * @return self
      */
-    protected function connect(array $classOne, array $classTwo):self
+    protected function connect(array $classOne, array $classTwo): self
     {
         // The root parent of classOne is its equivalence class.
         $temp1 = $this->cells[$this->eqClasses[$classOne['idx']]];
@@ -249,7 +249,7 @@ class Maze implements MazeInterface
      * @param int $idx
      * @return self
      */
-    protected function removeWall(int $idx):self
+    protected function removeWall(int $idx): self
     {
         $this->walls[$idx] = 0;
         return $this;
@@ -264,7 +264,7 @@ class Maze implements MazeInterface
      *
      * @return array A random cell in the maze.
      */
-    protected function getRandomCell():array
+    protected function getRandomCell(): array
     {
         $idx = rand(0, $this->cellCount - 1);
         return $this->cells[$idx];
@@ -282,7 +282,7 @@ class Maze implements MazeInterface
      * @return int The index of a random inner wall adjacent to the room.
      * @throws \Exception
      */
-    protected function getRandomInnerWall(array $cell):int
+    protected function getRandomInnerWall(array $cell): int
     {
         // Determine which row the cell is in
         $row = floor($cell['idx'] / $this->xCoordinate);
@@ -325,7 +325,7 @@ class Maze implements MazeInterface
      *               wall.
      * @throws \Exception
      */
-    protected function getNeighboringCell(array $cell, int $wall):array
+    protected function getNeighboringCell(array $cell, int $wall): array
     {
         // Determine which row the cell is in
         $row = floor($cell['idx'] / $this->xCoordinate);
@@ -366,7 +366,7 @@ class Maze implements MazeInterface
      *
      * @return bool Whether any disjoint cells still exist
      */
-    protected function disjointCellsExist():bool
+    protected function disjointCellsExist(): bool
     {
         return $this->remainingClasses > 1;
     }
