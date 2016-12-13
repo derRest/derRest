@@ -40,7 +40,7 @@ before_deploy:
 - git add .
 - git commit -m "[build] automated travis"
 - git remote add upstream "https://$GH_ACCESS@github.com/derRest/derRest.git"
-- git push --set-upstream origin travis-build
+- git push -q -u origin travis-build
 - git branch -d travis-build
 
 deploy:
