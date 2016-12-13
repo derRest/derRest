@@ -57,5 +57,5 @@ deploy:
   on:
     repo: derRest/derRest
     branch: master
-    tag: "build"
+    tags: "build"
     title: "Build $TRAVIS_BUILD_NUMBER"
