@@ -56,4 +56,5 @@ deploy:
   on:
     repo: derRest/derRest
     branch: chrisb9-patch-travis
-    tag: "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER"
+    tag: "build"
+    title: "Build v.140"
