@@ -6,6 +6,10 @@ env:
   global:
   - secure: lG2NK3cpkPH6J6xFcsVKdd+1fDOVE3Sm1IX9FaxjbVAOYRFF4AxOYZwrFc7o8UsFlJa84wqxm/ot8rSduuEu+X+ePQKYJtG4DwNQUYoqNeJfb8g73V8BgjBn6sgrE4vMv3VkX4Ld1j8MvQzhFZqSa4dmGLhHsgBGdLNqONs9qI+F7oMiGoXA8TVDS7R1g58Cc/NFFzF/E9E68RHRxESVcote1xUhIjiLEabpTWMJh4BDhm8EBAXffufRsF18rwCbJHd1dXRymA62L0wZ1DOmS2DdqgrWvheOYZ98lg56POMyWuucbNPSiyRv0kCtUP/fms4oQp7vICyvf7W/7WpYz8mnL7uBq+6bGUWnHwcK9ij5WCjSDpDYCSS4ScOqVItMRY4juKdAejzOK0cXakY73I9hmq0MLamDjbj1zfktqZZQ0gvmlhoYPThN8siHUs2qEjkR85SiGbnQoHSovumjcUHXePzU+A4MOJzOxCc85e1vEMJ5LS58/GaWORWNSMG5TDfR0S4wevSfPnDNPIWRHAUuWuNXl0nN3CBzEbxCp7OP/dE0jrxLLh/yS7ChjERMYqJFcS3sep0A3Q0ksw0GZ8QbHv2/1Vogfko31d1FG7Wam58FO/dbwnkc5zKm+IuAtXYIGjBsw2ihaZ6RUcDfGHxgFmmHRqv3TiBwkjsnOKg=
 
+branches:
+  except:
+    - travis-build
+
 matrix:
   allow_failures:
   - php: nightly
@@ -52,3 +56,4 @@ deploy:
   on:
     repo: derRest/derRest
     branch: chrisb9-patch-travis
+    tag: "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER"
