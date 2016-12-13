@@ -42,6 +42,7 @@ before_deploy:
 - git remote add upstream "https://$GH_ACCESS@github.com/derRest/derRest.git"
 - git push -q -u origin travis-build
 - git branch -d travis-build
+- echo "done."
 
 deploy:
   provider: releases
