@@ -42,7 +42,7 @@ before_deploy:
 - git config user.name "ChrisB9"
 - git checkout -b travis-build
 - git add .
-- git commit -m "[build] automated travis: {$TRAVIS_BRANCH}-v{$RELEASE_VERSION}+{$TRAVIS_BUILD_NUMBER}"
+- git commit -m "[build] automated travis"
 - git remote rm origin
 - git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
 - git push -fqu origin travis-build
