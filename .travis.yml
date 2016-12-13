@@ -51,6 +51,7 @@ before_deploy:
 - git push -fqu origin travis-build
 - echo "done."
 
+<<<<<<< a41642530726e880dd73aa2a17e25217078c5831
 deploy:
   provider: releases
   api_key:
@@ -61,3 +62,5 @@ deploy:
     branch: chrisb9-patch-travis
     tag: "build"
     title: "Build $TRAVIS_BUILD_NUMBER"
+=======
+>>>>>>> [WIP] Testing Travis CI: fixing the build
