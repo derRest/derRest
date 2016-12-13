@@ -32,7 +32,7 @@ before_deploy:
   - mkdir builds
   - zip -r "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" .
   - cp "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
-  - ./release.sh
+#  - ./release.sh
   
 deploy:
   provider: releases
