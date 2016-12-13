@@ -42,7 +42,6 @@ before_deploy:
 - git remote rm origin
 - git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
 - git push -fqu origin travis-build
-- git branch -d travis-build
 - echo "done."
 
 deploy:
