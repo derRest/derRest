@@ -9,7 +9,7 @@ env:
 branches:
   except:
     - travis-build
-    - /^build.*/
+    - /^(?i:build)-.*$/
 
 matrix:
   allow_failures:
@@ -58,5 +58,6 @@ deploy:
   on:
      repo: derRest/derRest
      branch: "$TRAVIS_BRANCH"
+     condition: $TRAVIS_BRANCH =~ /^!(?i:branch)-.*$/
      php: 7.0
      tags: true
