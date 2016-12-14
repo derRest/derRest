@@ -9,7 +9,7 @@ env:
 branches:
   except:
     - travis-build
-    - /^build*/
+    - /^build.*/
 
 matrix:
   allow_failures:
