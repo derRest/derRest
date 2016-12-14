@@ -56,7 +56,4 @@ deploy:
   file: builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip
   skip_cleanup: true
   on:
-    repo: derRest/derRest
-    branch: master
     tags: true
-    title: "Build $TRAVIS_BUILD_NUMBER"
