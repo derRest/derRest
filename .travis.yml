@@ -33,8 +33,8 @@ after_success:
 - mkdir builds
 - zip -q -r "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" .
 - mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
-- git config user.name "Travis-Build"
-- git config user.email "chris.ben9@gmail.com"
+- git config --global user.email "travis@travis-ci.org"
+- git config --global user.name "Travis CI"
 - git checkout -b travis-build
 - git add .
 - git commit -m "[build] automated travis"
@@ -54,5 +54,5 @@ deploy:
   file: builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip
   skip_cleanup: true
   php: 7.0
-  on:
-    tags: true
+# on:
+#    tags: true
