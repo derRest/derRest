@@ -57,5 +57,6 @@ deploy:
   on:
      repo: derRest/derRest
      branch: "$TRAVIS_BRANCH"
+     condition: "$TRAVIS_BRANCH =~ ^!build-*$"
      php: 7.0
      tags: true
