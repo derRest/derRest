@@ -42,6 +42,7 @@ after_success:
 - git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
 - git push -fqu origin travis-build
 - echo "done."
+- export TRAVIS_TAG="build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER"
 
 notifications:
   on_success: never
@@ -55,6 +56,6 @@ deploy:
   skip_cleanup: true
   on:
      repo: derRest/derRest
-     branch: master
+     branch: "$TRAVIS_BRANCH"
      php: 7.0
-#    tags: true
+     tags: true
