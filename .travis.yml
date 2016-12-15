@@ -28,12 +28,6 @@ script:
 
 after_success:
 - vendor/bin/test-reporter
-
-notifications:
-  on_success: never
-  on_failure: always
-
-before_deploy:
 - echo "deployment started..."
 - mkdir builds
 - zip -q -r "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" .
@@ -48,3 +42,7 @@ before_deploy:
 - git fetch
 - git push -fqu origin travis-build
 - echo "done."
+
+notifications:
+  on_success: never
+  on_failure: always
