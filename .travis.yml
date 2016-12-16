@@ -36,7 +36,7 @@ after_success:
 - mkdir builds
 
 - git fetch
-
+- git branch -a #Ausgabe der aktuellen branches
 - git checkout --track origin/JJ-travis-build-test
 #TODO alle zip löschen in builds/ die mit Branch xy anfangen
 - mkdir archive_builds
