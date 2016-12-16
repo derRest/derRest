@@ -29,18 +29,11 @@ script:
 after_success:
 - vendor/bin/test-reporter
 - echo "deployment started..."
-- zip -q -r "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" .
-- git config user.name "Travis CI"
-- git config user.email "travis@travis-ci.org"
-- git stash
 - git fetch
 - git checkout travis-build
-- git stash pop
-- mkdir builds
-- mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
-- git status
+- git archive -o $TRAVIS_BRANCH --prefix="v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER" --format=zip
 - git add .
-- git commit -m "[build] automated travis"
+- git commit -m "[travis] auto archive"
 - git remote rm origin
 - git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
 - git push -fqu origin travis-build
