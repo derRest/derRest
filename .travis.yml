@@ -26,7 +26,7 @@ install:
 script:
 #- composer test
 - git config user.name "Travis-Build"
-- git config user.email "pruvat@jan-jaeger.de"
+- git config user.email "privat@jan-jaeger.de"
 
 
 after_success:
@@ -37,11 +37,12 @@ after_success:
 - mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
 - git fetch
 
-- git checkout JJ-travis-build-test
-- git archive JJ-travis-build-test --output=build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip --prefix=archive/
-
+- git checkout -b JJ-travis-build-test
+- git archive JJ-travis-build-test --output=build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=archive/
+- git move build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
 - git status
-
+- git add .
+- git commit -m "REPLACED build with build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
 - echo "done."
 
 notifications:
