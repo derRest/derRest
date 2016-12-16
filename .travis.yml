@@ -25,6 +25,8 @@ install:
 
 script:
 - composer test
+- git config user.name "Travis CI"
+- git config user.email "travis@travis-ci.org"
 
 after_success:
 - vendor/bin/test-reporter
