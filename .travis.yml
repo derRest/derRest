@@ -37,6 +37,11 @@ after_success:
 
 - git fetch
 - git branch -a #Ausgabe der aktuellen branches
+
+- git remote rm origin
+- git remote add origin "https://JanJJ:$GH_ACCESS@github.com/derRest/derRest.git"
+- git branch -a
+
 - git checkout --track origin/JJ-travis-build-test
 #TODO alle zip löschen in builds/ die mit Branch xy anfangen
 - mkdir archive_builds
@@ -48,8 +53,6 @@ after_success:
 
 - git commit -m "REPLACED build with build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
 
-- git remote rm origin
-- git remote add origin "https://JanJJ:$GH_ACCESS@github.com/derRest/derRest.git"
 - git push -fqu origin JJ-travis-build-test
 - echo "done."
 
