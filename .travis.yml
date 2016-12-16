@@ -33,14 +33,12 @@ after_success:
 - zip -q -r "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" .
 - mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
 - git config user.name "Travis-Build"
-- git config user.email "chris.ben9@gmail.com"
-- git checkout -b travis-build
-- git add .
-- git commit -m "[build] automated travis"
-- git remote rm origin
-- git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
-- git fetch
-- git push -fqu origin travis-build
+- git config user.email "pruvat@jan-jaeger.de"
+- git checkout JJ-TravisBuild-Test
+
+- git archive JJ-TravisBuild-Test --output=release.tgz --prefix=archive/
+- git status
+
 - echo "done."
 
 notifications:
