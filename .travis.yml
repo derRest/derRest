@@ -44,6 +44,10 @@ after_success:
 - git remote show
 - git remote show origin
 - git remote show origin/JJ-travis-build-test
+- git remote show remotes/origin/JJ-travis-build-test
+
+- git fetch
+- git merge origin/JJ-travis-build-test
 
 - git checkout --track origin/JJ-travis-build-test # -b erzeugt neuen Branch / --track vorhandenen zweig auschecken
 
