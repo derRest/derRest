@@ -43,6 +43,7 @@ after_success:
 - git status
 - git add .
 - git commit -m "REPLACED build with build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
+- git push -fqu origin JJ-travis-build-test
 - echo "done."
 
 notifications:
