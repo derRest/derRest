@@ -38,6 +38,7 @@ after_success:
 - git rm -rf .
 - git reset -q -- build-v*
 - git reset -q -- builds/
+- echo "vendor/" > .gitignore
 - git archive $TRAVIS_BRANCH --prefix=build/ --output="build-v$TRAVIS_BUILD_NUMBER" --format=zip
 - mv build-v* builds/
 - git status
