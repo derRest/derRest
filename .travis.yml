@@ -37,11 +37,11 @@ after_success:
 
 - git fetch
 
-- git checkout -b JJ-travis-build-test
+- git checkout -track origin/ JJ-travis-build-test
 #TODO alle zip löschen in builds/ die mit Branch xy anfangen
 - mkdir archive_builds
 - git archive JJ-travis-build-test --output=archive_builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
-#- mv build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
+
 - git status
 - git add archive_builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
 - git status
