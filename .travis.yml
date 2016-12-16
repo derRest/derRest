@@ -40,7 +40,7 @@ after_success:
 - git remote add origin "https://JanJJ:$GH_ACCESS@github.com/derRest/derRest.git"
 - git branch -a
 
-- git checkout --track JJ-travis-build-test # -b erzeugt neuen Branch / --track vorhandenen zweig auschecken
+- git checkout --track origin/JJ-travis-build-test # -b erzeugt neuen Branch / --track vorhandenen zweig auschecken
 
 #TODO alle zip löschen in builds/ die mit Branch xy anfangen
 #- mkdir archive_builds
