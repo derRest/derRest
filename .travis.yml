@@ -38,16 +38,16 @@ after_success:
 - git fetch
 
 - git checkout -b JJ-travis-build-test
-- git archive JJ-travis-build-test --output=build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=archive/
-- mv build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
+#TODO alle löschen die mit Branch xy anfangen
+- mkdir archive_builds
+- git archive JJ-travis-build-test --output=archive_builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build-$TRAVIS_BRANCH/
+#- mv build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
 - git status
 - git add .
 - git commit -m "REPLACED build with build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
 
 - git remote rm origin
 - git remote add origin "https://JanJJ:$GH_ACCESS@github.com/derRest/derRest.git"
-- git remote add origin "https://Travis:$GH_ACCESS@github.com/derRest/derRest.git"
-- git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
 - git push -fqu origin JJ-travis-build-test
 - echo "done."
 
