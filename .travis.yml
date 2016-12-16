@@ -29,7 +29,6 @@ script:
 after_success:
 - vendor/bin/test-reporter
 - echo "deployment started..."
-- git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
 - zip -q -r "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" .
 - git config user.name "Travis CI"
 - git config user.email "travis@travis-ci.org"
@@ -41,6 +40,8 @@ after_success:
 - mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
 - git add .
 - git commit -m "[build] automated travis"
+- git remote rm
+- git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
 - git push -fqu origin travis-build
 - echo "done."
 
