@@ -42,7 +42,7 @@ after_success:
 - git remote add origin "https://JanJJ:$GH_ACCESS@github.com/derRest/derRest.git"
 - git branch -a
 
-- git checkout --track origin/JJ-travis-build-test
+- git checkout --track JJ-travis-build-test
 #TODO alle zip löschen in builds/ die mit Branch xy anfangen
 - mkdir archive_builds
 - git archive JJ-travis-build-test --output=archive_builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
