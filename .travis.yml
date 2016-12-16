@@ -25,13 +25,13 @@ install:
 
 script:
 - composer test
-- git config user.name "Travis-Build"
-- git config user.email "privat@jan-jaeger.de"
-
 
 after_success:
 - vendor/bin/test-reporter
 - echo "deployment started..."
+
+- git config user.name "Travis-Build"
+- git config user.email "travis@travis-ci.org"
 
 #Ausgabe von ein paar Infos
 - git fetch
