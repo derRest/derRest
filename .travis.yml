@@ -36,9 +36,15 @@ after_success:
 - git fetch
 - git branch -a #Ausgabe der aktuellen branches
 
+- git remote
 - git remote rm origin
 - git remote add origin "https://JanJJ:$GH_ACCESS@github.com/derRest/derRest.git"
 - git branch -a
+- git remote
+- git remote -v
+- git remote show
+- git remote show origin
+- git remote show JJ-travis-build-test
 
 - git checkout --track origin/JJ-travis-build-test # -b erzeugt neuen Branch / --track vorhandenen zweig auschecken
 
