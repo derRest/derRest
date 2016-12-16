@@ -20,7 +20,7 @@ matrix:
 #  - php: nightly
 
 install:
-- composer install --dev --no-interaction --prefer-dist
+#- composer install --dev --no-interaction --prefer-dist
 - phpenv rehash
 
 script:
