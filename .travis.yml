@@ -38,9 +38,10 @@ after_success:
 - git stash pop
 - mkdir builds
 - mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
+- git status
 - git add .
 - git commit -m "[build] automated travis"
-- git remote rm
+- git remote rm origin
 - git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
 - git push -fqu origin travis-build
 - echo "done."
