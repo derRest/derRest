@@ -16,15 +16,15 @@ matrix:
   fast_finish: true
   include:
   - php: 7.0
-#  - php: 7.1
-#  - php: nightly
+  - php: 7.1
+  - php: nightly
 
 install:
-#- composer install --dev --no-interaction --prefer-dist
+- composer install --dev --no-interaction --prefer-dist
 - phpenv rehash
 
 script:
-#- composer test
+- composer test
 - git config user.name "Travis-Build"
 - git config user.email "privat@jan-jaeger.de"
 
@@ -46,18 +46,18 @@ after_success:
 
 #holen des bereits existierenden Branches --> Wichtig
 - git fetch
-- git merge --edit "REPLACE build.zip" origin/JJ-travis-build-test
-- git checkout --track origin/JJ-travis-build-test # -b erzeugt neuen Branch / --track vorhandenen zweig auschecken
+- git merge --edit "REPLACE build.zip" origin/travis-build
+- git checkout --track origin/travis-build # -b erzeugt neuen Branch / --track vorhandenen zweig auschecken
 
 #TODO alle zip löschen in builds/ die mit Branch xy anfangen
-- mkdir -v builds
+- mkdir -v builds #Nur eine vorsichtsmaßnahme
 - git archive $TRAVIS_BRANCH --output=builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
 
 - git status
 - git add builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
 - git status
 - git commit -m "CREATE build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
-- git push -fqu origin JJ-travis-build-test
+- git push -fqu origin travis-build
 - echo "done."
 
 notifications:
