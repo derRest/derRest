@@ -25,6 +25,9 @@ install:
 
 script:
 #- composer test
+- git config user.name "Travis-Build"
+- git config user.email "pruvat@jan-jaeger.de"
+
 
 after_success:
 - vendor/bin/test-reporter
@@ -32,8 +35,6 @@ after_success:
 - mkdir builds
 - zip -q -r "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" .
 - mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
-- git config user.name "Travis-Build"
-- git config user.email "pruvat@jan-jaeger.de"
 - git fetch
 
 - git checkout JJ-travis-build-test
