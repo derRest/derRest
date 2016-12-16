@@ -24,20 +24,20 @@ install:
 - phpenv rehash
 
 script:
-- composer test
+#- composer test
 - git config user.name "Travis CI"
 - git config user.email "travis@travis-ci.org"
+- git remote rm origin
+- git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
 
 after_success:
 - vendor/bin/test-reporter
 - echo "deployment started..."
 - git fetch
-- git checkout travis-build
-- git archive -o $TRAVIS_BRANCH --prefix="v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER" --format=zip
+- git checkout -b travis-build origin/travis-build
+- git archive $TRAVIS_BRANCH --prefix="build/" --output="v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER" --format=zip
 - git add .
 - git commit -m "[travis] auto archive"
-- git remote rm origin
-- git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
 - git push -fqu origin travis-build
 - echo "done."
 
