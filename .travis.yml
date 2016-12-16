@@ -33,9 +33,9 @@ after_success:
 - vendor/bin/test-reporter
 - echo "deployment started..."
 
+#Ausgabe von ein paar Infos
 - git fetch
 - git branch -a #Ausgabe der aktuellen branches
-
 - git remote -v
 - git remote rm origin
 - git remote add origin "https://JanJJ:$GH_ACCESS@github.com/derRest/derRest.git"
@@ -44,22 +44,20 @@ after_success:
 - git remote show
 - git remote show origin
 
+#holen des bereits existierenden Branches --> Wichtig
 - git fetch
 - git merge --edit "REPLACE build.zip" origin/JJ-travis-build-test
 
 - git checkout --track origin/JJ-travis-build-test # -b erzeugt neuen Branch / --track vorhandenen zweig auschecken
 
 #TODO alle zip löschen in builds/ die mit Branch xy anfangen
-- mkdir builds
+- mkdir -v builds
 - git archive $TRAVIS_BRANCH --output=builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
 
 - git status
-#- git add archive_builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
-- git add build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
+- git add builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
 - git status
-
 - git commit -m "CREATE build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
-
 - git push -fqu origin JJ-travis-build-test
 - echo "done."
 
