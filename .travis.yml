@@ -43,8 +43,6 @@ after_success:
 - git remote -v
 - git remote show
 - git remote show origin
-- git remote show origin/JJ-travis-build-test
-- git remote show remotes/origin/JJ-travis-build-test
 
 - git fetch
 - git merge origin/JJ-travis-build-test
