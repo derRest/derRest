@@ -31,9 +31,7 @@ script:
 
 after_success:
 - vendor/bin/test-reporter
-
 - echo "deployment started..."
-- mkdir builds
 
 - git fetch
 - git branch -a #Ausgabe der aktuellen branches
@@ -42,13 +40,15 @@ after_success:
 - git remote add origin "https://JanJJ:$GH_ACCESS@github.com/derRest/derRest.git"
 - git branch -a
 
-- git checkout -b JJ-travis-build-test
+- git checkout --track JJ-travis-build-test # -b erzeugt neuen Branch / --track vorhandenen zweig auschecken
+
 #TODO alle zip löschen in builds/ die mit Branch xy anfangen
 #- mkdir archive_builds
-- git archive $TRAVIS_BRANCH --output=archive_builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
+- git archive $TRAVIS_BRANCH --output=build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
 
 - git status
-- git add archive_builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
+#- git add archive_builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
+- git add build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
 - git status
 
 - git commit -m "CREAT build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
