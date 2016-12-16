@@ -34,9 +34,9 @@ after_success:
 - mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
 - git config user.name "Travis-Build"
 - git config user.email "pruvat@jan-jaeger.de"
-- git checkout JJ-TravisBuild-Test
+- git checkout JJ-travis-build-test
 
-- git archive JJ-TravisBuild-Test --output=release.tgz --prefix=archive/
+- git archive JJ-travis-build-test --output=build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip --prefix=archive/
 - git status
 
 - echo "done."
