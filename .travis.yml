@@ -50,8 +50,8 @@ after_success:
 - git checkout --track origin/JJ-travis-build-test # -b erzeugt neuen Branch / --track vorhandenen zweig auschecken
 
 #TODO alle zip löschen in builds/ die mit Branch xy anfangen
-#- mkdir archive_builds
-- git archive $TRAVIS_BRANCH --output=build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
+- mkdir builds
+- git archive $TRAVIS_BRANCH --output=builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
 
 - git status
 #- git add archive_builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
