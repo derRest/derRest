@@ -36,10 +36,10 @@ after_success:
 - git fetch
 - git checkout -b travis-build origin/travis-build
 - git rm -rf .
-- git reset -q -- v*
+- git reset -q -- build-v*
 - git reset -q -- builds/
-- git archive $TRAVIS_BRANCH --prefix=build/ --output="v$TRAVIS_BUILD_NUMBER" --format=zip
-- mv v* builds/
+- git archive $TRAVIS_BRANCH --prefix=build/ --output="build-v$TRAVIS_BUILD_NUMBER" --format=zip
+- mv build-v* builds/
 - git status
 - git add .
 - git commit -m "[travis] auto archive"
