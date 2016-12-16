@@ -44,14 +44,14 @@ after_success:
 
 - git checkout -b JJ-travis-build-test
 #TODO alle zip löschen in builds/ die mit Branch xy anfangen
-- mkdir archive_builds
+#- mkdir archive_builds
 - git archive $TRAVIS_BRANCH --output=archive_builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
 
 - git status
 - git add archive_builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
 - git status
 
-- git commit -m "REPLACED build with build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
+- git commit -m "CREAT build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
 
 - git push -fqu origin JJ-travis-build-test
 - echo "done."
