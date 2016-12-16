@@ -37,7 +37,7 @@ after_success:
 
 - git fetch
 
-#- git checkout -b JJ-travis-build-test
+- git checkout JJ-travis-build-test
 #TODO alle löschen die mit Branch xy anfangen
 - mkdir archive_builds
 - git archive JJ-travis-build-test --output=archive_builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build-$TRAVIS_BRANCH/
