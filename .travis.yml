@@ -35,7 +35,12 @@ after_success:
 - echo "deployment started..."
 - git fetch
 - git checkout -b travis-build origin/travis-build
-- git archive $TRAVIS_BRANCH --prefix="build/" --output="v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER" --format=zip
+- git rm -rf .
+- git reset -q -- v*
+- git reset -q -- builds/
+- git archive $TRAVIS_BRANCH --prefix=build/ --output="v$TRAVIS_BUILD_NUMBER" --format=zip
+- mv v* builds/
+- git status
 - git add .
 - git commit -m "[travis] auto archive"
 - git push -fqu origin travis-build
