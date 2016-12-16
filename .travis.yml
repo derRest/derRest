@@ -35,7 +35,7 @@ after_success:
 
 #Ausgabe von ein paar Infos
 - git fetch
-- git branch -a #Ausgabe der aktuellen branches
+- git branch -a  #Ausgabe der aktuellen branches
 - git remote -v
 - git remote rm origin
 - git remote add origin "https://JanJJ:$GH_ACCESS@github.com/derRest/derRest.git"
