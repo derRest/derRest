@@ -45,7 +45,7 @@ after_success:
 - git remote show origin
 
 - git fetch
-- git merge origin/JJ-travis-build-test
+- git merge --edit "REPLACE build.zip" origin/JJ-travis-build-test
 
 - git checkout --track origin/JJ-travis-build-test # -b erzeugt neuen Branch / --track vorhandenen zweig auschecken
 
@@ -58,7 +58,7 @@ after_success:
 - git add build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
 - git status
 
-- git commit -m "CREAT build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
+- git commit -m "CREATE build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
 
 - git push -fqu origin JJ-travis-build-test
 - echo "done."
