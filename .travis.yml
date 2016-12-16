@@ -35,7 +35,7 @@ after_success:
 - git stash
 - git fetch
 - git checkout travis-build
-- git pop
+- git stash pop
 - mkdir builds
 - mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
 - git add .
