@@ -24,7 +24,7 @@ install:
 - phpenv rehash
 
 script:
-#- composer test
+- composer test
 - git config user.name "Travis CI"
 - git config user.email "travis@travis-ci.org"
 - git remote rm origin
@@ -34,16 +34,12 @@ after_success:
 - vendor/bin/test-reporter
 - echo "deployment started..."
 - git fetch
-- git checkout -b travis-build origin/travis-build
-- git rm -rf .
-- git reset -q -- build-v*
-- git reset -q -- builds/
-- echo "vendor/" > .gitignore
-- git archive $TRAVIS_BRANCH --prefix=build/ --output="build-v$TRAVIS_BUILD_NUMBER" --format=zip
-- mv build-v* builds/
-- git status
-- git add .
-- git commit -m "[travis] auto archive"
+- git merge --edit "REPLACE build.zip" origin/travis-build
+- git checkout --track origin/travis-build
+- mkdir -v builds
+- git archive $TRAVIS_BRANCH --output=builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
+- git add builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
+- git commit -m "CREATE build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
 - git push -fqu origin travis-build
 - echo "done."
 
