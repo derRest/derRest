@@ -29,17 +29,25 @@ script:
 after_success:
 - vendor/bin/test-reporter
 - echo "deployment started..."
-- mkdir builds
-- zip -q -r "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" .
-- mv "build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip" "builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION+$TRAVIS_BUILD_NUMBER.zip"
-- git config user.name "Travis CI"
+
+- git config user.name "Travis-Build"
 - git config user.email "travis@travis-ci.org"
-- git checkout -b travis-build
-- git add .
-- git commit -m "[build] automated travis"
+
 - git remote rm origin
-- git remote add origin "https://ChrisB9:$GH_ACCESS@github.com/derRest/derRest.git"
+- git remote add origin "https://JanJJ:$GH_ACCESS@github.com/derRest/derRest.git"
+
+#holen des bereits existierenden Branches --> Wichtig
 - git fetch
+- git merge --edit "REPLACE build.zip" origin/travis-build
+- git checkout --track origin/travis-build # -b erzeugt neuen Branch / --track vorhandenen zweig auschecken
+
+- mkdir -v builds #Nur eine vorsichtsmaßnahme
+- git archive $TRAVIS_BRANCH --output=builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
+
+#- git status
+- git add builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
+#- git status
+- git commit -m "CREATE build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
 - git push -fqu origin travis-build
 - echo "done."
 
