@@ -41,7 +41,7 @@ after_success:
 - git merge --edit "REPLACE build.zip" origin/travis-build
 - git checkout --track origin/travis-build # -b erzeugt neuen Branch / --track vorhandenen zweig auschecken
 
-- rm -rf builds/
+- rm -fv builds/*$TRAVIS_BRANCH*
 - mkdir -v builds #Nur eine vorsichtsmaßnahme
 - git archive $TRAVIS_BRANCH --output=builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
 
