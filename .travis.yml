@@ -42,11 +42,12 @@ after_success:
 - git checkout --track origin/travis-build # -b erzeugt neuen Branch / --track vorhandenen zweig auschecken
 
 - mkdir -v builds #Nur eine vorsichtsmaßnahme
+- rm -fv builds/*$TRAVIS_BRANCH*
 - git archive $TRAVIS_BRANCH --output=builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
 
-#- git status
-- git add builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip
-#- git status
+
+- git add builds/
+- git status
 - git commit -m "CREATE build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
 - git push -fqu origin travis-build
 - echo "done."
