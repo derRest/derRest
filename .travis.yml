@@ -46,7 +46,7 @@ after_success:
 - git archive $TRAVIS_BRANCH --output=builds/build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip --prefix=build/
 
 
-- git add builds/
+- git add --all builds/
 - git status
 - git commit -m "CREATE build-$TRAVIS_BRANCH-v$RELEASE_VERSION_$TRAVIS_BUILD_NUMBER.zip"
 - git push -fqu origin travis-build
