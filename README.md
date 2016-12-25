@@ -3,6 +3,10 @@
 [![Code Climate](https://codeclimate.com/github/derRest/derRest/badges/gpa.svg)](https://codeclimate.com/github/derRest/derRest)
 [![Test Coverage](https://codeclimate.com/github/derRest/derRest/badges/coverage.svg)](https://codeclimate.com/github/derRest/derRest/coverage)
 # derRest
+
+## IMPORTANT!
+This is a study project and will most likely see no further progress or at least only minor changes. 
+
 ## LICENSE
 MIT or
 ````
